@@ -6,7 +6,7 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 
 | Component | Location | Included example |
 | --- | --- | --- |
-| Instructions | `instructions/` | Language guidance, customization maintenance, and pull request comment disclosure |
+| Instructions | `instructions/` | Language guidance, customization maintenance, and pull request guidance |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
 | Skills | `skills/` | Plugin version reporting, active PR automation, and telemetry guidance |
 
