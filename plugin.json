@@ -1,7 +1,7 @@
 {
 	"name": "agent-plugin",
 	"description": "Personal agent instructions, commands, and skills.",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"repository": "https://github.com/amunger/agent-plugin",
 	"commands": "commands/",
 	"skills": "skills/",

@@ -11,7 +11,7 @@ When both are useful, separate **what is changing** from **how it is changing**.
 
 Do not enumerate behavior, events, fields, identifiers, cadence, or semantics that remain unchanged. Mention unchanged behavior only when it is surprising, establishes a material compatibility guarantee, or prevents a likely reviewer misunderstanding.
 
-Do not add a validation or testing section that merely lists checks enforced by CI or pre-commit hooks. Those routine checks do not add useful review context.
+Do not add a validation or testing section that merely lists checks enforced by CI or pre-commit hooks. Do not state that routine compile, type-check, lint, build, or test validation was deferred to pull request CI; reviewers already expect CI to run those checks.
 
 Include validation details only when they communicate information not already guaranteed by those automated checks, such as manual testing, environment-specific verification, intentionally skipped checks, or relevant limitations.
 
