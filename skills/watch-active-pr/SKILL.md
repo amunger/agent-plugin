@@ -1,6 +1,6 @@
 ---
 name: watch-active-pr
-description: Set up or refresh an hourly automation that watches the active pull request, investigates failures and feedback, reruns likely flakes, fixes clear regressions, and disables auto-merge when human judgment is needed.
+description: Set up or refresh an hourly automation that watches the active pull request, investigates failures and feedback, reruns likely flakes, fixes clear regressions, disables auto-merge when human judgment is needed, and stops after the PR merges.
 user-invocable: true
 ---
 
@@ -15,7 +15,7 @@ Set up the watcher; do not perform the watch inline unless the user separately a
 3. Call `listAutomations` before configuring anything.
 4. If an automation with that exact name exists, update it with the prompt and settings below and retarget it to the current session. Otherwise, create it for the current session.
 5. Configure it as enabled, hourly, in agent mode, with the `autopilot` permission level. The prompt's merge-safety rules are mandatory despite that permission level.
-6. Report whether the automation was created or updated and that it runs hourly.
+6. Report whether the automation was created or updated, that it runs hourly, and that it disables itself after the PR merges.
 
 Use `configureAutomation`; do not substitute a GitHub Actions workflow, operating-system scheduler, or long-running local process. If the automation tools are unavailable, explain that limitation rather than creating a different mechanism.
 
@@ -24,13 +24,14 @@ Use `configureAutomation`; do not substitute a GitHub Actions workflow, operatin
 Pass the following prompt verbatim:
 
 ```text
-Watch the open pull request associated with the current branch in this repository. This is a recurring caretaker run, so inspect the PR's current state rather than relying on conclusions from an earlier run.
+Watch the pull request associated with the current branch in this repository. This is a recurring caretaker run, so inspect the PR's current state rather than relying on conclusions from an earlier run.
 
 Use gh for GitHub operations and invoke applicable installed skills, especially fix-ci-failures for failed checks and act-on-feedback for user feedback. Respect repository instructions and preserve unrelated worktree changes.
 
 1. Establish scope
-- Verify gh authentication and resolve only the open PR for the current branch. Do not select an unrelated PR.
-- If there is no open PR for the current branch, make no repository or GitHub changes and finish with a concise "no active PR" summary.
+- Verify gh authentication and resolve only the PR associated with the current branch, including its current state. Do not select an unrelated PR.
+- If that PR is merged, call listAutomations, find the automation named "Watch active PR: <owner/repository>" for this repository, and call configureAutomation with its stable ID and enabled set to false. Make no repository or GitHub changes. Finish with a concise summary that says the PR was merged and the watcher was disabled. If the automation cannot be found or disabling it fails, report that failure prominently instead of claiming it was disabled.
+- If there is no PR for the current branch or its PR is closed without merge, make no repository or GitHub changes and finish with a concise "no active PR" summary.
 - Read the PR description, current review state, unresolved review threads, issue comments, and check results. Ignore feedback already resolved or clearly addressed, and do not respond to bot noise unless it identifies an actionable problem.
 
 2. Investigate failures and feedback
