@@ -1,6 +1,6 @@
 ---
-name: code-review-plus-plus
-description: Review the current session's code changes or a supplied pull request from multiple angles.
+name: code-review-alpha
+description: Review changes with the original all-in-one review prompt.
 argument-hint: '[PR URL or number]'
 ---
 
