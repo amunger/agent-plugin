@@ -8,7 +8,7 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | --- | --- | --- |
 | Instructions | `instructions/` | Language guidance, customization maintenance, and pull request guidance |
 | Slash commands | `commands/` | `/code-review-alpha`, `/code-review-bravo`, and `/keep-going` |
-| Skills | `skills/` | Specialist code reviewers, plugin version reporting, active PR automation, and telemetry guidance |
+| Skills | `skills/` | Specialist code reviewers, plugin version reporting, active PR automation, telemetry guidance, and Agents background setup |
 
 The `rules` entry in `plugin.json` maps plugin instructions to the `instructions/` directory. Keep the root manifest in the Copilot plugin format unless the component layout is deliberately migrated to another plugin specification.
 
