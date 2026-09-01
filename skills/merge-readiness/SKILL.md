@@ -17,13 +17,13 @@ Determine whether the current change or a supplied pull request is ready to merg
 ## Validate readiness
 
 1. Complete every outstanding user-required validation task before declaring the change ready. If a task cannot be completed, report the blocker and do not declare the change ready.
-2. Check the pull request state when one exists, including merge conflicts, required checks, unresolved required feedback, and required approvals. Routine automated tests and static analysis must pass, but successful CI coverage is not validation work to enumerate.
+2. Check the pull request state when one exists for merge conflicts, failed required checks, and unresolved required feedback. Do not treat draft state or missing approvals as blockers, and do not mention them; readiness here means the author-side due diligence is complete before requesting human review.
 3. Give local testing against the product special weight for product behavior and user experience changes:
    - Prefer to perform the relevant local product scenario directly when the environment and available tools support it.
    - Verify the changed behavior and a meaningful nearby or regression scenario rather than only confirming that the product starts.
    - If credible local product testing is important but cannot be performed by the agent, determine whether the user already said they will test it.
    - When the user's intent is unknown and their testing or waiver is necessary for confidence, ask whether they want to test before merge. Do not assume that user testing is always required.
-4. Review the complete current diff and confirm that the implementation matches the stated goal, contains no known blockers, and includes any necessary documentation or release-facing updates.
+4. Do not perform a substitute code review as part of this skill. Determine which specific review skills, if any, have already reviewed the current change and include them in the validation summary. If none have run, say that no review skill has been performed.
 
 Explicitly requested automated tests or static analyzers must still be completed even when CI runs them. If they succeed, do not list them as validation work; if they fail, report the failure as a blocker.
 
@@ -38,7 +38,7 @@ Start with exactly one verdict:
 Then report:
 
 - Any unmet required validation, unresolved feedback, conflict, failed requirement, or other blocker.
-- Meaningful validation performed so far, limited to local product testing, manual scenarios, visual inspection, environment-specific verification, or other work not automatically covered by routine CI.
+- Meaningful validation performed so far, including completed review skills, local product testing, manual scenarios, visual inspection, environment-specific verification, or other work not automatically covered by routine CI.
 - Whether additional user testing is required, optional, already planned, completed, or explicitly waived when that distinction matters.
 
-If the user did not specify validation tasks, say so and list only the meaningful validation already performed. Do not list successful automated tests, builds, linters, type checks, static analyzers, or other checks that routinely run in CI. Do not add a generic recommendation to rerun them.
+If the user did not specify validation tasks, say so and list only the meaningful validation already performed, including specific review skills or the absence of one. Do not list successful automated tests, builds, linters, type checks, static analyzers, or other checks that routinely run in CI. Do not add a generic recommendation to rerun them.
