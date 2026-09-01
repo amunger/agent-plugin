@@ -7,19 +7,21 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | Component | Location | Included example |
 | --- | --- | --- |
 | Instructions | `instructions/` | Language guidance, customization maintenance, and pull request guidance |
-| Slash commands | `commands/` | `/code-review-alpha`, `/code-review-bravo`, and `/keep-going` |
-| Skills | `skills/` | Specialist code reviewers, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, and Agents background setup |
+| Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
+| Skills | `skills/` | Code reviews, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, and Agents background setup |
 
 The `rules` entry in `plugin.json` maps plugin instructions to the `instructions/` directory. Keep the root manifest in the Copilot plugin format unless the component layout is deliberately migrated to another plugin specification.
 
-`/code-review-alpha` is the original all-in-one review. `/code-review-bravo` runs six independent reviewer skills and reconciles their findings. Each Bravo reviewer can also be invoked directly:
+`/agent-plugin:code-review-alpha` is the original all-in-one review. `/agent-plugin:code-review-bravo` runs six independent reviewer skills and reconciles their findings. Each Bravo reviewer can also be invoked directly:
 
-- `/code-review-behavior`
-- `/code-review-architecture`
-- `/code-review-runtime`
-- `/code-review-maintainability`
-- `/code-review-performance`
-- `/code-review-tests`
+- `/agent-plugin:code-review-behavior`
+- `/agent-plugin:code-review-architecture`
+- `/agent-plugin:code-review-runtime`
+- `/agent-plugin:code-review-maintainability`
+- `/agent-plugin:code-review-performance`
+- `/agent-plugin:code-review-tests`
+
+`/agent-plugin:notification-triage` reviews the GitHub notification inbox using conservative, versioned rules. It can automatically mark narrowly proven-safe threads Done, independently reviews other suggestions, and requires confirmation before acting on those suggestions. It uses the GitHub CLI and native Windows PowerShell; GitHub authentication needs the `notifications` scope.
 
 The Rust instructions are sourced from [github/awesome-copilot](https://github.com/github/awesome-copilot/blob/main/instructions/rust.instructions.md). See `THIRD_PARTY_NOTICES.md` for license details. Awesome Copilot does not currently provide framework-neutral TypeScript instructions, so this repository includes its own general-purpose TypeScript guidance rather than applying its MCP, Azure Functions, or Playwright instructions to every TypeScript project.
 

@@ -1,7 +1,7 @@
 ---
 name: code-review-bravo
 description: Review changes with six independent specialist reviewers and a lead synthesis.
-argument-hint: '[PR URL or number]'
+user-invocable: true
 ---
 
 Review the code changes made in the current conversation or session. If the user supplies a pull request URL or number, review that pull request instead.

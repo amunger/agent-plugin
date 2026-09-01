@@ -1,7 +1,7 @@
 ---
 name: code-review-alpha
 description: Review changes with the original all-in-one review prompt.
-argument-hint: '[PR URL or number]'
+user-invocable: true
 ---
 
 Review the code changes made in the current conversation or session. If the user supplies a pull request URL or number, review that pull request instead.
