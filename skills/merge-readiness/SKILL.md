@@ -1,6 +1,6 @@
 ---
 name: merge-readiness
-description: Determine whether a change is ready to merge, complete explicitly required validation, and summarize meaningful local or product validation without repeating routine CI coverage.
+description: Determine whether a change is ready to merge by checking required validation and summarizing meaningful local or product validation without repeating routine CI coverage.
 user-invocable: true
 ---
 
@@ -12,11 +12,11 @@ Determine whether the current change or a supplied pull request is ready to merg
 
 1. Identify the change and its intended behavior from the current conversation, task tracking, worktree, pull request, linked issue, and review discussion.
 2. Collect every validation task the user explicitly required. Treat these as merge requirements unless the user later waived or replaced them.
-3. Inspect the validation already performed in the current session and other available evidence. Do not claim validation without direct evidence that it completed successfully against the current change.
+3. Inspect the validation already performed in the current session and other available evidence. Validation performed before the latest change may still count when that change was small and did not invalidate the scenario, but note that it predates the change. Otherwise, do not claim validation without direct evidence that it completed successfully against the current change.
 
 ## Validate readiness
 
-1. Complete every outstanding user-required validation task before declaring the change ready. If a task cannot be completed, report the blocker and do not declare the change ready.
+1. Every user-required validation task should be completed before the change is declared ready. Report any incomplete or blocked task and do not declare the change ready.
 2. Check the pull request state when one exists for merge conflicts, failed required checks, and unresolved required feedback. Do not treat draft state or missing approvals as blockers, and do not mention them; readiness here means the author-side due diligence is complete before requesting human review.
 3. Give local testing against the product special weight for product behavior and user experience changes:
    - Prefer to perform the relevant local product scenario directly when the environment and available tools support it.
