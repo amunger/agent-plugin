@@ -23,6 +23,9 @@ refreshing.
   watcher in this skill instead of requiring elevation.
 - The Agents renderer caches image URIs. Generate a never-reused filename and
   change `chat.agentSessions.preferredDarkBackgroundImage` to the new URI.
+- Insiders updates can leave newer staged application directories beside the
+  active build. Resolve the active commit with `code-insiders.cmd --version`;
+  do not assume the newest `product.json` date is the running version.
 
 ## Files
 
@@ -115,7 +118,7 @@ Start with the scheduled task. Do not change VS Code source code or the
 background renderer until the external updater has been ruled out.
 
 Inspect the task status, last result, restart policy, watcher process, current
-setting, and generated file timestamp:
+setting, generated file timestamp, and active Insiders commit:
 
 ```powershell
 $taskName = "Agents Build Background"
@@ -124,6 +127,9 @@ $info = Get-ScheduledTaskInfo -TaskName $taskName
 $settingsPath = Join-Path $env:APPDATA "Code - Insiders\User\settings.json"
 $settings = Get-Content -Raw -LiteralPath $settingsPath | ConvertFrom-Json
 $background = [uri]$settings.'chat.agentSessions.preferredDarkBackgroundImage'
+$cliPath = Join-Path $env:LOCALAPPDATA `
+  "Programs\Microsoft VS Code Insiders\bin\code-insiders.cmd"
+$activeVersion = @(& $cliPath --version)
 $watcher = Get-CimInstance Win32_Process |
   Where-Object {
     $_.Name -eq "pwsh.exe" -and
@@ -142,6 +148,8 @@ $watcher = Get-CimInstance Win32_Process |
   BackgroundLastWriteTime = if (Test-Path -LiteralPath $background.LocalPath) {
     (Get-Item -LiteralPath $background.LocalPath).LastWriteTime
   }
+  ActiveVersion = $activeVersion[0]
+  ActiveCommit = $activeVersion[1]
 }
 ```
 
@@ -153,6 +161,10 @@ Interpret the result as follows:
   stopped.
 - A running watcher with a stale image requires the process-detection test in
   the Verification section.
+- If the SVG commit differs from `ActiveCommit`, check whether the generator
+  selected the newest staged application directory instead of the directory
+  matching the CLI-reported active commit. Update the generator from this
+  skill's example and run it directly.
 
 When the task has exited, run the generator directly before changing the task.
 This surfaces metadata, installation-layout, settings, and output-path errors:
@@ -232,6 +244,7 @@ Also verify:
 - Exactly one `agents-build-background-*.svg` remains in the output directory.
 - The URI in `settings.json` points to that file.
 - The SVG parses as XML.
+- The SVG commit matches the second line from `code-insiders.cmd --version`.
 - The bottom-right `updated` text reflects the latest run.
 
 ## Behavior and Cost

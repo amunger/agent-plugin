@@ -6,6 +6,7 @@ $ErrorActionPreference = "Stop"
 
 $settingsPath = Join-Path $env:APPDATA "Code - Insiders\User\settings.json"
 $installRoot = Join-Path $env:LOCALAPPDATA "Programs\Microsoft VS Code Insiders"
+$cliPath = Join-Path $installRoot "bin\code-insiders.cmd"
 $outputDirectory = "Q:\artifacts\backimg"
 $backgroundSetting = "chat.agentSessions.preferredDarkBackgroundImage"
 $devbox = "cp1"
@@ -31,6 +32,15 @@ try {
     if (-not (Test-Path -LiteralPath $settingsPath -PathType Leaf)) {
         throw "VS Code Insiders settings not found: $settingsPath"
     }
+    if (-not (Test-Path -LiteralPath $cliPath -PathType Leaf)) {
+        throw "VS Code Insiders CLI not found: $cliPath"
+    }
+
+    $activeVersion = @(& $cliPath --version)
+    if ($LASTEXITCODE -ne 0 -or $activeVersion.Count -lt 2) {
+        throw "Unable to determine the active VS Code Insiders commit from $cliPath"
+    }
+    $activeCommit = [string]$activeVersion[1]
 
     $appCandidates = Get-ChildItem -LiteralPath $installRoot -Directory |
         Where-Object {
@@ -48,9 +58,11 @@ try {
         } |
         Sort-Object BuildDate -Descending
 
-    $currentApp = $appCandidates | Select-Object -First 1
+    $currentApp = $appCandidates |
+        Where-Object { [string]$_.Product.commit -eq $activeCommit } |
+        Select-Object -First 1
     if ($null -eq $currentApp) {
-        throw "No VS Code Insiders installation was found under $installRoot"
+        throw "The active VS Code Insiders commit $activeCommit was not found under $installRoot"
     }
 
     $appPackage = Get-Content -Raw -LiteralPath (Join-Path $currentApp.AppRoot "package.json") |
