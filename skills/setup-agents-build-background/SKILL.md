@@ -26,6 +26,11 @@ refreshing.
 - Insiders updates can leave newer staged application directories beside the
   active build. Resolve the active commit with `code-insiders.cmd --version`;
   do not assume the newest `product.json` date is the running version.
+- An Insiders update can replace the active executable without producing a
+  process start that the watcher observes. Poll the active executable metadata
+  as a second refresh signal.
+- Keep the layout setting user-owned. The generator must update only the image
+  URI; it must not add or change a layout setting.
 
 ## Files
 
@@ -33,8 +38,9 @@ The working example is in this skill's `examples/` directory:
 
 - `Update-AgentsBackground.ps1` reads installed metadata, generates the SVG,
   updates the setting, and removes the previous generated SVG.
-- `Watch-VSCodeWindows.ps1` polls Insiders process IDs and runs the generator
-  when it observes a new process.
+- `Watch-VSCodeWindows.ps1` polls Insiders process IDs and active executable
+  metadata, retries failed updates, and records refresh results in
+  `Watch-VSCodeWindows.log`.
 
 ## Setup
 
@@ -61,11 +67,12 @@ The working example is in this skill's `examples/` directory:
 
    ```json
    "chat.agentSessions.preferredDarkBackgroundImage": "<any valid file URI>",
-   "chat.agentSessions.backgroundImageLayout": "bottom-left"
+   "chat.agentSessions.preferredDarkBackgroundImageLayout": "bottom-left"
    ```
 
    The generator deliberately requires the image setting to exist and replaces
-   only its string value, preserving the rest of a JSON-with-comments file.
+   only its string value, preserving the rest of a JSON-with-comments file. The
+   layout value is an example for initial setup and remains user-controlled.
 
 5. Run the generator directly and verify it succeeds:
 
@@ -86,7 +93,11 @@ The working example is in this skill's `examples/` directory:
    $action = New-ScheduledTaskAction `
      -Execute $pwsh `
      -Argument "-NoLogo -NoProfile -NonInteractive -WindowStyle Hidden -File `"$watcher`""
-   $trigger = New-ScheduledTaskTrigger -AtLogOn -User $userId
+   $logonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $userId
+   $watchdogTrigger = New-ScheduledTaskTrigger `
+     -Once `
+     -At (Get-Date).AddMinutes(5) `
+     -RepetitionInterval (New-TimeSpan -Minutes 5)
    $settings = New-ScheduledTaskSettingsSet `
      -AllowStartIfOnBatteries `
      -DontStopIfGoingOnBatteries `
@@ -103,10 +114,10 @@ The working example is in this skill's `examples/` directory:
    Register-ScheduledTask `
      -TaskName $taskName `
      -Action $action `
-     -Trigger $trigger `
+     -Trigger @($logonTrigger, $watchdogTrigger) `
      -Settings $settings `
      -Principal $principal `
-     -Description "Refreshes the VS Code Agents background when VS Code Insiders windows start." `
+     -Description "Refreshes the VS Code Agents background when Insiders starts or updates." `
      -Force
 
    Start-ScheduledTask -TaskName $taskName
@@ -117,8 +128,9 @@ The working example is in this skill's `examples/` directory:
 Start with the scheduled task. Do not change VS Code source code or the
 background renderer until the external updater has been ruled out.
 
-Inspect the task status, last result, restart policy, watcher process, current
-setting, generated file timestamp, and active Insiders commit:
+Inspect the task status, last result, triggers, restart policy, watcher process,
+current setting, generated file timestamp, active Insiders commit, and watcher
+log:
 
 ```powershell
 $taskName = "Agents Build Background"
@@ -142,6 +154,7 @@ $watcher = Get-CimInstance Win32_Process |
   LastTaskResult = "0x{0:X8}" -f ($info.LastTaskResult -band 0xffffffffL)
   RestartCount = $task.Settings.RestartCount
   RestartInterval = $task.Settings.RestartInterval
+  TriggerCount = @($task.Triggers).Count
   WatcherProcessId = $watcher.ProcessId -join ","
   Background = $background.AbsoluteUri
   BackgroundExists = Test-Path -LiteralPath $background.LocalPath
@@ -151,6 +164,11 @@ $watcher = Get-CimInstance Win32_Process |
   ActiveVersion = $activeVersion[0]
   ActiveCommit = $activeVersion[1]
 }
+
+Get-Content `
+  -LiteralPath "$HOME\.copilot\agents-build-background\Watch-VSCodeWindows.log" `
+  -Tail 20 `
+  -ErrorAction SilentlyContinue
 ```
 
 Interpret the result as follows:
@@ -161,6 +179,13 @@ Interpret the result as follows:
   stopped.
 - A running watcher with a stale image requires the process-detection test in
   the Verification section.
+- A healthy installation has both a logon trigger and a five-minute repeating
+  watchdog trigger. With `MultipleInstances IgnoreNew`, watchdog invocations do
+  nothing while the watcher is running and relaunch it after an unexpected
+  exit.
+- A running watcher that logs an update failure should retry it after one
+  minute. Fix repeated errors reported by the log rather than adding more task
+  restarts.
 - If the SVG commit differs from `ActiveCommit`, check whether the generator
   selected the newest staged application directory instead of the directory
   matching the CLI-reported active commit. Update the generator from this
@@ -182,7 +207,16 @@ start it again:
 $task = Get-ScheduledTask -TaskName "Agents Build Background"
 $task.Settings.RestartCount = 3
 $task.Settings.RestartInterval = "PT1M"
-Set-ScheduledTask -InputObject $task | Out-Null
+$logonTrigger = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
+$watchdogTrigger = New-ScheduledTaskTrigger `
+  -Once `
+  -At (Get-Date).AddMinutes(5) `
+  -RepetitionInterval (New-TimeSpan -Minutes 5)
+Set-ScheduledTask `
+  -TaskName "Agents Build Background" `
+  -Settings $task.Settings `
+  -Trigger @($logonTrigger, $watchdogTrigger) |
+    Out-Null
 Start-ScheduledTask -TaskName "Agents Build Background"
 Start-Sleep -Seconds 4
 
@@ -208,6 +242,7 @@ $task.State
 "0x{0:X}" -f $info.LastTaskResult
 $task.Settings.RestartCount
 $task.Settings.RestartInterval
+@($task.Triggers).Count
 ```
 
 Expected while running:
@@ -217,6 +252,7 @@ Running
 0x41301
 3
 PT1M
+2
 ```
 
 `0x41301` means the scheduled task is currently running; it is not an error.
@@ -246,18 +282,23 @@ Also verify:
 - The SVG parses as XML.
 - The SVG commit matches the second line from `code-insiders.cmd --version`.
 - The bottom-right `updated` text reflects the latest run.
+- The watcher log contains a successful `watcher-start`, `process-start`, or
+  `active-install-change` update and no subsequent unresolved error.
 
 ## Behavior and Cost
 
-The watcher starts once at user logon and remains as a hidden PowerShell
-process. It sleeps for one second between `Get-Process` calls. When it detects a
-new `Code - Insiders` PID, it waits two seconds to debounce the startup burst,
-then invokes the generator. The generator uses the
+The watcher starts at user logon and remains as a hidden PowerShell process. It
+sleeps for one second between `Get-Process` calls and checks the active
+executable's file metadata every 30 seconds. It invokes the generator after a
+new `Code - Insiders` PID or active executable replacement, and retries a
+failed update after one minute. The generator uses the
 `Local\AgentsBuildBackground` mutex so simultaneous triggers cannot race.
 
 The watcher can refresh for helper-process restarts as well as true window
 opens. This is harmless and preferable to requiring administrator privileges
-for process-start event subscriptions.
+for process-start event subscriptions. Task Scheduler also attempts to start
+the watcher every five minutes; `MultipleInstances IgnoreNew` makes this a
+low-cost watchdog rather than a duplicate watcher.
 
 ## Removal
 
