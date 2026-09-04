@@ -89,6 +89,8 @@ The working example is in this skill's `examples/` directory:
      -DontStopIfGoingOnBatteries `
      -ExecutionTimeLimit ([TimeSpan]::Zero) `
      -MultipleInstances IgnoreNew `
+     -RestartCount 3 `
+     -RestartInterval (New-TimeSpan -Minutes 1) `
      -StartWhenAvailable
    $principal = New-ScheduledTaskPrincipal `
      -UserId $userId `
@@ -107,6 +109,82 @@ The working example is in this skill's `examples/` directory:
    Start-ScheduledTask -TaskName $taskName
    ```
 
+## Troubleshooting
+
+Start with the scheduled task. Do not change VS Code source code or the
+background renderer until the external updater has been ruled out.
+
+Inspect the task status, last result, restart policy, watcher process, current
+setting, and generated file timestamp:
+
+```powershell
+$taskName = "Agents Build Background"
+$task = Get-ScheduledTask -TaskName $taskName
+$info = Get-ScheduledTaskInfo -TaskName $taskName
+$settingsPath = Join-Path $env:APPDATA "Code - Insiders\User\settings.json"
+$settings = Get-Content -Raw -LiteralPath $settingsPath | ConvertFrom-Json
+$background = [uri]$settings.'chat.agentSessions.preferredDarkBackgroundImage'
+$watcher = Get-CimInstance Win32_Process |
+  Where-Object {
+    $_.Name -eq "pwsh.exe" -and
+    $_.CommandLine -match '-File\s+"?[^"]*Watch-VSCodeWindows\.ps1'
+  }
+
+[pscustomobject]@{
+  TaskState = $task.State
+  LastRunTime = $info.LastRunTime
+  LastTaskResult = "0x{0:X8}" -f ($info.LastTaskResult -band 0xffffffffL)
+  RestartCount = $task.Settings.RestartCount
+  RestartInterval = $task.Settings.RestartInterval
+  WatcherProcessId = $watcher.ProcessId -join ","
+  Background = $background.AbsoluteUri
+  BackgroundExists = Test-Path -LiteralPath $background.LocalPath
+  BackgroundLastWriteTime = if (Test-Path -LiteralPath $background.LocalPath) {
+    (Get-Item -LiteralPath $background.LocalPath).LastWriteTime
+  }
+}
+```
+
+Interpret the result as follows:
+
+- `Running` with `0x00041301` means the long-running watcher is healthy.
+- `Ready` with `0x00000001` and no watcher process means the watcher exited
+  with an error. A stale generated-file timestamp confirms that refreshes
+  stopped.
+- A running watcher with a stale image requires the process-detection test in
+  the Verification section.
+
+When the task has exited, run the generator directly before changing the task.
+This surfaces metadata, installation-layout, settings, and output-path errors:
+
+```powershell
+& "C:\Program Files\PowerShell\7\pwsh.exe" `
+  -NoLogo -NoProfile -NonInteractive `
+  -File "$HOME\.copilot\agents-build-background\Update-AgentsBackground.ps1"
+```
+
+If the generator succeeds, ensure the existing task has a restart policy and
+start it again:
+
+```powershell
+$task = Get-ScheduledTask -TaskName "Agents Build Background"
+$task.Settings.RestartCount = 3
+$task.Settings.RestartInterval = "PT1M"
+Set-ScheduledTask -InputObject $task | Out-Null
+Start-ScheduledTask -TaskName "Agents Build Background"
+Start-Sleep -Seconds 4
+
+$task = Get-ScheduledTask -TaskName "Agents Build Background"
+$info = Get-ScheduledTaskInfo -TaskName "Agents Build Background"
+if ($task.State -ne "Running" -or $info.LastTaskResult -ne 0x41301) {
+  throw "The Agents background watcher did not remain running."
+}
+```
+
+If the generator fails, fix the reported error instead of masking it with
+additional task restarts. After any repair, verify that the setting references
+a newly generated file and that the watcher remains running.
+
 ## Verification
 
 Confirm the task remains alive:
@@ -116,6 +194,8 @@ $task = Get-ScheduledTask -TaskName "Agents Build Background"
 $info = Get-ScheduledTaskInfo -TaskName "Agents Build Background"
 $task.State
 "0x{0:X}" -f $info.LastTaskResult
+$task.Settings.RestartCount
+$task.Settings.RestartInterval
 ```
 
 Expected while running:
@@ -123,6 +203,8 @@ Expected while running:
 ```text
 Running
 0x41301
+3
+PT1M
 ```
 
 `0x41301` means the scheduled task is currently running; it is not an error.
