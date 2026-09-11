@@ -1,0 +1,297 @@
+{
+	"schemaVersion": 1,
+	"categoryDefinitions": {
+		"personal-preference": "Interaction behavior retained because it matches the plugin owner's preferred way of working.",
+		"team-workflow": "Behavior retained to satisfy an organizational policy, convention, or operating constraint.",
+		"model-workaround": "Behavior retained to compensate for a demonstrated model limitation and expected to be reassessed as models improve.",
+		"workflow-enhancement": "A capability added because the vanilla workflow does not provide enough value, rigor, or automation.",
+		"plugin-management": "Knowledge or tooling used for plugin and customization authoring, diagnostics, versioning, publishing, or source maintenance.",
+		"reference-utility": "Domain knowledge or an operational utility that does not primarily encode a behavioral policy."
+	},
+	"integrationRoleDefinitions": {
+		"standalone": "Operates independently and does not primarily exist as part of another customization.",
+		"orchestrator": "Coordinates named component customizations into a larger workflow.",
+		"component": "Exists primarily to be invoked as part of an orchestrated customization, even when it is also directly invocable."
+	},
+	"customizations": [
+		{
+			"path": "commands/code-review-alpha.prompt.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "standalone",
+			"rationale": "Provides a broad, evidence-based review workflow beyond the default review behavior.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow provides comparable breadth, evidence validation, and signal without this command.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "commands/code-review-bravo.prompt.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "orchestrator",
+			"uses": [
+				"skills/code-review-architecture/SKILL.md",
+				"skills/code-review-behavior/SKILL.md",
+				"skills/code-review-maintainability/SKILL.md",
+				"skills/code-review-performance/SKILL.md",
+				"skills/code-review-runtime/SKILL.md",
+				"skills/code-review-tests/SKILL.md"
+			],
+			"rationale": "Adds independent specialist reviews and lead synthesis that the vanilla review workflow does not provide.",
+			"reviewOn": [
+				"major-model-release",
+				"agent-delegation-change",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow provides independent specialist coverage and reliable synthesis with comparable cost and precision.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "commands/code-review-plus-plus.prompt.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "standalone",
+			"rationale": "Adds a multi-angle review with explicit evidence and test-sensitivity requirements.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow consistently performs the same multi-angle analysis and rejects unsupported findings.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "commands/keep-going.prompt.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "standalone",
+			"rationale": "Lets the agent continue a bounded, useful increment when the user is not ready to take over.",
+			"reviewOn": [
+				"agent-autonomy-change",
+				"agent-ui-workflow-change"
+			],
+			"retirementTest": "The default interaction continues productive, goal-directed work with the same scope control without this command.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "instructions/agent-customization-maintenance.instructions.md",
+			"category": "plugin-management",
+			"integrationRole": "standalone",
+			"rationale": "Maintains plugin guidance by turning reusable feedback into source-level customization updates instead of one-off exceptions.",
+			"reviewOn": [
+				"customization-platform-change",
+				"plugin-maintenance-workflow-change"
+			],
+			"retirementTest": "The plugin maintenance workflow handles reusable feedback, source discovery, and change approval without this instruction.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "instructions/pull-request-comment-responses.instructions.md",
+			"category": "personal-preference",
+			"integrationRole": "standalone",
+			"rationale": "Applies the plugin owner's preferred authorship disclosure to automated pull request comment responses.",
+			"reviewOn": [
+				"comment-disclosure-preference-change",
+				"github-comment-authorship-change"
+			],
+			"retirementTest": "The plugin owner no longer wants the disclosure or the platform provides an equivalent disclosure automatically.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "instructions/pull-request-descriptions.instructions.md",
+			"category": "personal-preference",
+			"integrationRole": "standalone",
+			"rationale": "Keeps pull request descriptions focused on reviewer-relevant intent and observable outcomes rather than routine implementation or CI details.",
+			"reviewOn": [
+				"pull-request-workflow-change",
+				"reviewer-preference-change"
+			],
+			"retirementTest": "The user prefers a different pull request description style or the hosting workflow supplies an equivalent description automatically.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "instructions/pull-request-readiness.instructions.md",
+			"category": "personal-preference",
+			"integrationRole": "standalone",
+			"rationale": "Supports publishing an early draft for convenient review while reserving ready-for-review state for changes whose checks pass.",
+			"reviewOn": [
+				"agent-ui-workflow-change",
+				"pull-request-workflow-change"
+			],
+			"retirementTest": "The preferred workflow no longer uses early draft pull requests or no longer requires passing checks before ready-for-review state.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "instructions/rust.instructions.md",
+			"category": "reference-utility",
+			"integrationRole": "standalone",
+			"rationale": "Supplies reusable Rust language and ecosystem guidance across repositories.",
+			"reviewOn": [
+				"rust-ecosystem-change",
+				"upstream-guidance-change"
+			],
+			"retirementTest": "Equivalent authoritative Rust guidance is built into the standard agent workflow or the plugin no longer needs cross-repository Rust guidance.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "instructions/typescript.instructions.md",
+			"category": "reference-utility",
+			"integrationRole": "standalone",
+			"rationale": "Supplies reusable, framework-neutral TypeScript guidance across repositories.",
+			"reviewOn": [
+				"typescript-ecosystem-change",
+				"upstream-guidance-change"
+			],
+			"retirementTest": "Equivalent framework-neutral TypeScript guidance is built into the standard agent workflow or the plugin no longer needs it across repositories.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/agent-host-telemetry-correlation/SKILL.md",
+			"category": "plugin-management",
+			"integrationRole": "standalone",
+			"rationale": "Preserves domain knowledge for correctly interpreting and joining Agent Host and SDK telemetry identifiers.",
+			"reviewOn": [
+				"agent-host-architecture-change",
+				"telemetry-schema-change"
+			],
+			"retirementTest": "Authoritative, maintained platform documentation provides equivalent correlation guidance or the documented telemetry pipelines are retired.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/agent-plugin-version/SKILL.md",
+			"category": "plugin-management",
+			"integrationRole": "standalone",
+			"rationale": "Provides a reliable utility for reporting the exact installed plugin version from its source of truth.",
+			"reviewOn": [
+				"plugin-manifest-change",
+				"plugin-installation-change"
+			],
+			"retirementTest": "The host reliably exposes the exact active plugin version without a custom skill.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/code-review-architecture/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "component",
+			"usedBy": [
+				"commands/code-review-bravo.prompt.md"
+			],
+			"rationale": "Adds focused review of ownership, dependency direction, reuse, and composition.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow consistently finds the same architecture defects with comparable precision and evidence.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/code-review-behavior/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "component",
+			"usedBy": [
+				"commands/code-review-bravo.prompt.md"
+			],
+			"rationale": "Adds focused tracing of behavioral contracts, compatibility, state changes, and error semantics.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow consistently finds the same behavioral defects with comparable precision and evidence.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/code-review-maintainability/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "component",
+			"usedBy": [
+				"commands/code-review-bravo.prompt.md"
+			],
+			"rationale": "Adds focused review of readability, type safety, API clarity, and realistic maintenance risk.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow consistently finds the same maintainability risks without producing stylistic noise.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/code-review-performance/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "component",
+			"usedBy": [
+				"commands/code-review-bravo.prompt.md"
+			],
+			"rationale": "Adds focused review of concrete time, memory, I/O, startup, concurrency, and scaling regressions.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow consistently finds the same performance defects while avoiding speculative optimization findings.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/code-review-runtime/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "component",
+			"usedBy": [
+				"commands/code-review-bravo.prompt.md"
+			],
+			"rationale": "Adds focused review of construction, initialization, lifecycle, disposal, operating modes, and concurrency.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow consistently finds the same runtime and lifecycle defects with comparable precision and evidence.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/code-review-tests/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "component",
+			"usedBy": [
+				"commands/code-review-bravo.prompt.md"
+			],
+			"rationale": "Adds explicit analysis of whether tests would catch realistic defects introduced by a change.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard review workflow consistently performs equivalent test-sensitivity and analytical mutation analysis.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/manage-agent-customization/SKILL.md",
+			"category": "plugin-management",
+			"integrationRole": "standalone",
+			"rationale": "Adds a reliable source-routing and maintenance workflow for public, experimental, and private customizations.",
+			"reviewOn": [
+				"customization-platform-change",
+				"plugin-repository-layout-change"
+			],
+			"retirementTest": "Standard customization tooling reliably selects the correct source repository and maintains equivalent classification metadata.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/setup-agents-build-background/SKILL.md",
+			"category": "reference-utility",
+			"integrationRole": "standalone",
+			"rationale": "Preserves the operational knowledge and reusable files needed to configure and troubleshoot the Agents window background.",
+			"reviewOn": [
+				"agents-window-platform-change",
+				"local-background-workflow-change"
+			],
+			"retirementTest": "VS Code natively provides the desired build metadata background or the local background workflow is no longer used.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/watch-active-pr/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "standalone",
+			"rationale": "Adds a recurring pull request caretaker that avoids duplicate work, acts on clear failures and feedback, and escalates ambiguous risk.",
+			"reviewOn": [
+				"automation-platform-change",
+				"pull-request-workflow-change"
+			],
+			"retirementTest": "The standard automation workflow provides equivalent state-aware pull request care and escalation safeguards.",
+			"lastReviewed": "2026-09-11"
+		}
+	]
+}

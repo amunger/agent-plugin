@@ -25,6 +25,27 @@ The `rules` entry in `plugin.json` maps plugin instructions to the `instructions
 
 The Rust instructions are sourced from [github/awesome-copilot](https://github.com/github/awesome-copilot/blob/main/instructions/rust.instructions.md). See `THIRD_PARTY_NOTICES.md` for license details. Awesome Copilot does not currently provide framework-neutral TypeScript instructions, so this repository includes its own general-purpose TypeScript guidance rather than applying its MCP, Azure Functions, or Playwright instructions to every TypeScript project.
 
+## Maintenance classification
+
+`customization-catalog.json` classifies every command, instruction, and skill by the primary reason it is retained. It separately records whether each customization is standalone, orchestrates other customizations, or primarily serves as a component of another workflow. The catalog also records what should trigger reevaluation and the condition under which a customization can be retired.
+
+| Category | Purpose |
+| --- | --- |
+| `personal-preference` | Matches how the plugin owner prefers to interact or work |
+| `team-workflow` | Satisfies an organizational policy, convention, or operating constraint |
+| `model-workaround` | Compensates for a demonstrated model limitation |
+| `workflow-enhancement` | Adds rigor, capability, or automation missing from the vanilla workflow |
+| `plugin-management` | Supports plugin and customization authoring, diagnostics, versioning, publishing, or source maintenance |
+| `reference-utility` | Provides domain knowledge or an operational utility without primarily expressing behavioral policy |
+
+| Integration role | Meaning |
+| --- | --- |
+| `standalone` | Operates independently rather than primarily as part of another customization |
+| `orchestrator` | Coordinates named component customizations into a larger workflow |
+| `component` | Primarily supports an orchestrator, even when it can also be invoked directly |
+
+The catalog is maintenance metadata rather than runtime guidance, so classifications are not duplicated in customization frontmatter. The `manage-agent-customization` skill defines how to choose categories and requires catalog entries to stay synchronized as customizations change.
+
 ## Install in VS Code
 
 1. Run **Chat: Install Plugin From Source** from the Command Palette.
