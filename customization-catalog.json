@@ -15,7 +15,7 @@
 	},
 	"customizations": [
 		{
-			"path": "commands/code-review-alpha.prompt.md",
+			"path": "skills/code-review-alpha/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
 			"rationale": "Provides a broad, evidence-based review workflow beyond the default review behavior.",
@@ -27,7 +27,7 @@
 			"lastReviewed": "2026-09-11"
 		},
 		{
-			"path": "commands/code-review-bravo.prompt.md",
+			"path": "skills/code-review-bravo/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
 			"uses": [
@@ -172,7 +172,7 @@
 			"category": "workflow-enhancement",
 			"integrationRole": "component",
 			"usedBy": [
-				"commands/code-review-bravo.prompt.md"
+				"skills/code-review-bravo/SKILL.md"
 			],
 			"rationale": "Adds focused review of ownership, dependency direction, reuse, and composition.",
 			"reviewOn": [
@@ -187,7 +187,7 @@
 			"category": "workflow-enhancement",
 			"integrationRole": "component",
 			"usedBy": [
-				"commands/code-review-bravo.prompt.md"
+				"skills/code-review-bravo/SKILL.md"
 			],
 			"rationale": "Adds focused tracing of behavioral contracts, compatibility, state changes, and error semantics.",
 			"reviewOn": [
@@ -202,7 +202,7 @@
 			"category": "workflow-enhancement",
 			"integrationRole": "component",
 			"usedBy": [
-				"commands/code-review-bravo.prompt.md"
+				"skills/code-review-bravo/SKILL.md"
 			],
 			"rationale": "Adds focused review of readability, type safety, API clarity, and realistic maintenance risk.",
 			"reviewOn": [
@@ -217,7 +217,7 @@
 			"category": "workflow-enhancement",
 			"integrationRole": "component",
 			"usedBy": [
-				"commands/code-review-bravo.prompt.md"
+				"skills/code-review-bravo/SKILL.md"
 			],
 			"rationale": "Adds focused review of concrete time, memory, I/O, startup, concurrency, and scaling regressions.",
 			"reviewOn": [
@@ -232,7 +232,7 @@
 			"category": "workflow-enhancement",
 			"integrationRole": "component",
 			"usedBy": [
-				"commands/code-review-bravo.prompt.md"
+				"skills/code-review-bravo/SKILL.md"
 			],
 			"rationale": "Adds focused review of construction, initialization, lifecycle, disposal, operating modes, and concurrency.",
 			"reviewOn": [
@@ -247,7 +247,7 @@
 			"category": "workflow-enhancement",
 			"integrationRole": "component",
 			"usedBy": [
-				"commands/code-review-bravo.prompt.md"
+				"skills/code-review-bravo/SKILL.md"
 			],
 			"rationale": "Adds explicit analysis of whether tests would catch realistic defects introduced by a change.",
 			"reviewOn": [
@@ -270,15 +270,53 @@
 			"lastReviewed": "2026-09-11"
 		},
 		{
+			"path": "skills/kusto-rest-query/SKILL.md",
+			"category": "reference-utility",
+			"integrationRole": "standalone",
+			"rationale": "Provides a safe, reusable fallback for running and diagnosing Kusto queries when an integrated query tool is unavailable.",
+			"reviewOn": [
+				"kusto-api-change",
+				"azure-cli-authentication-change",
+				"integrated-kusto-tool-change"
+			],
+			"retirementTest": "An integrated Kusto tool reliably supports the required queries and authentication diagnostics without this REST fallback.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/merge-readiness/SKILL.md",
+			"category": "team-workflow",
+			"integrationRole": "standalone",
+			"rationale": "Encodes the author-side merge-readiness policy in which required validation and feedback matter but ordinary approvals are not a default blocker.",
+			"reviewOn": [
+				"team-merge-policy-change",
+				"pull-request-workflow-change"
+			],
+			"retirementTest": "The team adopts a different definition of merge readiness or the standard workflow implements the same author-side policy.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
+			"path": "skills/notification-triage/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "standalone",
+			"rationale": "Adds conservative, stateful notification cleanup with independent review and explicit confirmation beyond the vanilla GitHub workflow.",
+			"reviewOn": [
+				"github-notification-api-change",
+				"automation-platform-change",
+				"notification-workflow-change"
+			],
+			"retirementTest": "The standard notification workflow provides equivalent conservative classification, stale-state protection, independent review, and confirmation controls.",
+			"lastReviewed": "2026-09-11"
+		},
+		{
 			"path": "skills/setup-agents-build-background/SKILL.md",
 			"category": "reference-utility",
 			"integrationRole": "standalone",
-			"rationale": "Preserves the operational knowledge and reusable files needed to configure and troubleshoot the Agents window background.",
+			"rationale": "Provides the operational knowledge needed to regenerate and verify the Agents window background on demand.",
 			"reviewOn": [
 				"agents-window-platform-change",
 				"local-background-workflow-change"
 			],
-			"retirementTest": "VS Code natively provides the desired build metadata background or the local background workflow is no longer used.",
+			"retirementTest": "VS Code natively provides the desired build metadata background or the one-shot background workflow is no longer used.",
 			"lastReviewed": "2026-09-11"
 		},
 		{
