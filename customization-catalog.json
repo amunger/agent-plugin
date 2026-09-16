@@ -204,13 +204,13 @@
 			"usedBy": [
 				"skills/code-review-bravo/SKILL.md"
 			],
-			"rationale": "Adds focused review of readability, type safety, API clarity, and realistic maintenance risk.",
+			"rationale": "Adds focused review of readability, type safety, API clarity, ownership and lifecycle consistency, and realistic maintenance risk.",
 			"reviewOn": [
 				"major-model-release",
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow consistently finds the same maintainability risks without producing stylistic noise.",
-			"lastReviewed": "2026-09-11"
+			"lastReviewed": "2026-09-15"
 		},
 		{
 			"path": "skills/code-review-performance/SKILL.md",

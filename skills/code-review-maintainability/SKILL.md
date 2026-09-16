@@ -22,6 +22,7 @@ When invoked directly, establish the change scope from the current session or a 
 - Check that names match actual responsibility and lifetime.
 - Check that comments explain invariants or non-obvious constraints rather than mechanics.
 - Flag definite-assignment assertions when they hide an observable invalid state.
+- Flag production code that creates and owns an object, then later queries a broader registry, container, or DOM subtree to rediscover it for updates, event wiring, or focus restoration. Prefer retaining a typed reference with the same lifecycle as the owned object. Do not flag queries over externally owned content, intentional event delegation, or test assertions.
 - Distinguish complexity inherent in the domain from incidental implementation complexity.
 - Do not report formatting or style already enforced by repository tools.
 
@@ -34,6 +35,7 @@ Readability is a finding only when it creates a realistic correctness or mainten
 - Validation and dereferencing are interleaved in one large boolean expression.
 - A dependency bundle hides unrelated requirements instead of representing a construction phase.
 - A comment documents required registration order that the API could enforce.
+- A component creates a button, then uses `querySelector` to find that button again when restoring focus instead of retaining its reference through the render lifecycle.
 
 ## Output
 
