@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Customization update recommendation</title>
+	<style>
+		:root {
+			color-scheme: light dark;
+			font-family: var(--vscode-font-family, system-ui, sans-serif);
+		}
+		body {
+			margin: 0;
+			color: var(--vscode-foreground, CanvasText);
+			background: transparent;
+		}
+		.card {
+			padding: 14px;
+			border: 1px solid var(--vscode-widget-border, GrayText);
+			border-radius: 8px;
+			background: var(--vscode-editorWidget-background, Canvas);
+		}
+		h2 {
+			margin: 0 0 6px;
+			font-size: 1rem;
+		}
+		p {
+			margin: 6px 0;
+			line-height: 1.45;
+		}
+		.source {
+			color: var(--vscode-descriptionForeground, GrayText);
+			font-size: 0.9em;
+			overflow-wrap: anywhere;
+		}
+		details {
+			margin: 12px 0;
+		}
+		summary {
+			cursor: pointer;
+			font-weight: 600;
+		}
+		h3 {
+			margin: 12px 0 4px;
+			font-size: 0.9rem;
+		}
+		button {
+			padding: 6px 12px;
+			border: 0;
+			border-radius: 3px;
+			color: var(--vscode-button-foreground, ButtonText);
+			background: var(--vscode-button-background, ButtonFace);
+			cursor: pointer;
+		}
+		button:hover {
+			background: var(--vscode-button-hoverBackground, ButtonFace);
+		}
+		button:disabled {
+			cursor: wait;
+			opacity: 0.65;
+		}
+		.status {
+			margin-left: 8px;
+			color: var(--vscode-descriptionForeground, GrayText);
+			font-size: 0.9em;
+		}
+	</style>
+</head>
+<body>
+	<section id="card" class="card" hidden>
+		<h2 id="title"></h2>
+		<p id="summary"></p>
+		<p id="source" class="source"></p>
+		<details>
+			<summary>What would change</summary>
+			<h3>Proposed source update</h3>
+			<p id="proposed-change"></p>
+			<h3>Future behavior</h3>
+			<p id="future-behavior"></p>
+		</details>
+		<button id="delegate" type="button">Delegate change</button>
+		<span id="status" class="status" role="status" aria-live="polite"></span>
+	</section>
+	<script>/* APP_SCRIPT */</script>
+</body>
+</html>

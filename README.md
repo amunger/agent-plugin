@@ -7,10 +7,11 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | Component | Location | Included example |
 | --- | --- | --- |
 | Instructions | `instructions/` | Language guidance, customization maintenance, and pull request guidance |
+| MCP Apps | `mcp/` | An inline customization update card with one-click session delegation |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
 | Skills | `skills/` | Code reviews, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, and one-shot Agents background updates |
 
-The `rules` entry in `plugin.json` maps plugin instructions to the `instructions/` directory. Keep the root manifest in the Copilot plugin format unless the component layout is deliberately migrated to another plugin specification.
+The `rules` entry in `plugin.json` maps plugin instructions to the `instructions/` directory. The `.mcp.json` file starts the bundled customization update MCP App without requiring an install-time package restore. Keep the root manifest in the Copilot plugin format unless the component layout is deliberately migrated to another plugin specification.
 
 `/agent-plugin:code-review-alpha` is the original all-in-one review. `/agent-plugin:code-review-bravo` runs six independent reviewer skills and reconciles their findings. Each Bravo reviewer can also be invoked directly:
 

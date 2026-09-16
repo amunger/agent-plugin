@@ -1,0 +1,19 @@
+{
+	"name": "agent-plugin-mcp-apps",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "node mcp/build.mjs",
+		"check": "tsc --noEmit && node --test mcp/test/*.test.mjs"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/ext-apps": "2.0.0",
+		"@modelcontextprotocol/server": "2.0.0",
+		"zod": "4.6.5"
+	},
+	"devDependencies": {
+		"@types/node": "24.5.2",
+		"esbuild": "0.28.2",
+		"typescript": "5.9.3"
+	}
+}

@@ -75,13 +75,15 @@
 			"path": "instructions/agent-customization-maintenance.instructions.md",
 			"category": "plugin-management",
 			"integrationRole": "standalone",
-			"rationale": "Maintains plugin guidance by turning reusable feedback into source-level customization updates instead of one-off exceptions.",
+			"rationale": "Maintains plugin guidance by turning reusable feedback into source-level customization updates and offering an in-response delegation path to apply approved recommendations.",
 			"reviewOn": [
 				"customization-platform-change",
-				"plugin-maintenance-workflow-change"
+				"plugin-maintenance-workflow-change",
+				"mcp-app-host-change",
+				"session-delegation-change"
 			],
-			"retirementTest": "The plugin maintenance workflow handles reusable feedback, source discovery, and change approval without this instruction.",
-			"lastReviewed": "2026-09-11"
+			"retirementTest": "The plugin maintenance workflow natively handles reusable feedback, source discovery, approval, and one-click creation of a context-rich update session.",
+			"lastReviewed": "2026-09-16"
 		},
 		{
 			"path": "instructions/pull-request-comment-responses.instructions.md",
