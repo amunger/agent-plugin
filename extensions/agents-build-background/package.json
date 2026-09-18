@@ -1,0 +1,80 @@
+{
+	"name": "agents-build-background",
+	"displayName": "Agents Build Background",
+	"description": "Keeps the VS Code Agents window background synchronized with the active Insiders build.",
+	"version": "0.1.6",
+	"publisher": "amunger",
+	"private": true,
+	"license": "UNLICENSED",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/amunger/agent-plugin.git",
+		"directory": "extensions/agents-build-background"
+	},
+	"engines": {
+		"vscode": "^1.100.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"enabledApiProposals": [
+		"agentsWindowActivation"
+	],
+	"capabilities": {
+		"agentsWindow": {
+			"supported": true
+		}
+	},
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "agentsBuildBackground.refresh",
+				"title": "Agents: Refresh Build Background"
+			},
+			{
+				"command": "agentsBuildBackground.showActivityLog",
+				"title": "Agents: Show Build Background Activity Log"
+			}
+		],
+		"configuration": {
+			"title": "Agents Build Background",
+			"properties": {
+				"agentsBuildBackground.machineLabel": {
+					"type": "string",
+					"default": "copilot+ laptop",
+					"description": "Machine label shown in the Agents window background."
+				},
+				"chat.agentSessions.preferredDarkBackgroundImage": {
+					"type": "string",
+					"default": "",
+					"scope": "window",
+					"description": "File URI for the dark-theme Agents window background."
+				},
+				"chat.agentSessions.backgroundImageLayout": {
+					"type": "string",
+					"enum": [
+						"bottom-left"
+					],
+					"default": "bottom-left",
+					"scope": "window",
+					"description": "Layout used for the generated Agents window background."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"compile": "tsc -p .",
+		"package": "npm run compile && vsce package --no-dependencies",
+		"check": "npm run compile && npm run package"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.0",
+		"@types/vscode": "^1.100.0",
+		"@vscode/vsce": "^3.6.0",
+		"typescript": "^5.8.3"
+	}
+}

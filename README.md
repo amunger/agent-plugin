@@ -9,7 +9,12 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | Instructions | `instructions/` | Language guidance, customization maintenance, and pull request guidance |
 | MCP Apps | `mcp/` | An inline customization update card with approval-gated session delegation |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
-| Skills | `skills/` | Code reviews, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, and one-shot Agents background updates |
+| Skills | `skills/` | Code reviews, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, and persistent Agents background updater setup |
+
+The `extensions/agents-build-background` project is installed by the
+`setup-agents-build-background` skill. It refreshes the Agents background after
+VS Code Insiders starts whenever the active build metadata changes, and updates
+the background settings through the VS Code configuration API.
 
 The `rules` entry in `plugin.json` maps plugin instructions to the `instructions/` directory. The `.mcp.json` file starts the bundled customization update MCP App without requiring an install-time package restore. Keep the root manifest in the Copilot plugin format unless the component layout is deliberately migrated to another plugin specification.
 
