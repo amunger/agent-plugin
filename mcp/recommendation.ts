@@ -14,6 +14,63 @@ export interface RenderedUpdateRecommendation extends UpdateRecommendation {
 	readonly readyPrompt: string;
 }
 
+interface RecommendationToolResult {
+	readonly isError?: boolean;
+	readonly structuredContent?: unknown;
+	readonly content?: ReadonlyArray<{ readonly type: string; readonly text?: string }>;
+}
+
+function isRenderedRecommendation(value: unknown): value is RenderedUpdateRecommendation {
+	if (typeof value !== "object" || value === null) {
+		return false;
+	}
+	const candidate = value as Record<string, unknown>;
+	return [
+		"title",
+		"summary",
+		"sourceRepository",
+		"sourceFile",
+		"proposedChange",
+		"futureBehavior",
+		"originSessionTitle",
+		"originSessionLink",
+		"delegationRequest",
+		"readyPrompt",
+	].every((key) => typeof candidate[key] === "string" && candidate[key].trim().length > 0);
+}
+
+export function readRecommendationResult(result: RecommendationToolResult): RenderedUpdateRecommendation {
+	if (result.isError) {
+		throw new Error("The recommendation tool failed. Ask the agent to try again.");
+	}
+	if (result.structuredContent !== undefined) {
+		if (isRenderedRecommendation(result.structuredContent)) {
+			return result.structuredContent;
+		}
+		throw new Error("The recommendation details were invalid.");
+	}
+
+	// Some hosts project only MCP content blocks, dropping structuredContent.
+	for (const block of result.content ?? []) {
+		if (block.type !== "text" || !block.text) {
+			continue;
+		}
+		let value: unknown;
+		try {
+			value = JSON.parse(block.text);
+		} catch (error: unknown) {
+			if (error instanceof SyntaxError) {
+				continue;
+			}
+			throw error;
+		}
+		if (isRenderedRecommendation(value)) {
+			return value;
+		}
+	}
+	throw new Error("The recommendation details were not available. Ask the agent for the text recommendation.");
+}
+
 export function renderUpdateRecommendation(
 	recommendation: UpdateRecommendation,
 ): RenderedUpdateRecommendation {
@@ -43,7 +100,7 @@ export function renderUpdateRecommendation(
 	].join("\n");
 
 	const delegationRequest = [
-		"Delegate the approved agent customization update now.",
+		"/btw Delegate the approved agent customization update now.",
 		"Use create_session with relationship \"independent\" and resolve the source repository below as its workspace.",
 		"Use the following text as the new session's initial prompt exactly as written:",
 		"",

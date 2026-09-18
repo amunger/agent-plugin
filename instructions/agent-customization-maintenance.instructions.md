@@ -19,12 +19,12 @@ When recommending an update, include it in the final response under this exact h
 
 State the source file when known and summarize the proposed change. Omit the section when there is no customization change to recommend.
 
-When the `show_update_recommendation` tool is available:
+When the `show_update_recommendation` tool is available (possibly with a server-name prefix such as `customization-update-show_update_recommendation`):
 
 1. Get the current session metadata so the recommendation can refer back to its origin.
-2. Call `show_update_recommendation` with the source repository and file, the proposed change, its future effect, and the origin session's title and link.
-3. Keep the final section concise because the tool renders the full recommendation in a collapsible card.
+2. Call `show_update_recommendation` with the source plugin repository and specific skill/instruction file, a concise description of the proposed change, its future effect, and the origin session's title and link. The card starts as a single expandable "Customization update recommendation" line; its details and delegation button are inside.
+3. Keep the final section concise, but still name the source and proposed change. A successful tool call does not prove that the host displayed the card; do not claim the card is visible or a session has been created without evidence.
 
-The card's **Delegate change** button is explicit approval to create a separate session. When its follow-up message arrives, immediately use `create_session` with `relationship: "independent"`, the customization's source repository as the workspace, and the ready-to-go prompt supplied in the message. Do not ask for confirmation again. If the source checkout cannot be resolved, explain the blocker rather than creating the session in an unrelated workspace.
+The card's **Delegate change** button is explicit approval to create a separate session. Its message begins with `/btw` so supporting hosts route it through a side chat instead of adding the delegation exchange to the main conversation. Some hosts place its message in the chat input instead of submitting it; the user must send that message before the agent can act. When its follow-up message arrives in the side chat (or as a user turn on another host), immediately use `create_session` with `relationship: "independent"`, the customization's source repository as the workspace, and the ready-to-go prompt supplied in the message. The side chat is only the handoff, not the implementation session. Do not ask for confirmation again. If the source checkout cannot be resolved, explain the blocker rather than creating the session in an unrelated workspace. If `/btw` is unavailable, explain that limitation and preserve explicit text approval as the fallback.
 
-When the tool or MCP Apps are unavailable, include the full recommendation as text and ask for approval as before.
+When the tool or MCP Apps are unavailable, include the full recommendation as text and ask for approval as before. Tool-search failures, missing cards, or rejected App messages are not approval. Preserve this text approval path if the host cannot render or deliver the App.

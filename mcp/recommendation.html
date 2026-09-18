@@ -11,38 +11,38 @@
 		}
 		body {
 			margin: 0;
+			font-size: var(--vscode-font-size, 13px);
 			color: var(--vscode-foreground, CanvasText);
 			background: transparent;
 		}
 		.card {
-			padding: 14px;
-			border: 1px solid var(--vscode-widget-border, GrayText);
-			border-radius: 8px;
-			background: var(--vscode-editorWidget-background, Canvas);
-		}
-		h2 {
-			margin: 0 0 6px;
-			font-size: 1rem;
+			padding: 4px 0;
 		}
 		p {
 			margin: 6px 0;
 			line-height: 1.45;
 		}
-		.source {
+		dt {
 			color: var(--vscode-descriptionForeground, GrayText);
-			font-size: 0.9em;
+		}
+		dd {
+			margin: 0;
 			overflow-wrap: anywhere;
 		}
-		details {
-			margin: 12px 0;
+		dl {
+			display: grid;
+			grid-template-columns: max-content minmax(0, 1fr);
+			gap: 4px 10px;
+			margin: 10px 0;
 		}
 		summary {
 			cursor: pointer;
-			font-weight: 600;
+			line-height: 20px;
 		}
-		h3 {
-			margin: 12px 0 4px;
-			font-size: 0.9rem;
+		#proposed-change {
+			white-space: pre-wrap;
+			overflow-wrap: anywhere;
+			margin-bottom: 10px;
 		}
 		button {
 			padding: 6px 12px;
@@ -60,27 +60,27 @@
 			opacity: 0.65;
 		}
 		.status {
-			margin-left: 8px;
 			color: var(--vscode-descriptionForeground, GrayText);
 			font-size: 0.9em;
+		}
+		.status:empty {
+			display: none;
 		}
 	</style>
 </head>
 <body>
-	<section id="card" class="card" hidden>
-		<h2 id="title"></h2>
-		<p id="summary"></p>
-		<p id="source" class="source"></p>
-		<details>
-			<summary>What would change</summary>
-			<h3>Proposed source update</h3>
-			<p id="proposed-change"></p>
-			<h3>Future behavior</h3>
-			<p id="future-behavior"></p>
-		</details>
-		<button id="delegate" type="button">Delegate change</button>
-		<span id="status" class="status" role="status" aria-live="polite"></span>
-	</section>
+	<details id="card" class="card" hidden>
+		<summary>Customization update recommendation</summary>
+		<dl>
+			<dt>Skill / instruction</dt>
+			<dd id="customization"></dd>
+			<dt>Source plugin</dt>
+			<dd id="source"></dd>
+		</dl>
+		<p id="proposed-change"></p>
+		<button id="delegate" type="button" disabled>Delegate change</button>
+	</details>
+	<p id="status" class="status" role="status" aria-live="polite">Loading recommendation...</p>
 	<script>/* APP_SCRIPT */</script>
 </body>
 </html>

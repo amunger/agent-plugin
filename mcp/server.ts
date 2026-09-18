@@ -24,7 +24,12 @@ export function createServer(): McpServer {
 		"show_update_recommendation",
 		{
 			title: "Show customization update recommendation",
-			description: "Render an agent customization update recommendation with a button that delegates the approved change to a new session.",
+			description: "Render an agent customization update recommendation with an approval button that hands the complete delegation prompt back to the origin chat.",
+			annotations: {
+				readOnlyHint: true,
+				idempotentHint: true,
+				openWorldHint: false,
+			},
 			inputSchema: z.object({
 				title: z.string().min(1),
 				summary: z.string().min(1),
@@ -46,7 +51,7 @@ export function createServer(): McpServer {
 			return {
 				content: [{
 					type: "text",
-					text: `${rendered.title}: ${rendered.summary}`,
+					text: JSON.stringify(rendered),
 				}],
 				structuredContent: rendered,
 			};

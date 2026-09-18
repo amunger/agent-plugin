@@ -4,7 +4,8 @@
 	"type": "module",
 	"scripts": {
 		"build": "node mcp/build.mjs",
-		"check": "tsc --noEmit && node --test mcp/test/*.test.mjs"
+		"check": "tsc --noEmit && node --test mcp/test/*.test.mjs",
+		"test:app": "node --test mcp/test/browser/*.test.mjs"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/ext-apps": "2.0.0",
@@ -12,8 +13,10 @@
 		"zod": "4.6.5"
 	},
 	"devDependencies": {
+		"@modelcontextprotocol/client": "2.0.0",
 		"@types/node": "24.5.2",
 		"esbuild": "0.28.2",
+		"playwright-core": "1.63.0",
 		"typescript": "5.9.3"
 	}
 }

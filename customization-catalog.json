@@ -75,7 +75,7 @@
 			"path": "instructions/agent-customization-maintenance.instructions.md",
 			"category": "plugin-management",
 			"integrationRole": "standalone",
-			"rationale": "Maintains plugin guidance by turning reusable feedback into source-level customization updates and offering an in-response delegation path to apply approved recommendations.",
+			"rationale": "Maintains plugin guidance through compact expandable recommendations and an approval-gated /btw side-chat handoff to an independent source-update session, with a text fallback when host integration is unavailable.",
 			"reviewOn": [
 				"customization-platform-change",
 				"plugin-maintenance-workflow-change",
@@ -83,7 +83,7 @@
 				"session-delegation-change"
 			],
 			"retirementTest": "The plugin maintenance workflow natively handles reusable feedback, source discovery, approval, and one-click creation of a context-rich update session.",
-			"lastReviewed": "2026-09-16"
+			"lastReviewed": "2026-09-18"
 		},
 		{
 			"path": "instructions/pull-request-comment-responses.instructions.md",

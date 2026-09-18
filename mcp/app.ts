@@ -4,15 +4,13 @@ import {
 	applyHostStyleVariables,
 	type McpUiHostContext,
 } from "@modelcontextprotocol/ext-apps";
-import type { RenderedUpdateRecommendation } from "./recommendation.js";
+import { readRecommendationResult, type RenderedUpdateRecommendation } from "./recommendation.js";
 
 const app = new App({ name: "Customization Update Recommendation", version: "1.0.0" });
 const card = getElement("card");
-const title = getElement("title");
-const summary = getElement("summary");
+const customization = getElement("customization");
 const source = getElement("source");
 const proposedChange = getElement("proposed-change");
-const futureBehavior = getElement("future-behavior");
 const delegateButton = getElement("delegate");
 const status = getElement("status");
 let recommendation: RenderedUpdateRecommendation | undefined;
@@ -36,40 +34,25 @@ function applyHostContext(context: McpUiHostContext): void {
 
 function render(value: RenderedUpdateRecommendation): void {
 	recommendation = value;
-	title.textContent = value.title;
-	summary.textContent = value.summary;
-	source.textContent = `${value.sourceRepository} - ${value.sourceFile}`;
+	customization.textContent = value.sourceFile;
+	source.textContent = value.sourceRepository;
 	proposedChange.textContent = value.proposedChange;
-	futureBehavior.textContent = value.futureBehavior;
+	card.removeAttribute("open");
 	card.hidden = false;
-}
-
-function isRenderedRecommendation(value: unknown): value is RenderedUpdateRecommendation {
-	if (typeof value !== "object" || value === null) {
-		return false;
-	}
-	const candidate = value as Record<string, unknown>;
-	return [
-		"title",
-		"summary",
-		"sourceRepository",
-		"sourceFile",
-		"proposedChange",
-		"futureBehavior",
-		"originSessionTitle",
-		"originSessionLink",
-		"delegationRequest",
-		"readyPrompt",
-	].every((key) => typeof candidate[key] === "string");
+	delegateButton.removeAttribute("disabled");
+	status.textContent = "";
 }
 
 app.ontoolresult = (result) => {
-	const value: unknown = result.structuredContent;
-	if (!isRenderedRecommendation(value)) {
-		status.textContent = "The recommendation details were not available.";
-		return;
+	try {
+		render(readRecommendationResult(result));
+	} catch (error: unknown) {
+		console.error(error);
+		recommendation = undefined;
+		card.hidden = true;
+		delegateButton.setAttribute("disabled", "true");
+		status.textContent = error instanceof Error ? error.message : "The recommendation could not be loaded.";
 	}
-	render(value);
 };
 
 app.onhostcontextchanged = applyHostContext;
@@ -85,7 +68,7 @@ delegateButton.addEventListener("click", async () => {
 	}
 
 	delegateButton.setAttribute("disabled", "true");
-	status.textContent = "Starting delegation...";
+	status.textContent = "Requesting delegation...";
 	try {
 		const result = await app.sendMessage(
 			{
@@ -95,9 +78,9 @@ delegateButton.addEventListener("click", async () => {
 			{ signal: AbortSignal.timeout(10_000) },
 		);
 		if (result.isError) {
-			throw new Error("The host rejected the delegation request.");
+			throw new Error("The host rejected the delegation request. Check that the chat input is empty, then try again.");
 		}
-		status.textContent = "Delegation request sent.";
+		status.textContent = "Request handed to chat. Press Send if needed; /btw asks a side chat to create the independent session.";
 	} catch (error: unknown) {
 		console.error(error);
 		status.textContent = error instanceof Error ? error.message : "Delegation failed.";

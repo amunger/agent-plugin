@@ -7,7 +7,7 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | Component | Location | Included example |
 | --- | --- | --- |
 | Instructions | `instructions/` | Language guidance, customization maintenance, and pull request guidance |
-| MCP Apps | `mcp/` | An inline customization update card with one-click session delegation |
+| MCP Apps | `mcp/` | An inline customization update card with approval-gated session delegation |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
 | Skills | `skills/` | Code reviews, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, and one-shot Agents background updates |
 
@@ -55,6 +55,140 @@ The catalog is maintenance metadata rather than runtime guidance, so classificat
 4. Open **Chat: Open Customizations** to inspect the installed components or disable the plugin.
 
 The plugin is installed in the current VS Code user profile and is available across workspaces where it is enabled.
+
+## Customization update App
+
+The `show_update_recommendation` tool returns a single-line **Customization update
+recommendation** disclosure on hosts that support MCP Apps. Expanding it shows
+the specific skill/instruction file, source plugin repository, update description,
+and **Delegate change** button. The collapsed card hides all details and actions.
+The server only renders a recommendation: it does not edit files or create sessions.
+The button sends the complete ready prompt and origin-session link to the host
+using the standard `ui/message` request. The origin agent creates an independent
+session only after receiving that approved message as a user turn.
+
+Message delivery is host-dependent. VS Code's current `ui/message` handler puts
+the request in an empty chat input; press **Send** to start delegation. The
+message starts with `/btw` to route the handoff through a side chat on supporting
+hosts, keeping the delegation exchange out of the main conversation. That side
+chat is asked to create an **independent session** in the source repository, not
+to implement the change itself. The ready prompt retains the original chat link
+and is passed unchanged to the independent session.
+
+The host rejects the request if the input already contains text. The App reports rejection and
+allows retrying, rather than claiming a new session was created. MCP Apps do not
+provide a direct session-creation API; the App uses the supported message handoff
+without filesystem or session-management access. Hosts without `/btw` support
+can use the explicit text-approval fallback.
+
+The server provides the recommendation both as `structuredContent` and as a JSON
+text content block. The App accepts either shape, for hosts that project only
+content blocks. Loading failures remain visible outside the initially hidden
+card. A successful tool invocation alone does not establish that a host rendered
+the App. Keep the Markdown recommendation and explicit text approval fallback
+when the tool, rendering, or message handoff is unavailable.
+
+### Development and validation
+
+```shell
+npm install
+npm run build
+npm run check
+npm run test:app
+```
+
+`check` includes a real stdio protocol test of the packaged server. `test:app`
+uses an installed Microsoft Edge browser by default, or the executable specified
+by `MCP_APP_BROWSER`. It loads the packaged resource in a sandboxed iframe with
+the official MCP Apps `AppBridge`, clicks the controls, and verifies collapsed
+details, a collapsed height of at most 32 CSS pixels at 320- and 700-pixel widths,
+an expansion-only button, lossless `/btw` prompt delivery, text-only results,
+visible errors, and retry.
+The test host never creates real sessions. These tests do not substitute for
+the host-specific manual checks below.
+
+### Host-specific manual checks
+
+Use an isolated, authenticated profile with this source checkout registered in
+`chat.pluginLocations`. Start a fresh session and send:
+
+> I want this to become lasting guidance: whenever a validation command fails, include the failing command in the final response. Recommend the appropriate customization update, but don't apply it in this session.
+
+Verify each boundary separately:
+
+1. The agent calls `get_current_session` and the recommendation tool, not merely
+   tool search. A tool-search error is not a renderer failure.
+2. The SDK start event carries `toolDescription._meta.ui.resourceUri`. The Agent
+   Host must preserve MCP ownership and the resource channel in its tool state.
+3. The workbench requests the HTML resource, mounts an iframe, and completes
+   `ui/initialize`. Expand tool groups when diagnosing a missing card.
+4. Only the disclosure line is visible initially. Expanding shows the
+   customization, source plugin, description, and button. No delegation message
+   is sent before clicking the button.
+5. Clicking **Delegate change** hands off the full message. If it appears in the
+   composer, verify it starts with `/btw`, then send it. Existing composer text
+   must not be overwritten.
+6. The side-chat user turn calls `create_session` with `relationship:
+   "independent"`, the correct source checkout, and the unchanged ready prompt.
+   Verify the origin-session link in that new session.
+
+### Host readiness fix and manual results
+
+Windows Insiders builds `046944034292b5479b4e9a50ad1a508033ffb64f` and
+`a07c6dc37c` intermittently invoked the tool successfully without displaying its
+App. A debugger and host logs identified the readiness race: a server became
+`connected`/`ready`, then a late `mcp_servers_loaded` startup snapshot changed it
+back to `pending`/`starting`. This revoked the resource channel required by the
+App renderer even though the SDK could still call the tool.
+
+The accompanying local VS Code source fix in `CopilotAgentSession` treats loaded
+events as inventory invalidations and fetches current state with `rpc.mcp.list`.
+Refreshes are serialized and retried when a lifecycle event overtakes an
+in-flight request. Real failures, disablement, restarts, and removals still take
+effect. A deterministic regression reproduced the missing channel before the
+fix and passed afterward; the affected host suite passed all 497 tests.
+This is a host change, not part of the plugin bundle: updating only the plugin
+does not fix an unpatched Insiders installation.
+
+Manual testing on the patched source host on 2026-09-18 verified:
+
+- Three fresh sessions using the exact prompt above rendered the card, including
+  a run after a window reload. A separate read-only delegation trial also
+  rendered the card.
+- Details began collapsed and could be expanded and collapsed.
+- The read-only trial exercised **Delegate change**, **Send**, and the host's
+  normal tool approval, then created an independent session in the source
+  checkout. The submitted message matched `delegationRequest` exactly, and the
+  delegated initial prompt matched `readyPrompt` exactly.
+- The child read the first 40 lines of this README, reported `Agent Plugin`,
+  and linked back to the origin session without editing files.
+
+A separate source-workbench chat-switch disposal error interrupted navigation
+while a tool approval was pending. Reloading recovered the session and its
+App; that unrelated error was not changed as part of the readiness fix.
+
+The compact-card follow-up also removes the host's hard-coded 100-pixel minimum
+MCP App container height in `ChatMcpAppSubPart`. The host now honors the App's
+reported size while retaining its existing initial height and maximum height.
+Manual measurement verified both the collapsed document and the actual host
+container were 28 CSS pixels tall; expansion resized the container to fit the
+details. Unpatched hosts may still reserve extra blank space around the line.
+
+The `/btw` handoff was tested through the real App button and **Send**:
+VS Code opened a side chat, which called `create_session` with
+`relationship: "independent"` in `Q:\src\agent-plugin`. The exact ready prompt
+and original-session link were preserved. After the normal host permission
+approval, the child read the first 40 lines of this README and returned its
+heading and origin link without modifying files. The original chat retained
+only its initial user turn; the delegation exchange stayed in the side chat.
+The button itself still prepares the message rather than directly creating a
+session or automatically submitting it.
+
+The current VS Code source also reconstructs MCP App results from Agent Host
+content blocks without `structuredContent`, and its `ui/message` handler fills
+the composer rather than submitting a turn. The plugin handles text-only results
+and explains the send step; it does not invent metadata to force eager loading,
+automatically submit through private host APIs, or bypass user approval.
 
 ## Install in Copilot CLI
 
