@@ -311,13 +311,19 @@
 			"path": "skills/setup-agents-build-background/SKILL.md",
 			"category": "reference-utility",
 			"integrationRole": "standalone",
-			"rationale": "Provides the operational knowledge needed to regenerate and verify the Agents window background on demand.",
+			"rationale": "Provides the operational knowledge needed to install, repair, and verify the persistent Agents background updater extension.",
 			"reviewOn": [
 				"agents-window-platform-change",
+				"vscode-extension-api-change",
+				"extension-activation-lifecycle-change",
+				"agents-window-extension-filter-change",
+				"agents-window-support-override-change",
+				"agents-background-uri-scheme-change",
+				"agents-background-configuration-registration-change",
 				"local-background-workflow-change"
 			],
-			"retirementTest": "VS Code natively provides the desired build metadata background or the one-shot background workflow is no longer used.",
-			"lastReviewed": "2026-09-11"
+			"retirementTest": "VS Code natively provides an automatically refreshed Agents background with the desired build metadata.",
+			"lastReviewed": "2026-09-16"
 		},
 		{
 			"path": "skills/watch-active-pr/SKILL.md",

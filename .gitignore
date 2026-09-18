@@ -1,2 +1,5 @@
 .DS_Store
 Thumbs.db
+extensions/**/node_modules/
+extensions/**/out/
+extensions/**/*.vsix
