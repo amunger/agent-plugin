@@ -266,10 +266,12 @@
 			"rationale": "Adds a reliable source-routing and maintenance workflow for public, experimental, and private customizations.",
 			"reviewOn": [
 				"customization-platform-change",
-				"plugin-repository-layout-change"
+				"plugin-repository-layout-change",
+				"plugin-publishing-workflow-change",
+				"mcp-app-capability-change"
 			],
 			"retirementTest": "Standard customization tooling reliably selects the correct source repository and maintains equivalent classification metadata.",
-			"lastReviewed": "2026-09-11"
+			"lastReviewed": "2026-09-18"
 		},
 		{
 			"path": "skills/kusto-rest-query/SKILL.md",

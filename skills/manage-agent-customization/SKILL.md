@@ -81,3 +81,25 @@ Before finishing:
 - Verify the resulting state, then end the completion summary with one of these, or an alternate summary as appropriate:
   - `Changes have been pushed on a new version.` when the change and bumped version are on remote `main`.
   - `Changes are local and ready to be pushed.` when they remain local.
+
+When changes are local and ready to be pushed, and the
+`show_plugin_publish_recommendation` MCP App tool is available:
+
+1. Get the current session metadata.
+2. Call `show_plugin_publish_recommendation` with the source repository,
+   `plugin.json` as the source file, the verified local state, the concrete
+   publish plan, the expected synchronized outcome, and the origin session
+   title and link.
+3. Keep the completion summary explicit that changes remain local. A successful
+   tool call does not prove the card rendered or that publishing started.
+
+The card's **Publish plugin update** button is approval to delegate only the
+existing local update's review, version check, commit, rebase, push, and final
+sync verification. Its `/btw` handoff should create an independent session in
+the source repository using the supplied ready prompt. Do not reinterpret it as
+approval for unrelated source edits or force-pushing.
+
+Do not show the publish card when changes are already pushed, validation has
+not established a publishable state, the source repository is unresolved, or
+human input is still required. When the tool or MCP Apps are unavailable,
+retain the explicit text status so the user can ask to publish normally.

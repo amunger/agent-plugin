@@ -8,6 +8,8 @@ import { readRecommendationResult, type RenderedUpdateRecommendation } from "./r
 
 const app = new App({ name: "Customization Update Recommendation", version: "1.0.0" });
 const card = getElement("card");
+const cardTitle = getElement("card-title");
+const subjectLabel = getElement("subject-label");
 const customization = getElement("customization");
 const source = getElement("source");
 const proposedChange = getElement("proposed-change");
@@ -34,9 +36,12 @@ function applyHostContext(context: McpUiHostContext): void {
 
 function render(value: RenderedUpdateRecommendation): void {
 	recommendation = value;
+	cardTitle.textContent = value.cardTitle;
+	subjectLabel.textContent = value.subjectLabel;
 	customization.textContent = value.sourceFile;
 	source.textContent = value.sourceRepository;
 	proposedChange.textContent = value.proposedChange;
+	delegateButton.textContent = value.actionLabel;
 	card.removeAttribute("open");
 	card.hidden = false;
 	delegateButton.removeAttribute("disabled");

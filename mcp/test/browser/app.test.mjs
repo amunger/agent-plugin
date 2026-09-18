@@ -4,17 +4,22 @@ import { after, before, test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { build } from "esbuild";
 import { chromium } from "playwright-core";
-import { connectTestServer, recommendation } from "../helpers/server.mjs";
+import { connectTestServer, publishRecommendation, recommendation } from "../helpers/server.mjs";
 
 let browser;
 let server;
 let client;
 let origin;
 let result;
+let publishResult;
 
 before(async () => {
 	client = await connectTestServer();
 	result = await client.callTool({ name: "show_update_recommendation", arguments: recommendation });
+	publishResult = await client.callTool({
+		name: "show_plugin_publish_recommendation",
+		arguments: publishRecommendation,
+	});
 	const resource = await client.readResource({ uri: "ui://customization-update/recommendation.html" });
 	const host = await build({
 		entryPoints: [fileURLToPath(new URL("./host.mjs", import.meta.url))],
@@ -30,6 +35,7 @@ before(async () => {
 			"/host.js": ["text/javascript", host.outputFiles[0].text],
 			"/app": ["text/html", resource.contents[0].text],
 			"/result": ["application/json", JSON.stringify(result)],
+			"/publish-result": ["application/json", JSON.stringify(publishResult)],
 		};
 		const route = routes[path];
 		response.writeHead(route ? 200 : 404, { "Content-Type": route?.[0] ?? "text/plain" });
@@ -60,6 +66,21 @@ async function openApp(t, mode = "") {
 	await page.waitForFunction(() => window.testHost?.ready);
 	return { page, app: page.frameLocator("#app") };
 }
+
+test("publish result renders a dedicated publish button and prompt", async (t) => {
+	const { page, app } = await openApp(t);
+	await page.evaluate((value) => window.testHost.sendResult(value), publishResult);
+	await app.getByText("Local plugin changes ready", { exact: true }).waitFor();
+	await app.locator("summary").click();
+	assert.equal(await app.locator("#subject-label").innerText(), "Plugin manifest");
+	assert.equal(await app.locator("#customization").innerText(), publishRecommendation.sourceFile);
+	await app.getByRole("button", { name: "Publish plugin update" }).click();
+	await page.waitForFunction(() => window.testHost.messages.length === 1);
+	assert.deepEqual(await page.evaluate(() => window.testHost.messages), [{
+		role: "user",
+		content: [{ type: "text", text: publishResult.structuredContent.delegationRequest }],
+	}]);
+});
 
 for (const mode of ["structured", "text"]) {
 	test(`${mode} result renders collapsed details and delegates only after a click`, async (t) => {

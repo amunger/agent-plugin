@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readRecommendationResult, renderUpdateRecommendation } from "../dist/recommendation.js";
-import { recommendation } from "./helpers/server.mjs";
+import {
+	readRecommendationResult,
+	renderPluginPublishRecommendation,
+	renderUpdateRecommendation,
+} from "../dist/recommendation.js";
+import { publishRecommendation, recommendation } from "./helpers/server.mjs";
 
 test("builds a traceable ready-to-go delegation prompt", () => {
 	const rendered = renderUpdateRecommendation({
@@ -20,6 +24,22 @@ test("builds a traceable ready-to-go delegation prompt", () => {
 	assert.match(rendered.delegationRequest, /Use create_session/);
 	assert.match(rendered.delegationRequest, /^\/btw Delegate/);
 	assert.match(rendered.delegationRequest, /--- BEGIN READY PROMPT ---/);
+	assert.equal(rendered.actionLabel, "Delegate change");
+	assert.equal(rendered.operation, "customization-update");
+});
+
+test("builds a publish-only delegation prompt", () => {
+	const rendered = renderPluginPublishRecommendation(publishRecommendation);
+
+	assert.equal(rendered.cardTitle, "Local plugin changes ready");
+	assert.equal(rendered.actionLabel, "Publish plugin update");
+	assert.equal(rendered.subjectLabel, "Plugin manifest");
+	assert.equal(rendered.operation, "plugin-publish");
+	assert.match(rendered.readyPrompt, /Publish the approved local agent plugin changes/);
+	assert.match(rendered.readyPrompt, /commit, rebase, and push/i);
+	assert.match(rendered.readyPrompt, /zero ahead and zero behind/);
+	assert.doesNotMatch(rendered.readyPrompt, /Make the smallest complete source change/);
+	assert.match(rendered.delegationRequest, /^\/btw Publish/);
 });
 
 test("reads structured results and text-only MCP projections without losing the ready prompt", () => {
