@@ -6,7 +6,7 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 
 | Component | Location | Included example |
 | --- | --- | --- |
-| Instructions | `instructions/` | Language guidance, customization maintenance, and pull request guidance |
+| Instructions | `instructions/` | Language guidance, customization maintenance, long-response summaries, and pull request guidance |
 | MCP Apps | `mcp/` | An inline customization update card with approval-gated session delegation |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
 | Skills | `skills/` | Code reviews, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, and persistent Agents background updater setup |
@@ -17,6 +17,8 @@ VS Code Insiders starts whenever the active build metadata changes, and updates
 the background settings through the VS Code configuration API.
 
 The `rules` entry in `plugin.json` maps plugin instructions to the `instructions/` directory. The `.mcp.json` file starts the bundled customization update MCP App without requiring an install-time package restore. Keep the root manifest in the Copilot plugin format unless the component layout is deliberately migrated to another plugin specification.
+
+[Long-response guidance](instructions/final-response-summary.instructions.md) requires final responses exceeding roughly 30 rendered screen lines to end with a clearly marked, short TL;DR answering the main query or giving the final conclusion, so the reader can quickly recover the chat's context.
 
 `/agent-plugin:code-review-alpha` is the original all-in-one review. `/agent-plugin:code-review-bravo` runs six independent reviewer skills and reconciles their findings. Each Bravo reviewer can also be invoked directly:
 
