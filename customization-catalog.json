@@ -302,13 +302,13 @@
 			"path": "skills/merge-readiness/SKILL.md",
 			"category": "team-workflow",
 			"integrationRole": "standalone",
-			"rationale": "Encodes the author-side merge-readiness policy in which required validation and feedback matter but ordinary approvals are not a default blocker.",
+			"rationale": "Encodes the author-side merge-readiness policy in which required validation and feedback matter but ordinary pending CI and approvals are not default blockers.",
 			"reviewOn": [
 				"team-merge-policy-change",
 				"pull-request-workflow-change"
 			],
 			"retirementTest": "The team adopts a different definition of merge readiness or the standard workflow implements the same author-side policy.",
-			"lastReviewed": "2026-09-11"
+			"lastReviewed": "2026-09-22"
 		},
 		{
 			"path": "skills/notification-triage/SKILL.md",

@@ -17,7 +17,10 @@ Determine whether the current change or a supplied pull request is ready to merg
 ## Validate readiness
 
 1. Every user-required validation task should be completed before the change is declared ready. Report any incomplete or blocked task and do not declare the change ready.
-2. Check the pull request state when one exists for merge conflicts, failed required checks, and unresolved required feedback. Do not treat draft state or missing approvals as blockers, and do not mention them; readiness here means the author-side due diligence is complete before requesting human review.
+2. Check the pull request state when one exists for merge conflicts, failed required checks, and unresolved required feedback. Readiness here means the author-side due diligence is complete and the change is ready for human review:
+   - Treat failing required checks as blockers.
+   - Report pending checks separately, but do not let ordinary pending CI force a negative verdict unless the user explicitly required those checks to complete.
+   - Do not treat draft state or missing approvals as blockers, and do not mention them.
 3. Give local testing against the product special weight for product behavior and user experience changes:
    - Prefer to perform the relevant local product scenario directly when the environment and available tools support it.
    - Verify the changed behavior and a meaningful nearby or regression scenario rather than only confirming that the product starts.
