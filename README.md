@@ -9,7 +9,7 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | Instructions | `instructions/` | Language guidance, customization maintenance, long-response summaries, and pull request guidance |
 | MCP Apps | `mcp/` | An inline customization update card with approval-gated session delegation |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
-| Skills | `skills/` | Code reviews, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, and persistent Agents background updater setup |
+| Skills | `skills/` | Code reviews, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, running JavaScript inspection with dbgjs, and persistent Agents background updater setup |
 
 The `extensions/agents-build-background` project is installed by the
 `setup-agents-build-background` skill. It refreshes the Agents background after

@@ -3,6 +3,9 @@
 Keeps the VS Code Insiders Agents window background synchronized with the
 active VS Code, bundled Copilot, and bundled Copilot SDK versions.
 
+Copilot CLI metadata is read from the root application dependencies in older
+builds and from the bundled Copilot extension package in newer builds.
+
 The extension checks the active build after startup and writes a new background
 only when its displayed metadata changes or the configured image is missing.
 Run **Agents: Refresh Build Background** to force a refresh.

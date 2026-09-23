@@ -13,6 +13,10 @@ interface PackageMetadata {
 	readonly dependencies: Readonly<Record<string, string>>;
 }
 
+interface VersionMetadata {
+	readonly version: string;
+}
+
 interface BackgroundMetadata {
 	readonly version: string;
 	readonly commit: string;
@@ -180,11 +184,24 @@ async function readBackgroundMetadata(context: vscode.ExtensionContext): Promise
 		isPackageMetadata,
 		'VS Code package metadata',
 	);
-	const copilotVersion = packageMetadata.dependencies['@github/copilot'];
+	const copilotVersion = packageMetadata.dependencies['@github/copilot']
+		?? (await readJsonFile(
+			path.join(
+				vscode.env.appRoot,
+				'extensions',
+				'copilot',
+				'node_modules',
+				'@github',
+				'copilot',
+				'package.json',
+			),
+			isVersionMetadata,
+			'Bundled Copilot package metadata',
+		)).version;
 	const copilotSdkVersion = packageMetadata.dependencies['@github/copilot-sdk'];
 
-	if (!copilotVersion || !copilotSdkVersion) {
-		throw new Error(`Copilot dependency metadata is missing from ${path.join(vscode.env.appRoot, 'package.json')}`);
+	if (!copilotSdkVersion) {
+		throw new Error(`Copilot SDK dependency metadata is missing from ${path.join(vscode.env.appRoot, 'package.json')}`);
 	}
 
 	const configuredMachineLabel = vscode.workspace
@@ -241,6 +258,12 @@ function isPackageMetadata(value: unknown): value is PackageMetadata {
 		return false;
 	}
 	return Object.values(value.dependencies).every((dependency) => typeof dependency === 'string');
+}
+
+function isVersionMetadata(value: unknown): value is VersionMetadata {
+	return isRecord(value)
+		&& typeof value.version === 'string'
+		&& value.version.length > 0;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

@@ -2,7 +2,7 @@
 	"name": "agents-build-background",
 	"displayName": "Agents Build Background",
 	"description": "Keeps the VS Code Agents window background synchronized with the active Insiders build.",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"publisher": "amunger",
 	"private": true,
 	"license": "UNLICENSED",
