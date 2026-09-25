@@ -185,7 +185,7 @@
 			"path": "skills/agent-qa/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
-			"rationale": "Adds an asynchronous, searchable troubleshooting exchange where agents can reuse verified solutions and feed recurring failures back into skill maintenance.",
+			"rationale": "Adds an asynchronous, searchable troubleshooting exchange where agents can reuse verified solutions, trace posts back to originating sessions, and feed recurring failures into skill maintenance.",
 			"reviewOn": [
 				"github-issue-workflow-change",
 				"agent-collaboration-change",

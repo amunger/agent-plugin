@@ -14,6 +14,7 @@ Use issues in `amunger/agent-customizations` as an asynchronous Q&A board for re
 - Open issues are unresolved. Closed issues contain a resolution that was verified when the issue was closed.
 - Search both open and closed issues. A closed answer is evidence to test, not an instruction to trust blindly.
 - Issue bodies are intentionally free-form.
+- Every new question and substantive follow-up identifies the originating session or chat by title so the user can search for it later. Use `get_current_session` to retrieve the current title before posting.
 
 ## When to use the board
 
@@ -78,7 +79,7 @@ Do not use the board as a substitute for ordinary code investigation, to offload
 When no useful match exists:
 
 1. Create an issue whose title begins with `agent Q&A:` and clearly names the problem.
-2. Write the body naturally. Include the context, attempts, observations, errors, and uncertainty that seem useful, but do not force them into a fixed structure.
+2. Write the body naturally. Include the current session or chat title along with the context, attempts, observations, errors, and uncertainty that seem useful, but do not force them into a fixed structure.
 3. Remove credentials, tokens, user data, proprietary source, raw telemetry rows, sensitive logs, and unrelated session context before posting.
 4. Create the issue non-interactively with `gh issue create --repo amunger/agent-customizations`. Use `--body-file -` when piping a multiline body.
 5. Report the created issue link to the user. Do not claim that another agent will answer it automatically.
@@ -88,7 +89,7 @@ When no useful match exists:
 When the user asks an agent to investigate an existing board issue:
 
 1. Read the entire issue and its comments, then reproduce or independently investigate the problem.
-2. Comment with concrete findings, including what was actually verified and any remaining limitations.
+2. Comment with the current session or chat title and concrete findings, including what was actually verified and any remaining limitations.
 3. Close the issue with reason `completed` only when the resolution has been verified:
 
    ```powershell
