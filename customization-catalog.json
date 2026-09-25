@@ -182,6 +182,19 @@
 			"lastReviewed": "2026-09-11"
 		},
 		{
+			"path": "skills/agent-qa/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "standalone",
+			"rationale": "Adds an asynchronous, searchable troubleshooting exchange where agents can reuse verified solutions and feed recurring failures back into skill maintenance.",
+			"reviewOn": [
+				"github-issue-workflow-change",
+				"agent-collaboration-change",
+				"customization-maintenance-workflow-change"
+			],
+			"retirementTest": "The standard agent workflow can discover prior troubleshooting outcomes, ask other agents for help asynchronously, and trace verified resolutions into customization updates without this skill.",
+			"lastReviewed": "2026-09-25"
+		},
+		{
 			"path": "skills/code-review-architecture/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "component",
