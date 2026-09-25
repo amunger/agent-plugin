@@ -195,6 +195,18 @@
 			"lastReviewed": "2026-09-25"
 		},
 		{
+			"path": "skills/answer-agent-qa/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "standalone",
+			"rationale": "Provides a focused workflow for investigating another agent's Q&A issue, contributing useful evidence, and reporting the likely outcome tersely.",
+			"reviewOn": [
+				"github-issue-workflow-change",
+				"agent-collaboration-change"
+			],
+			"retirementTest": "The standard agent workflow reliably investigates cross-session questions, posts useful evidence to the originating issue, and reports only the requested concise outcome.",
+			"lastReviewed": "2026-09-25"
+		},
+		{
 			"path": "skills/code-review-architecture/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "component",
