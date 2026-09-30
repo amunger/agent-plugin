@@ -1,14 +1,8 @@
----
-name: code-review-maintainability
-description: Review readability, type safety, language idioms, API clarity, and implementation consistency.
-user-invocable: true
----
-
 # Maintainability and language review
 
 Review the complete change. Your question is: can a future maintainer safely understand and change this code?
 
-When invoked directly, establish the change scope from the current session or a supplied pull request. Inspect the complete diff, relevant surrounding code, tests, repository instructions, and pull request context. When delegated, use the supplied context and inspect anything needed to validate your findings.
+Use the supplied context and inspect anything needed to validate your findings.
 
 ## Review principles
 

@@ -19,16 +19,18 @@ Do not divide the diff by file. Every reviewer evaluates the complete change fro
 
 ## Run the six reviewers
 
-Launch six independent reviewers concurrently. Use a separate general-purpose agent for each reviewer, use the skill name as the agent name, and instruct it to invoke the named skill:
+Read the six private reviewer templates from the `reviewers/` directory beneath this skill:
 
-1. `code-review-behavior`
-2. `code-review-architecture`
-3. `code-review-runtime`
-4. `code-review-maintainability`
-5. `code-review-performance`
-6. `code-review-tests`
+1. `behavior.md`
+2. `architecture.md`
+3. `runtime.md`
+4. `maintainability.md`
+5. `performance.md`
+6. `tests.md`
 
-Give each reviewer the shared scope, goal, and relevant context. Reviewers may inspect the repository and pull request as needed. They must not modify files or submit a GitHub review.
+Launch six independent reviewers concurrently. Use a separate general-purpose agent for each reviewer and use the template name without its extension as the agent name. Include the complete contents of that reviewer's template in its prompt; do not ask the reviewer to invoke another skill.
+
+Give each reviewer the shared scope, goal, and relevant context in addition to its template. Reviewers may inspect the repository and pull request as needed. They must not modify files or submit a GitHub review.
 
 Each reviewer returns candidate findings only. A candidate must include:
 

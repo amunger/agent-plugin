@@ -1,14 +1,8 @@
----
-name: code-review-tests
-description: Review whether tests and validation catch realistic defects introduced by a change.
-user-invocable: true
----
-
 # Test and validation review
 
 Review the complete change. Your question is: would the tests fail for realistic defects introduced by this change?
 
-When invoked directly, establish the change scope from the current session or a supplied pull request. Inspect the complete diff, production code, relevant tests, repository instructions, and pull request context. When delegated, use the supplied context and inspect anything needed to validate your findings.
+Use the supplied context and inspect anything needed to validate your findings.
 
 ## Review principles
 

@@ -19,14 +19,7 @@ The `rules` entry in `plugin.json` maps plugin instructions to the `instructions
 
 [Long-response guidance](instructions/final-response-summary.instructions.md) requires final responses exceeding roughly 30 rendered screen lines to end with a clearly marked, short TL;DR answering the main query or giving the final conclusion, so the reader can quickly recover the chat's context.
 
-`/agent-plugin:code-review-alpha` is the original all-in-one review. `/agent-plugin:code-review-bravo` runs six independent reviewer skills and reconciles their findings. Each Bravo reviewer can also be invoked directly:
-
-- `/agent-plugin:code-review-behavior`
-- `/agent-plugin:code-review-architecture`
-- `/agent-plugin:code-review-runtime`
-- `/agent-plugin:code-review-maintainability`
-- `/agent-plugin:code-review-performance`
-- `/agent-plugin:code-review-tests`
+`/agent-plugin:code-review-alpha` is the original all-in-one review. `/agent-plugin:code-review-bravo` runs six independent reviewers from private prompt templates and reconciles their findings. The reviewer templates are implementation details of Bravo rather than directly invocable skills, which keeps them out of the global skill catalog.
 
 `/agent-plugin:notification-triage` reviews the GitHub notification inbox using conservative, versioned rules. It can automatically mark narrowly proven-safe threads Done, independently reviews other suggestions, and requires confirmation before acting on those suggestions. It uses the GitHub CLI and native Windows PowerShell; GitHub authentication needs the `notifications` scope.
 

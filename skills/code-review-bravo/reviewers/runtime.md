@@ -1,14 +1,8 @@
----
-name: code-review-runtime
-description: Review construction, initialization, lifecycle, disposal, modes, concurrency, and integration behavior.
-user-invocable: true
----
-
 # Runtime and lifecycle review
 
 Review the complete change. Your question is: does the system construct, initialize, run, and shut down correctly in every supported mode?
 
-When invoked directly, establish the change scope from the current session or a supplied pull request. Inspect the complete diff, relevant surrounding code, tests, repository instructions, and pull request context. When delegated, use the supplied context and inspect anything needed to validate your findings.
+Use the supplied context and inspect anything needed to validate your findings.
 
 ## Review principles
 

@@ -1,14 +1,8 @@
----
-name: code-review-behavior
-description: Review a change for behavioral correctness, contracts, compatibility, and error semantics.
-user-invocable: true
----
-
 # Behavior and contract review
 
 Review the complete change. Your question is: does it do the right thing for every affected caller and state?
 
-When invoked directly, establish the change scope from the current session or a supplied pull request. Inspect the complete diff, relevant surrounding code, tests, repository instructions, and pull request context. When delegated by another review command, use its shared context and inspect anything needed to validate your findings.
+Use the supplied context and inspect anything needed to validate your findings.
 
 ## Review principles
 

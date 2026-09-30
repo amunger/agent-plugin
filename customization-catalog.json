@@ -30,22 +30,14 @@
 			"path": "skills/code-review-bravo/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"uses": [
-				"skills/code-review-architecture/SKILL.md",
-				"skills/code-review-behavior/SKILL.md",
-				"skills/code-review-maintainability/SKILL.md",
-				"skills/code-review-performance/SKILL.md",
-				"skills/code-review-runtime/SKILL.md",
-				"skills/code-review-tests/SKILL.md"
-			],
-			"rationale": "Adds independent specialist reviews and lead synthesis that the vanilla review workflow does not provide.",
+			"rationale": "Adds independent specialist reviews from private prompt templates and lead synthesis without exposing implementation-only reviewers as skills.",
 			"reviewOn": [
 				"major-model-release",
 				"agent-delegation-change",
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides independent specialist coverage and reliable synthesis with comparable cost and precision.",
-			"lastReviewed": "2026-09-11"
+			"lastReviewed": "2026-09-30"
 		},
 		{
 			"path": "commands/code-review-plus-plus.prompt.md",
@@ -203,96 +195,6 @@
 			],
 			"retirementTest": "The standard agent workflow reliably investigates cross-session questions, posts useful evidence to the originating issue, and reports only the requested concise outcome.",
 			"lastReviewed": "2026-09-25"
-		},
-		{
-			"path": "skills/code-review-architecture/SKILL.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "component",
-			"usedBy": [
-				"skills/code-review-bravo/SKILL.md"
-			],
-			"rationale": "Adds focused review of ownership, dependency direction, reuse, and composition.",
-			"reviewOn": [
-				"major-model-release",
-				"vanilla-code-review-change"
-			],
-			"retirementTest": "The standard review workflow consistently finds the same architecture defects with comparable precision and evidence.",
-			"lastReviewed": "2026-09-11"
-		},
-		{
-			"path": "skills/code-review-behavior/SKILL.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "component",
-			"usedBy": [
-				"skills/code-review-bravo/SKILL.md"
-			],
-			"rationale": "Adds focused tracing of behavioral contracts, compatibility, state changes, and error semantics.",
-			"reviewOn": [
-				"major-model-release",
-				"vanilla-code-review-change"
-			],
-			"retirementTest": "The standard review workflow consistently finds the same behavioral defects with comparable precision and evidence.",
-			"lastReviewed": "2026-09-11"
-		},
-		{
-			"path": "skills/code-review-maintainability/SKILL.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "component",
-			"usedBy": [
-				"skills/code-review-bravo/SKILL.md"
-			],
-			"rationale": "Adds focused review of readability, type safety, API clarity, ownership and lifecycle consistency, and realistic maintenance risk.",
-			"reviewOn": [
-				"major-model-release",
-				"vanilla-code-review-change"
-			],
-			"retirementTest": "The standard review workflow consistently finds the same maintainability risks without producing stylistic noise.",
-			"lastReviewed": "2026-09-15"
-		},
-		{
-			"path": "skills/code-review-performance/SKILL.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "component",
-			"usedBy": [
-				"skills/code-review-bravo/SKILL.md"
-			],
-			"rationale": "Adds focused review of concrete time, memory, I/O, startup, concurrency, and scaling regressions.",
-			"reviewOn": [
-				"major-model-release",
-				"vanilla-code-review-change"
-			],
-			"retirementTest": "The standard review workflow consistently finds the same performance defects while avoiding speculative optimization findings.",
-			"lastReviewed": "2026-09-11"
-		},
-		{
-			"path": "skills/code-review-runtime/SKILL.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "component",
-			"usedBy": [
-				"skills/code-review-bravo/SKILL.md"
-			],
-			"rationale": "Adds focused review of construction, initialization, lifecycle, disposal, operating modes, and concurrency.",
-			"reviewOn": [
-				"major-model-release",
-				"vanilla-code-review-change"
-			],
-			"retirementTest": "The standard review workflow consistently finds the same runtime and lifecycle defects with comparable precision and evidence.",
-			"lastReviewed": "2026-09-11"
-		},
-		{
-			"path": "skills/code-review-tests/SKILL.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "component",
-			"usedBy": [
-				"skills/code-review-bravo/SKILL.md"
-			],
-			"rationale": "Adds explicit analysis of whether tests would catch realistic defects introduced by a change.",
-			"reviewOn": [
-				"major-model-release",
-				"vanilla-code-review-change"
-			],
-			"retirementTest": "The standard review workflow consistently performs equivalent test-sensitivity and analytical mutation analysis.",
-			"lastReviewed": "2026-09-11"
 		},
 		{
 			"path": "skills/manage-agent-customization/SKILL.md",

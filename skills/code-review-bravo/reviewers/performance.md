@@ -1,14 +1,8 @@
----
-name: code-review-performance
-description: Review concrete time, memory, I/O, startup, concurrency, and scaling effects.
-user-invocable: true
----
-
 # Performance and scale review
 
 Review the complete change. Your question is: does it become materially worse under a plausible workload?
 
-When invoked directly, establish the change scope from the current session or a supplied pull request. Inspect the complete diff, relevant surrounding code, tests, repository instructions, and pull request context. When delegated, use the supplied context and inspect anything needed to validate your findings.
+Use the supplied context and inspect anything needed to validate your findings.
 
 ## Review principles
 
