@@ -184,25 +184,30 @@ async function readBackgroundMetadata(context: vscode.ExtensionContext): Promise
 		isPackageMetadata,
 		'VS Code package metadata',
 	);
-	const copilotVersion = packageMetadata.dependencies['@github/copilot']
-		?? (await readJsonFile(
-			path.join(
-				vscode.env.appRoot,
-				'extensions',
-				'copilot',
-				'node_modules',
-				'@github',
-				'copilot',
-				'package.json',
-			),
-			isVersionMetadata,
-			'Bundled Copilot package metadata',
-		)).version;
-	const copilotSdkVersion = packageMetadata.dependencies['@github/copilot-sdk'];
-
-	if (!copilotSdkVersion) {
-		throw new Error(`Copilot SDK dependency metadata is missing from ${path.join(vscode.env.appRoot, 'package.json')}`);
-	}
+	const copilotVersion = await readBundledPackageVersion(
+		'Copilot',
+		packageMetadata.dependencies['@github/copilot'],
+		path.join(
+			vscode.env.appRoot,
+			'extensions',
+			'copilot',
+			'node_modules',
+			'@github',
+			'copilot',
+			'package.json',
+		),
+	);
+	const copilotSdkVersion = await readBundledPackageVersion(
+		'Copilot SDK',
+		packageMetadata.dependencies['@github/copilot-sdk'],
+		path.join(
+			vscode.env.appRoot,
+			'node_modules.asar.unpacked',
+			'@github',
+			`copilot-sdk-${process.platform}-${process.arch}`,
+			'package.json',
+		),
+	);
 
 	const configuredMachineLabel = vscode.workspace
 		.getConfiguration('agentsBuildBackground')
@@ -228,6 +233,29 @@ async function readBackgroundMetadata(context: vscode.ExtensionContext): Promise
 		updateMode: vscode.workspace.getConfiguration('update').get<string>('mode', 'default'),
 		machineLabel,
 	};
+}
+
+async function readBundledPackageVersion(
+	label: string,
+	declaredVersion: string | undefined,
+	manifestPath: string,
+): Promise<string> {
+	try {
+		const metadata = await readJsonFile(manifestPath, isVersionMetadata, `${label} package metadata`);
+		return metadata.version;
+	} catch (error: unknown) {
+		if (!isMissingFileError(error)) {
+			throw error;
+		}
+	}
+
+	if (declaredVersion) {
+		return declaredVersion;
+	}
+
+	throw new Error(
+		`${label} version metadata is missing from ${manifestPath} and ${path.join(vscode.env.appRoot, 'package.json')}`,
+	);
 }
 
 async function readJsonFile<T>(

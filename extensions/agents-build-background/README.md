@@ -3,8 +3,10 @@
 Keeps the VS Code Insiders Agents window background synchronized with the
 active VS Code, bundled Copilot, and bundled Copilot SDK versions.
 
-Copilot CLI metadata is read from the root application dependencies in older
-builds and from the bundled Copilot extension package in newer builds.
+Bundled package versions are read from their package manifests under the active
+`vscode.env.appRoot`, with the root application dependency declarations used as
+a compatibility fallback. This supports builds where Copilot is owned by the
+bundled Copilot extension instead of the root application package.
 
 The extension checks the active build after startup and writes a new background
 only when its displayed metadata changes or the configured image is missing.
