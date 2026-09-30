@@ -75,15 +75,13 @@
 			"path": "instructions/agent-customization-maintenance.instructions.md",
 			"category": "plugin-management",
 			"integrationRole": "standalone",
-			"rationale": "Maintains plugin guidance through compact expandable recommendations and an approval-gated /btw side-chat handoff to an independent source-update session, with a text fallback when host integration is unavailable.",
+			"rationale": "Maintains plugin guidance through explicit textual recommendations that identify the source and proposed lasting behavior without applying changes before user approval.",
 			"reviewOn": [
 				"customization-platform-change",
-				"plugin-maintenance-workflow-change",
-				"mcp-app-host-change",
-				"session-delegation-change"
+				"plugin-maintenance-workflow-change"
 			],
-			"retirementTest": "The plugin maintenance workflow natively handles reusable feedback, source discovery, approval, and one-click creation of a context-rich update session.",
-			"lastReviewed": "2026-09-18"
+			"retirementTest": "The default customization workflow reliably identifies reusable feedback, recommends the correct source change, and waits for explicit approval.",
+			"lastReviewed": "2026-09-30"
 		},
 		{
 			"path": "instructions/final-response-summary.instructions.md",
@@ -304,11 +302,10 @@
 			"reviewOn": [
 				"customization-platform-change",
 				"plugin-repository-layout-change",
-				"plugin-publishing-workflow-change",
-				"mcp-app-capability-change"
+				"plugin-publishing-workflow-change"
 			],
 			"retirementTest": "Standard customization tooling reliably selects the correct source repository and maintains equivalent classification metadata.",
-			"lastReviewed": "2026-09-18"
+			"lastReviewed": "2026-09-30"
 		},
 		{
 			"path": "skills/kusto-rest-query/SKILL.md",
@@ -365,7 +362,7 @@
 				"local-background-workflow-change"
 			],
 			"retirementTest": "VS Code natively provides an automatically refreshed Agents background with the desired build metadata.",
-			"lastReviewed": "2026-09-16"
+			"lastReviewed": "2026-09-22"
 		},
 		{
 			"path": "skills/use-dbgjs-for-inspecting-running-javascript/SKILL.md",
