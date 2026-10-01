@@ -18,25 +18,49 @@
 			"path": "skills/code-review-alpha/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
-			"rationale": "Provides a broad, evidence-based review workflow beyond the default review behavior.",
+			"rationale": "Provides a broad, evidence-based standalone review workflow and an independent holistic perspective within Charlie's deeper review.",
+			"usedBy": [
+				"skills/code-review-charlie/SKILL.md"
+			],
 			"reviewOn": [
 				"major-model-release",
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides comparable breadth, evidence validation, and signal without this command.",
-			"lastReviewed": "2026-09-11"
+			"lastReviewed": "2026-10-01"
 		},
 		{
 			"path": "skills/code-review-bravo/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
 			"rationale": "Adds seven independent specialist reviews, worst-case external-call analysis, an evidence-based product skeptic, and advisory cross-review consolidation with durable root-cause fix planning before independent top-level synthesis; includes optional contrasting-model guidance without exposing internal templates as skills.",
+			"usedBy": [
+				"skills/code-review-charlie/SKILL.md"
+			],
 			"reviewOn": [
 				"major-model-release",
 				"agent-delegation-change",
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides independent specialist coverage, cross-review consolidation, coherent root-cause recommendations, and independent final synthesis with comparable cost and precision.",
+			"lastReviewed": "2026-10-01"
+		},
+		{
+			"path": "skills/code-review-charlie/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "orchestrator",
+			"rationale": "Adds an explicit-only deep review with verified multi-model specialist coverage, an independent holistic Alpha review, shared Bravo templates, advisory consolidation, and independent top-level synthesis.",
+			"uses": [
+				"skills/code-review-alpha/SKILL.md",
+				"skills/code-review-bravo/SKILL.md"
+			],
+			"reviewOn": [
+				"major-model-release",
+				"model-routing-change",
+				"agent-delegation-change",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "Bravo or the standard workflow provides comparable validated unique findings and cross-model scrutiny at lower cost, or supported hosts no longer permit verifiable multi-model routing.",
 			"lastReviewed": "2026-10-01"
 		},
 		{
