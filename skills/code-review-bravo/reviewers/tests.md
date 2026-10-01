@@ -31,4 +31,4 @@ Use the supplied context and inspect anything needed to validate your findings.
 
 ## Output
 
-Return only evidence-based, actionable findings. For each finding include severity, file and line, concrete impact, surviving mutation or missed regression, smallest appropriate fix, and evidence. If no significant test findings remain, say so directly. Do not modify code or submit a review.
+Return only evidence-based, actionable findings. For each finding include severity, file and line, concrete impact, surviving mutation or missed regression, an appropriate root-cause fix with scope and tradeoffs, and evidence. If no significant test findings remain, say so directly. Do not modify code or submit a review.

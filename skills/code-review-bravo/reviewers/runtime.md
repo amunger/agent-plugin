@@ -33,4 +33,4 @@ Do not argue abstract layering without a runtime consequence. Do not report scal
 
 ## Output
 
-Return only evidence-based, actionable findings. For each finding include severity, file and line, concrete impact, triggering conditions, smallest appropriate fix, and evidence. If no significant runtime findings remain, say so directly. Do not modify code or submit a review.
+Return only evidence-based, actionable findings. For each finding include severity, file and line, concrete impact, triggering conditions, an appropriate root-cause fix with scope and tradeoffs, and evidence. If no significant runtime findings remain, say so directly. Do not modify code or submit a review.

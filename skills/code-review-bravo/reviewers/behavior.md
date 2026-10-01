@@ -29,4 +29,4 @@ Do not report architecture preferences unless they cause a concrete behavioral d
 
 ## Output
 
-Return only evidence-based, actionable findings. For each finding include severity, file and line, concrete impact, triggering conditions, smallest appropriate fix, and the evidence that validates it. If no significant behavioral findings remain, say so directly. Do not modify code or submit a review.
+Return only evidence-based, actionable findings. For each finding include severity, file and line, concrete impact, triggering conditions, an appropriate root-cause fix with scope and tradeoffs, and the evidence that validates it. If no significant behavioral findings remain, say so directly. Do not modify code or submit a review.

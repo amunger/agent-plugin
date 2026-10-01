@@ -30,14 +30,14 @@
 			"path": "skills/code-review-bravo/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"rationale": "Adds independent specialist reviews from private prompt templates and lead synthesis without exposing implementation-only reviewers as skills.",
+			"rationale": "Adds seven independent specialist reviews, worst-case external-call analysis, an evidence-based product skeptic, and advisory cross-review consolidation with durable root-cause fix planning before independent top-level synthesis; includes optional contrasting-model guidance without exposing internal templates as skills.",
 			"reviewOn": [
 				"major-model-release",
 				"agent-delegation-change",
 				"vanilla-code-review-change"
 			],
-			"retirementTest": "The standard review workflow provides independent specialist coverage and reliable synthesis with comparable cost and precision.",
-			"lastReviewed": "2026-09-30"
+			"retirementTest": "The standard review workflow provides independent specialist coverage, cross-review consolidation, coherent root-cause recommendations, and independent final synthesis with comparable cost and precision.",
+			"lastReviewed": "2026-10-01"
 		},
 		{
 			"path": "commands/code-review-plus-plus.prompt.md",
