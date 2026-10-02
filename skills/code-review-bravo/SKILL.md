@@ -1,10 +1,12 @@
 ---
 name: code-review-bravo
-description: Review changes with seven independent specialist reviewers, an advisory consolidation agent, and a top-level lead synthesis.
+description: Review changes with eight independent specialist reviewers, including scope and product fit, advisory consolidation, and a top-level lead synthesis.
 user-invocable: true
 ---
 
 Review the code changes made in the current conversation or session. If the user supplies a pull request URL or number, review that pull request instead.
+
+Before delegation, read and apply the mandatory [Copilot-only model policy](./copilot-model-policy.md). All reviewers, the consolidator, and the current top-level lead must use verified GitHub Copilot routes, never BYOK. This requirement takes precedence over defaults and model suggestions; stop when provider provenance cannot be verified.
 
 ## Establish shared context
 
@@ -17,9 +19,9 @@ Before delegating, establish the stated goal and inspect enough context to give 
 
 Do not divide the diff by file. Every reviewer evaluates the complete change from a different perspective.
 
-## Run the seven reviewers
+## Run the eight reviewers
 
-Read the seven private reviewer templates from the `reviewers/` directory beneath this skill:
+Read the eight private reviewer templates from the `reviewers/` directory beneath this skill:
 
 1. `behavior.md`
 2. `architecture.md`
@@ -28,8 +30,9 @@ Read the seven private reviewer templates from the `reviewers/` directory beneat
 5. `performance.md`
 6. `tests.md`
 7. `skeptic.md`
+8. `scope.md`
 
-Launch seven independent reviewers concurrently. Use a separate general-purpose agent for each reviewer and use the template name without its extension as the agent name. Include the complete contents of that reviewer's template in its prompt; do not ask the reviewer to invoke another skill.
+Launch eight independent reviewers concurrently. Use a separate general-purpose agent for each reviewer and use the template name without its extension as the agent name. Include the complete contents of that reviewer's template in its prompt; do not ask the reviewer to invoke another skill.
 
 Give each reviewer the shared scope, goal, and relevant context in addition to its template. Reviewers may inspect the repository and pull request as needed. They must not modify files or submit a GitHub review.
 
@@ -43,11 +46,13 @@ Each reviewer returns candidate findings only. A candidate must include:
 
 Reviewers should return no findings rather than invent low-signal concerns outside their perspective.
 
+Keep evidence-backed optional follow-up opportunities and alternative PR approaches separate from candidate defects. Pass these notes through consolidation and final synthesis using the larger-change dispositions below.
+
 Recommend fixes that address the root cause at the appropriate ownership boundary. Prefer a coherent, durable change over a smaller patch that leaves duplicated workarounds or incomplete behavior. Explain any broader scope and its tradeoffs; do not expand into unrelated cleanup.
 
 ## Model suggestions
 
-These are starting hypotheses for a mixed-model review, not proven model rankings or mandatory routing. Use versions available in the host's model picker.
+These are starting hypotheses for a mixed-model review, not proven model rankings or mandatory routing. When concrete version selection is authorized, prefer the highest available Copilot version within each chosen family and tier under the shared model policy; preserve explicit pins and applicable configured preferences.
 
 | Perspective | Suggested model family | Capability to evaluate |
 | --- | --- | --- |
@@ -58,6 +63,7 @@ These are starting hypotheses for a mixed-model review, not proven model ranking
 | Performance | Claude Sonnet; consider a stronger reasoning model for complex cases | Worst-case latency, load, retention, and concurrency analysis |
 | Tests | Strong Gemini model | Independent fixture scrutiny and surviving-mutation analysis |
 | Skeptic | Claude Opus | Product fit, necessity, tradeoffs, and simpler alternatives |
+| Scope | Claude Opus | Unrelated changes, unexplained scope, and description accuracy |
 | Advisory consolidation | Strong GPT reasoning model when the top-level agent uses Claude; Claude Opus when it uses GPT or Gemini | Cross-review consolidation and root-cause fix planning from a different model family |
 | Final lead synthesis | Current top-level agent | Independent validation and final judgment using original reviews plus advisory notes |
 
@@ -71,7 +77,7 @@ Evaluate routing by validated unique findings, rejected candidates, latency, and
 
 ## Advisory consolidation
 
-After all seven reviewers have finished or reported that they could not complete:
+After all eight reviewers have finished or reported that they could not complete:
 
 1. Read the private `synthesis/consolidator.md` template beneath this skill.
 2. Launch one separate general-purpose agent named `consolidator`. Include the complete template, shared scope and goal, relevant context, and every original reviewer response, including no-finding results, open questions, and incomplete-review status. Give findings stable references such as `behavior-1` so suggestions remain traceable.
@@ -93,5 +99,16 @@ The current top-level agent performs the final synthesis. Treat the consolidator
 8. If no significant findings remain, say so directly.
 9. Mention any reviewer or consolidator that could not complete its work.
 10. Distinguish evidenced product-level objections from implementation defects. A skeptic finding may recommend narrowing or not making the change, but must identify a concrete conflict or cost and a viable alternative. If product intent cannot be established, report the missing context as an open question rather than a defect or a veto.
+11. Preserve scope findings as actionable dispositions: update an incomplete description of intended behavior, remove or split unrelated code, or seek clarification. Do not broaden the stated goal merely to justify unrelated changes.
+
+## Larger-change opportunities
+
+The skeptic, architecture reviewer, and consolidator may identify a larger coherent solution. Do not suppress it just because it exceeds the current diff, but distinguish three dispositions in final synthesis:
+
+- **Current-PR correction:** needed to address a validated defect or material requirement conflict. Explain why the scope is necessary.
+- **Optional follow-up PR:** an evidence-backed improvement that can safely be deferred. Note the benefit, affected boundaries, scope, dependencies, tradeoffs, and why the current change can stand without it. Do not assign defect severity or present it as a merge blocker merely because it would improve the design.
+- **Alternative PR approach:** a materially different way to meet the same goal that could replace or reshape this PR. Compare it with the current approach, identify retained and lost capabilities, costs and risks, and state whether adoption is optional or needed because of a separately validated problem.
+
+Keep optional follow-ups and alternative approaches separate from severity-ordered findings. Return none when there is no concrete opportunity; do not produce generic redesign suggestions. These are notes for author judgment, not authorization to implement them, change the PR description, or open another PR.
 
 Do not modify code or submit a GitHub review unless the user explicitly asks.

@@ -15,6 +15,8 @@ Use the shared goal, complete change, repository instructions, surrounding code,
 - Avoid unrelated redesign. Justify broader scope with the validated problems and the stated requirements; size alone is neither a benefit nor a defect.
 - Identify conflicts among suggested fixes and explain viable alternatives against the same constraints.
 - Keep product-fit objections and unresolved product decisions distinct from implementation defects.
+- Preserve scope-review dispositions: description correction, removal, splitting, or author clarification. Do not resolve unrelated scope by inventing a broader goal.
+- Classify larger recommendations as current-PR corrections, optional follow-up PR opportunities, or alternative PR approaches. Explain evidence, benefit, scope, dependencies, tradeoffs, and whether deferral is safe. Do not turn optional redesign into a severity-rated defect or merge blocker.
 - Label any newly discovered concern as originating in consolidation and provide its location, impact, trigger, and evidence. Do not introduce unsupported concerns to make the report appear comprehensive.
 - Recommendations are advisory. The top-level agent will independently evaluate all original candidates and your notes and make the final judgment.
 
@@ -26,5 +28,6 @@ Return:
 2. Suggested consolidated findings with originating perspectives, affected files and lines, distinct impacts and triggers, evidence, and proposed severity with rationale.
 3. Revised fix suggestions, including shared root-cause corrections where appropriate, their justified scope and tradeoffs, and validation that would distinguish a real solution from a workaround.
 4. Conflicting alternatives, open questions, evidence gaps, incomplete-review limitations, and any separately labeled new concerns.
+5. Separately labeled optional follow-up PR opportunities and alternative PR approaches, with supporting evidence and explicit optional-versus-required status. Account for supplied opportunities without mixing them into the defect list.
 
 If no significant findings appear supported, say so and still account for the supplied candidates. Do not present these notes as the final user-facing review.

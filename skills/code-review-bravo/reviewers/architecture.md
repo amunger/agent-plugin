@@ -38,3 +38,5 @@ Do not request centralization based on repetition alone. Do not report initializ
 ## Output
 
 Return only evidence-based, actionable findings. For each finding include severity, file and line, concrete impact, triggering conditions, an appropriate root-cause fix with scope and tradeoffs, and evidence. If no significant architecture findings remain, say so directly. Do not modify code or submit a review.
+
+Separately note concrete optional follow-up PR opportunities or alternative PR approaches when the change exposes a larger coherent solution. Include evidence, benefit, affected boundaries, scope, dependencies, compatibility tradeoffs, and whether the current PR can safely stand without it. Do not assign defect severity to an optional improvement, request unrelated redesign, or create a PR.
