@@ -14,7 +14,7 @@ Read these files relative to this skill before delegation:
 - [Alpha review](../code-review-alpha/SKILL.md), for the independent holistic review.
 - All eight templates in [Bravo reviewers](../code-review-bravo/reviewers/).
 - [Bravo consolidation template](../code-review-bravo/synthesis/consolidator.md).
-- [Copilot-only model policy](../code-review-bravo/copilot-model-policy.md), mandatory for every reviewer, consolidator, and the current top-level lead. Never use BYOK; stop when provider provenance cannot be verified.
+- [Copilot-only model policy](../code-review-bravo/copilot-model-policy.md), mandatory for every reviewer, consolidator, and the current top-level lead. Use built-in Copilot delegation; reject known BYOK routes without demanding unavailable provider attestation.
 
 Do not invoke the Bravo workflow or ask a subagent to run it: reuse its guidance and templates with Charlie's reviewer matrix below, not an additional eight-reviewer run. Do not copy or fork the shared templates.
 
@@ -24,7 +24,7 @@ Establish the same complete diff, goal, surrounding code, repository instruction
 
 Charlie requires actual cross-model review, not multiple agents with unknown or identical models. Resolve the suggested slots to concrete model IDs supported by the current host before launching. Respect explicit user model choices and applicable model-selection restrictions.
 
-Invoking Charlie authorizes its documented model-family mix, including the advisory consolidator, without a separate routine approval prompt. Resolve concrete IDs and provider routes from the host's verified GitHub Copilot models and select the highest available versions automatically within those families and tiers, subject to applicable model-selection restrictions. Explicit user model choices take precedence only within the Copilot-only policy. Announce the resolved mapping and verified Copilot provenance and proceed; do not wait for a second confirmation.
+Invoking Charlie authorizes its documented model-family mix, including the advisory consolidator, without a separate routine approval prompt. Resolve concrete IDs from models supported by the built-in Copilot delegation tool and select the highest available versions automatically within those families and tiers, subject to applicable model-selection restrictions and the shared no-BYOK policy. Explicit user model choices take precedence only within that policy. Announce the resolved mapping and proceed; do not wait for provider attestation or a second confirmation.
 
 The following is a starting selection, not a benchmarked ranking or a guarantee of model availability. Do not depend on hard-coded version examples: apply the shared policy's highest-available-version rule using supported Copilot versions exposed by the current host.
 
@@ -44,7 +44,7 @@ The eight core perspectives total 17 specialist reviewers; Alpha adds one, for 1
 
 For each multi-model perspective, use distinct model families as suggested unless the user explicitly approves a different mix. Different reasoning settings or separate agents on the same model do not count as different models.
 
-Ask only when Copilot provider provenance or routing cannot be verified, the required model-family diversity cannot be achieved through Copilot, or an explicit user model choice cannot be honored within the Copilot-only policy. Do not silently fall back to configured defaults: if routing is unsupported, a required family is unavailable, or its identity cannot be verified, explain the limitation and ask whether to choose supported models, reduce coverage, or use Bravo instead. If clarification cannot be obtained, report the unresolved routing limitation and that the review has not started; do not label it completed. Do not claim Charlie's multi-model coverage was achieved without verifying the actual routing.
+Ask only when built-in model selection is unsupported, a known BYOK conflict exists, the required model-family diversity cannot be achieved, or an explicit user model choice cannot be honored. Do not silently fall back to configured defaults: explain the concrete limitation and ask whether to choose supported built-in models, reduce coverage, or use Bravo instead. Missing provider metadata alone is not a routing failure. If clarification cannot be obtained, report the unresolved limitation and that the review has not started; do not label it completed. Do not claim Charlie's multi-model coverage was achieved without selecting distinct supported models; report actual model identity when exposed and distinguish it from the requested selection.
 
 Select a strong consolidator from a different family than the current top-level agent: GPT reasoning when the lead uses Claude, or Claude Opus when it uses GPT or Gemini. If the lead's identity is unknown, select an available Claude Opus consolidator and disclose that contrast with the lead is unverified; this alone does not require approval. The final lead remains the current top-level agent.
 
@@ -69,7 +69,7 @@ For the one holistic slot:
 
 Do not show reviewers other reviewers' findings or preliminary consolidation. No reviewer may modify files, submit a GitHub review, or launch additional reviewers.
 
-Assign stable candidate references including perspective and model, such as `runtime-gpt-1` or `alpha-opus-1`. Retain all original responses, no-finding results, open questions, and incomplete-review status. Record verified Copilot provider provenance and the requested and actual model for each slot when the host exposes them; distinguish a verified model selection from an unverified request.
+Assign stable candidate references including perspective and model, such as `runtime-gpt-1` or `alpha-opus-1`. Retain all original responses, no-finding results, open questions, and incomplete-review status. Record the built-in delegation route and requested model for each slot, plus actual model and provider metadata when exposed; do not present unexposed metadata as verified.
 
 ## Advisory consolidation
 

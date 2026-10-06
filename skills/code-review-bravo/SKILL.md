@@ -6,7 +6,7 @@ user-invocable: true
 
 Review the code changes made in the current conversation or session. If the user supplies a pull request URL or number, review that pull request instead.
 
-Before delegation, read and apply the mandatory [Copilot-only model policy](./copilot-model-policy.md). All reviewers, the consolidator, and the current top-level lead must use verified GitHub Copilot routes, never BYOK. This requirement takes precedence over defaults and model suggestions; stop when provider provenance cannot be verified.
+Before delegation, read and apply the mandatory [Copilot-only model policy](./copilot-model-policy.md). Use built-in Copilot delegation, never intentional or known BYOK routes. Run all reviewers, consolidation, and top-level synthesis without a separate provider approval step; missing provider metadata alone must not block the workflow. Stop on a known non-Copilot routing conflict, not an unavailable attestation.
 
 ## Establish shared context
 

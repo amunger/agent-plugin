@@ -33,7 +33,7 @@
 			"path": "skills/code-review-bravo/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"rationale": "Adds eight independent specialist reviews including scope alignment, worst-case external-call analysis, an evidence-based product skeptic, separate follow-up and alternative-approach opportunities, and advisory cross-review consolidation with durable root-cause fix planning before independent top-level synthesis; includes optional contrasting-model guidance without exposing internal templates as skills.",
+			"rationale": "Adds eight independent specialist reviews and advisory consolidation through built-in Copilot delegation without unavailable provider-attestation gates, while rejecting known BYOK routes; covers scope, product fit, external-call risks, root-cause fixes, follow-up opportunities, and independent final synthesis without exposing internal templates as skills.",
 			"usedBy": [
 				"skills/code-review-charlie/SKILL.md"
 			],
@@ -43,13 +43,13 @@
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides Copilot-only routing, independent specialist coverage, cross-review consolidation, coherent root-cause recommendations, and independent final synthesis with comparable cost and precision.",
-			"lastReviewed": "2026-10-02"
+			"lastReviewed": "2026-10-06"
 		},
 		{
 			"path": "skills/code-review-charlie/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"rationale": "Adds an explicit-only deep review whose invocation authorizes automatic highest-available Copilot version selection within the documented model-family mix, with verified specialist coverage, a scope reviewer, an independent holistic Alpha review, shared Bravo templates, advisory consolidation, and independent top-level synthesis separating defects from follow-up and alternative-approach opportunities.",
+			"rationale": "Adds an explicit-only deep review whose invocation authorizes highest-available model selection through built-in Copilot delegation without provider-attestation gates, while rejecting known BYOK routes; combines multi-model specialist coverage, holistic Alpha review, shared Bravo templates, advisory consolidation, and independent top-level synthesis.",
 			"uses": [
 				"skills/code-review-alpha/SKILL.md",
 				"skills/code-review-bravo/SKILL.md"
@@ -61,7 +61,7 @@
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "Bravo or the standard workflow provides comparable validated unique findings and Copilot-only cross-model scrutiny at lower cost, or supported hosts no longer permit verifiable Copilot-only multi-model routing.",
-			"lastReviewed": "2026-10-02"
+			"lastReviewed": "2026-10-06"
 		},
 		{
 			"path": "commands/code-review-plus-plus.prompt.md",
