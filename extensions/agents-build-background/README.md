@@ -3,10 +3,15 @@
 Keeps the VS Code Insiders Agents window background synchronized with the
 active VS Code, bundled Copilot, and bundled Copilot SDK versions.
 
-Bundled package versions are read from their package manifests under the active
-`vscode.env.appRoot`, with the root application dependency declarations used as
-a compatibility fallback. This supports builds where Copilot is owned by the
-bundled Copilot extension instead of the root application package.
+Copilot versions come first from `product.json`'s `copilotVersions` under the
+active `vscode.env.appRoot`, matching the runtime and SDK reported by VS Code's
+About dialog. This avoids displaying a separate, older runtime bundled with the
+Copilot extension. Version formatting also matches the About dialog.
+
+For older builds, the updater falls back to root `copilotRuntimeVersion`, the
+installed SDK's `copilotCliVersion`, and then bundled package manifests and root
+dependency declarations. Long canary versions wrap within the image instead of
+being clipped; short versions retain the original layout.
 
 The extension checks the active build after startup and writes a new background
 only when its displayed metadata changes or the configured image is missing.
@@ -39,3 +44,5 @@ background value is always converted with Node's `pathToFileURL` to a standard
 Windows `file:///C:/...` URI. The Agents renderer does not display the
 `vscode-userdata:` URI returned by the global-storage API or a URI whose drive
 colon is encoded as `c%3A`.
+
+Run `npm test` to compile and test version resolution and SVG rendering.

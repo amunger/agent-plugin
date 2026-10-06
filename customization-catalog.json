@@ -284,11 +284,12 @@
 				"agents-window-support-override-change",
 				"agents-background-uri-scheme-change",
 				"bundled-copilot-package-layout-change",
+				"product-copilot-version-metadata-change",
 				"agents-background-configuration-registration-change",
 				"local-background-workflow-change"
 			],
 			"retirementTest": "VS Code natively provides an automatically refreshed Agents background with the desired build metadata.",
-			"lastReviewed": "2026-09-22"
+			"lastReviewed": "2026-10-06"
 		},
 		{
 			"path": "skills/use-dbgjs-for-inspecting-running-javascript/SKILL.md",

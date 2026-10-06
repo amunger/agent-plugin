@@ -32,11 +32,13 @@ The updater extension:
   ```
 - Reads metadata from the active `vscode.env.appRoot`, so staged but inactive
   Insiders application directories cannot be selected accidentally.
-- Reads bundled package versions from their package manifests under that active
-  application root, with root dependency declarations as a compatibility
-  fallback. Do not assume both Copilot packages remain root dependencies;
-  Copilot can be owned by the bundled Copilot extension while the SDK remains
-  an application dependency.
+- Reads `product.json`'s `copilotVersions` under that active application root
+  first, using the same runtime and SDK version formatting as the About dialog.
+  For older builds, falls back to root `copilotRuntimeVersion`, the installed
+  SDK's `copilotCliVersion`, then bundled package manifests and root dependency
+  declarations. The Copilot extension's separate runtime may be older than the
+  active Agent Host runtime; do not prefer it over product metadata.
+- Wraps long canary versions within the SVG rather than clipping them.
 - Compares the active VS Code version, commit, build date, bundled Copilot
   version, bundled Copilot SDK version, update mode, and machine label with its
   last successful render.

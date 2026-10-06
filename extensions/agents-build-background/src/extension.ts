@@ -3,29 +3,8 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import * as vscode from 'vscode';
-
-interface ProductMetadata {
-	readonly commit: string;
-	readonly date: string;
-}
-
-interface PackageMetadata {
-	readonly dependencies: Readonly<Record<string, string>>;
-}
-
-interface VersionMetadata {
-	readonly version: string;
-}
-
-interface BackgroundMetadata {
-	readonly version: string;
-	readonly commit: string;
-	readonly buildDate: string;
-	readonly copilotVersion: string;
-	readonly copilotSdkVersion: string;
-	readonly updateMode: string;
-	readonly machineLabel: string;
-}
+import { readBuildMetadata } from './buildMetadata';
+import { formatDate, renderSvg, type BackgroundMetadata } from './backgroundSvg';
 
 const fingerprintKey = 'lastFingerprint';
 const machineLabelKey = 'machineLabel';
@@ -174,40 +153,7 @@ async function logActivity(
 }
 
 async function readBackgroundMetadata(context: vscode.ExtensionContext): Promise<BackgroundMetadata> {
-	const product = await readJsonFile(
-		path.join(vscode.env.appRoot, 'product.json'),
-		isProductMetadata,
-		'VS Code product metadata',
-	);
-	const packageMetadata = await readJsonFile(
-		path.join(vscode.env.appRoot, 'package.json'),
-		isPackageMetadata,
-		'VS Code package metadata',
-	);
-	const copilotVersion = await readBundledPackageVersion(
-		'Copilot',
-		packageMetadata.dependencies['@github/copilot'],
-		path.join(
-			vscode.env.appRoot,
-			'extensions',
-			'copilot',
-			'node_modules',
-			'@github',
-			'copilot',
-			'package.json',
-		),
-	);
-	const copilotSdkVersion = await readBundledPackageVersion(
-		'Copilot SDK',
-		packageMetadata.dependencies['@github/copilot-sdk'],
-		path.join(
-			vscode.env.appRoot,
-			'node_modules.asar.unpacked',
-			'@github',
-			`copilot-sdk-${process.platform}-${process.arch}`,
-			'package.json',
-		),
-	);
+	const build = await readBuildMetadata(vscode.env.appRoot);
 
 	const configuredMachineLabel = vscode.workspace
 		.getConfiguration('agentsBuildBackground')
@@ -226,76 +172,13 @@ async function readBackgroundMetadata(context: vscode.ExtensionContext): Promise
 
 	return {
 		version: vscode.version,
-		commit: product.commit,
-		buildDate: formatDate(product.date),
-		copilotVersion,
-		copilotSdkVersion,
+		commit: build.commit,
+		buildDate: formatDate(build.date),
+		copilotVersion: build.copilotVersion,
+		copilotSdkVersion: build.copilotSdkVersion,
 		updateMode: vscode.workspace.getConfiguration('update').get<string>('mode', 'default'),
 		machineLabel,
 	};
-}
-
-async function readBundledPackageVersion(
-	label: string,
-	declaredVersion: string | undefined,
-	manifestPath: string,
-): Promise<string> {
-	try {
-		const metadata = await readJsonFile(manifestPath, isVersionMetadata, `${label} package metadata`);
-		return metadata.version;
-	} catch (error: unknown) {
-		if (!isMissingFileError(error)) {
-			throw error;
-		}
-	}
-
-	if (declaredVersion) {
-		return declaredVersion;
-	}
-
-	throw new Error(
-		`${label} version metadata is missing from ${manifestPath} and ${path.join(vscode.env.appRoot, 'package.json')}`,
-	);
-}
-
-async function readJsonFile<T>(
-	filePath: string,
-	guard: (value: unknown) => value is T,
-	label: string,
-): Promise<T> {
-	const text = await fs.readFile(filePath, 'utf8');
-	const value: unknown = JSON.parse(text);
-	if (!guard(value)) {
-		throw new Error(`${label} is invalid: ${filePath}`);
-	}
-	return value;
-}
-
-function isProductMetadata(value: unknown): value is ProductMetadata {
-	if (!isRecord(value)) {
-		return false;
-	}
-	return typeof value.commit === 'string'
-		&& value.commit.length >= 10
-		&& typeof value.date === 'string'
-		&& !Number.isNaN(Date.parse(value.date));
-}
-
-function isPackageMetadata(value: unknown): value is PackageMetadata {
-	if (!isRecord(value) || !isRecord(value.dependencies)) {
-		return false;
-	}
-	return Object.values(value.dependencies).every((dependency) => typeof dependency === 'string');
-}
-
-function isVersionMetadata(value: unknown): value is VersionMetadata {
-	return isRecord(value)
-		&& typeof value.version === 'string'
-		&& value.version.length > 0;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-	return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function getConfiguredImageUri(): vscode.Uri | undefined {
@@ -372,50 +255,6 @@ function createImageName(): string {
 	const iso = new Date().toISOString();
 	const timestamp = `${iso.slice(0, 10).replaceAll('-', '')}-${iso.slice(11, 19).replaceAll(':', '')}${iso.slice(20, 23)}`;
 	return `agents-build-background-${timestamp}.svg`;
-}
-
-function formatDate(value: string): string {
-	return new Intl.DateTimeFormat('en-US', {
-		month: 'short',
-		day: 'numeric',
-		year: 'numeric',
-		hour: 'numeric',
-		minute: '2-digit',
-	}).format(new Date(value));
-}
-
-function renderSvg(metadata: BackgroundMetadata): string {
-	const machineLabel = escapeXml(metadata.machineLabel);
-	const updateMode = escapeXml(metadata.updateMode.toUpperCase());
-	const modeColor = metadata.updateMode === 'default' ? '#71ff8d' : '#ffbf4a';
-	const updatedAt = escapeXml(formatDate(new Date().toISOString()));
-
-	return `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="253" viewBox="0 0 220 253">
-  <metadata><agents-background machine="${machineLabel}" /></metadata>
-  <defs>
-    <radialGradient id="screen" cx="50%" cy="45%" r="75%"><stop offset="0" stop-color="#08230f"/><stop offset="0.72" stop-color="#031308"/><stop offset="1" stop-color="#010704"/></radialGradient>
-    <linearGradient id="scanlines" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.5" stop-color="#000" stop-opacity="0"/><stop offset="0.5" stop-color="#000" stop-opacity="0.2"/><stop offset="1" stop-color="#000" stop-opacity="0.2"/></linearGradient>
-    <pattern id="scanlinePattern" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="url(#scanlines)"/></pattern>
-    <filter id="phosphorGlow" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="1.1" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>
-  <rect x="1" y="1" width="218" height="251" rx="9" fill="#020503" stroke="#174d25" stroke-width="2"/><rect x="6" y="6" width="208" height="241" rx="5" fill="url(#screen)"/>
-  <g fill="#71ff8d" font-family="Cascadia Mono, Consolas, monospace" filter="url(#phosphorGlow)">
-    <text x="16" y="48" font-size="18" font-weight="700" letter-spacing="1.5">${escapeXml(metadata.machineLabel.toUpperCase())}</text>
-    <line x1="17" y1="56" x2="203" y2="56" stroke="#71ff8d" stroke-width="1" opacity="0.65"/>
-    <g font-size="12.5"><text x="17" y="79">&gt; <tspan fill="${modeColor}">${updateMode}</tspan> update mode</text><text x="17" y="101">&gt; VS CODE</text><text x="29" y="119">${escapeXml(metadata.version)}</text><text x="17" y="140">&gt; ${escapeXml(metadata.commit.slice(0, 10))}</text><text x="17" y="161" font-size="11.5">&gt; ${escapeXml(metadata.buildDate)}</text><text x="17" y="188">&gt; copilot: ${escapeXml(metadata.copilotVersion)}</text><text x="17" y="209">&gt; copilot-sdk:</text><text x="29" y="227">${escapeXml(metadata.copilotSdkVersion)}</text></g>
-    <text x="203" y="242" text-anchor="end" font-size="9" opacity="0.65">updated ${updatedAt}</text>
-  </g><rect x="6" y="6" width="208" height="241" rx="5" fill="url(#scanlinePattern)" pointer-events="none"/>
-</svg>
-`;
-}
-
-function escapeXml(value: string): string {
-	return value
-		.replaceAll('&', '&amp;')
-		.replaceAll('"', '&quot;')
-		.replaceAll("'", '&apos;')
-		.replaceAll('<', '&lt;')
-		.replaceAll('>', '&gt;');
 }
 
 async function deleteOlderImages(directory: string, activeImagePath: string): Promise<void> {

@@ -2,7 +2,7 @@
 	"name": "agents-build-background",
 	"displayName": "Agents Build Background",
 	"description": "Keeps the VS Code Agents window background synchronized with the active Insiders build.",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"publisher": "amunger",
 	"private": true,
 	"license": "UNLICENSED",
@@ -68,6 +68,7 @@
 	},
 	"scripts": {
 		"compile": "tsc -p .",
+		"test": "npm run compile && node --test test/background.test.cjs",
 		"package": "npm run compile && vsce package --no-dependencies --allow-star-activation --skip-license",
 		"check": "npm run compile && npm run package"
 	},
