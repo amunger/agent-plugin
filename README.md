@@ -33,6 +33,13 @@ Both Bravo and Charlie check for changes unrelated to the goal, recommending des
 
 `/agent-plugin:answer-agent-qa` investigates an issue on that board, posts guidance or additional diagnostic evidence, and reports the likely outcome tersely.
 
+`/agent-plugin:migrate-agent-host-tunnel` guides Windows migrations from the legacy
+Agent Host-specific tunnel to the regular VS Code tunnel or its persistent
+service. It verifies process-tree shutdown, preserves working registrations,
+handles proven orphan/stale-state failures, and checks fresh Agent Host messages
+separately from relay connectivity. Insiders updates and reboot persistence are
+explicit follow-up checks, not assumed consequences of installing the service.
+
 The Rust instructions are sourced from [github/awesome-copilot](https://github.com/github/awesome-copilot/blob/main/instructions/rust.instructions.md). See `THIRD_PARTY_NOTICES.md` for license details. Awesome Copilot does not currently provide framework-neutral TypeScript instructions, so this repository includes its own general-purpose TypeScript guidance rather than applying its MCP, Azure Functions, or Playwright instructions to every TypeScript project.
 
 ## Maintenance classification

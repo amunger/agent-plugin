@@ -15,6 +15,19 @@
 	},
 	"customizations": [
 		{
+			"path": "skills/migrate-agent-host-tunnel/SKILL.md",
+			"category": "reference-utility",
+			"integrationRole": "standalone",
+			"rationale": "Provides evidence-based Windows Agent Host tunnel migration and recovery knowledge, including verified process-tree shutdown, registration preservation, and separate relay, session, update, and persistence checks.",
+			"reviewOn": [
+				"vscode-tunnel-cli-change",
+				"agent-host-gateway-change",
+				"windows-tunnel-service-change"
+			],
+			"retirementTest": "Supported tunnel migration reliably cleans up legacy owners and documents registration, session recovery, update freshness, and persistence verification without additional operational guidance.",
+			"lastReviewed": "2026-10-08"
+		},
+		{
 			"path": "skills/code-review-alpha/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
