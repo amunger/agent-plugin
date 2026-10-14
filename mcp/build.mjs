@@ -22,7 +22,23 @@ const server = await build({
 });
 
 const packages = new Set();
-for (const input of [...Object.keys(app.metafile.inputs), ...Object.keys(server.metafile.inputs)]) {
+const verificationApp = await build({
+	entryPoints: [fileURLToPath(new URL("./verificationApp.ts", import.meta.url))],
+	bundle: true, format: "iife", minify: true, platform: "browser", target: "es2022", write: false, metafile: true,
+});
+const verificationScript = verificationApp.outputFiles[0]?.text;
+const verificationTemplate = (await readFile(new URL("./verification.html", import.meta.url), "utf8")).replaceAll("\r\n", "\n");
+if (!verificationScript || !verificationTemplate.includes("/* APP_SCRIPT */")) {
+	throw new Error("Missing verification bundle or HTML script placeholder.");
+}
+await writeFile(new URL("verification.html", directory), verificationTemplate.replace("/* APP_SCRIPT */", () => verificationScript.replaceAll("</script", "<\\/script")));
+const verificationServer = await build({
+	entryPoints: [fileURLToPath(new URL("./verificationServer.ts", import.meta.url))],
+	bundle: true, format: "esm", minify: true, platform: "node", target: "node22", metafile: true,
+	outfile: fileURLToPath(new URL("verificationServer.mjs", directory)),
+});
+
+for (const input of [app, server, verificationApp, verificationServer].flatMap(result => Object.keys(result.metafile.inputs))) {
 	const match = input.replaceAll("\\", "/").match(/^(.*node_modules\/(?:@[^/]+\/)?[^/]+)\//);
 	if (match) {
 		packages.add(match[1]);

@@ -9,7 +9,7 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | Instructions | `instructions/` | Language guidance, customization maintenance, long-response summaries, and pull request guidance |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
 | Skills | `skills/` | Disk cleanup, code reviews, agent Q&A and answering, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, running JavaScript inspection with dbgjs, and persistent Agents background updater setup |
-| MCP app | `mcp/` | Compact disk cleanup review with repository-level worktree selection |
+| MCP apps | `mcp/` | Disk cleanup review and same-chat verification approval |
 
 The `extensions/agents-build-background` project is installed by the
 `setup-agents-build-background` skill. It refreshes the Agents background after
@@ -33,6 +33,8 @@ Both Bravo and Charlie check for changes unrelated to the goal, recommending des
 `/agent-plugin:agent-qa` searches a private issue board for prior solutions when a skill or agent workflow is blocked. It records a free-form question when no useful answer exists, uses issue closure as the verified-resolution signal, and connects reusable outcomes back to skill maintenance.
 
 `/agent-plugin:answer-agent-qa` investigates an issue on that board, posts guidance or additional diagnostic evidence, and reports the likely outcome tersely.
+
+`/agent-plugin:prepare-verification` outlines the target, high-level checks, success criteria, and limitations before doing verification. Its inline card ends with **Go Ahead and Verify**, which sends exactly `go ahead and verify` to the same chat; it does not create a new session. Rendering the plan runs no tests or queries. Hosts without MCP Apps receive a text fallback. The latest unambiguous plan is rechecked before execution, and a delivery timeout does not automatically resend the request.
 
 `/agent-plugin:migrate-agent-host-tunnel` guides Windows migrations from the legacy
 Agent Host-specific tunnel to the regular VS Code tunnel or its persistent
