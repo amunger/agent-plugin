@@ -13,6 +13,7 @@ Determine whether the current change or a supplied pull request is ready to merg
 1. Identify the change and its intended behavior from the current conversation, task tracking, worktree, pull request, linked issue, and review discussion.
 2. Collect every validation task the user explicitly required. Treat these as merge requirements unless the user later waived or replaced them.
 3. Inspect the validation already performed in the current session and other available evidence. Validation performed before the latest change may still count when that change was small and did not invalidate the scenario, but note that it predates the change. Otherwise, do not claim validation without direct evidence that it completed successfully against the current change.
+4. There should typically be a set of manual tests performed, launching the product and exercising the relevant features to ensure the change behaves as intended. Automated tests are very rarely sufficient on their own.
 
 ## Validate readiness
 
