@@ -18,14 +18,14 @@
 			"path": "skills/disk-cleanup/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
-			"rationale": "Adds evidence-based disk cleanup with old worktrees prioritized, one compact selectable entry per repository, and a single paths-only confirmation backed by exact-path and preservation revalidation.",
+			"rationale": "Adds evidence-based disk cleanup across the current machine without a root-selection prompt, focusing first on drives over 80% used, then old worktrees before caches, with one compact selectable entry per repository and a single paths-only confirmation backed by exact-path and preservation revalidation.",
 			"reviewOn": [
 				"major-model-release",
 				"mcp-app-host-change",
 				"vanilla-disk-cleanup-change",
 				"cleanup-interaction-preference-change"
 			],
-			"retirementTest": "The standard cleanup workflow provides comparable measured candidates, repository-level selection, one-step scoped confirmation and preservation checks without a custom skill or app.",
+			"retirementTest": "The standard cleanup workflow provides machine-wide discovery with capacity-based drive priority, comparable measured candidates, repository-level selection, one-step scoped confirmation and preservation checks without a custom skill or app.",
 			"lastReviewed": "2026-10-14"
 		},
 		{

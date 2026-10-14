@@ -45,8 +45,15 @@ The Rust instructions are sourced from [github/awesome-copilot](https://github.c
 
 ## Disk cleanup app
 
-Ask for disk cleanup or invoke `/agent-plugin:disk-cleanup` with the machine/roots
-to inspect. The skill is available for automatic invocation as well as explicit use.
+Ask for disk cleanup or invoke `/agent-plugin:disk-cleanup`; no root selection is
+required. The default scope is the full current inspection host across its local
+drives. It checks capacity first and focuses on drives **over 80% used**, highest
+usage percentage first; other drives remain secondary. If none exceeds 80%, it
+looks across all local drives for high-impact cleanup locations. Exactly 80% does
+not trigger prioritization, and an explicitly narrower scope is honored. Network
+shares and other hosts are not scanned by default; coverage gaps are reported.
+This discovery default never expands a cleanup confirmation beyond selected paths.
+The skill is available for automatic invocation as well as explicit use.
 The agent measures directories, verifies their purpose and preservation evidence,
 and presents compact rows with sizes, inactivity and risk status.
 

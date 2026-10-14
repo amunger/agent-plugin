@@ -1,6 +1,6 @@
 ---
 name: disk-cleanup
-description: "Inspect disk usage and present a compact MCP App with repository-level worktree selection and a cleanup button. Use for cleaning up disk space, reviewing old worktrees, build artifacts, caches or dependencies, and executing 'Confirmed cleanup for the following entries' requests."
+description: "Inspect the full current machine by default, focusing on drives over 80% used, and present a compact MCP App with repository-level worktree selection and a cleanup button. Use for cleaning up disk space, reviewing old worktrees, build artifacts, caches or dependencies, and executing 'Confirmed cleanup for the following entries' requests."
 ---
 
 # Disk cleanup
@@ -11,11 +11,28 @@ preparing recommendations.
 
 ## Discover and recommend
 
-1. Establish the machine and roots the user wants inspected. Do not assume `C:\src`,
-   the current workspace, or that a repository is on this host. Check drive capacity.
-   Investigate old worktrees before library caches. If the Copilot runtime repository
-   is present, also inspect its large generated artifacts; do not invent paths or
-   scan another host.
+1. Default to the **full current machine**, not just the current workspace or a
+   user-chosen root. Do not ask which root directory or drive to inspect. Verify
+   the inspection host and enumerate its local drives/volumes and their total and
+   free bytes first. On Windows, use `Get-Volume` or
+   `Get-CimInstance Win32_LogicalDisk`; distinguish local volumes from network drives.
+   Count each volume once even when it has multiple mount points.
+   - Calculate usage as `100 * (totalBytes - freeBytes) / totalBytes` using raw
+     values, not rounded display percentages. **Over 80%** means strictly `> 80`;
+     exactly 80% does not trigger the priority.
+   - If any drives are over 80% used, focus discovery and measurement on those
+     drives first, most-used percentage first. Other local drives remain in scope
+     but are secondary; do not spend equal effort scanning roomy drives first.
+   - If no drive is over 80%, inspect across all local drives, prioritizing likely
+     high-impact cleanup locations rather than asking for a root.
+   - Honor an explicitly supplied narrower scope. Never widen a selected cleanup
+     confirmation into machine-wide discovery. Do not scan another host, network
+     shares or unavailable volumes by default; report inaccessible/unmeasurable
+     volumes as coverage gaps, not as empty or safe.
+   Discover actual repository, worktree, build-output and cache locations on the
+   prioritized drives. Do not invent paths or assume `C:\src`. Within that drive
+   priority, investigate old worktrees before library caches. If the Copilot runtime
+   repository is present, also inspect its large generated artifacts.
 2. Inspect top-level sizes, then drill into the largest entries. Prefer existing
    repository tooling. `inspect_cleanup_directory` measures one absolute directory,
    returning logical bytes, latest filesystem activity, free bytes and skipped links.
