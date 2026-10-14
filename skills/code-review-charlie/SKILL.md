@@ -6,6 +6,8 @@ user-invocable: true
 
 Review the code changes made in the current conversation or session. If the user supplies a pull request URL or number, review that pull request instead. This is the expensive, explicit-only alternative to Bravo: 18 independent first-stage reviewers, one advisory consolidator, and final synthesis in the current top-level agent.
 
+Start the review without asking confirmation or clarification questions. Do not ask the user to approve model names, routing, cost, coverage, or the reviewer matrix. Use the supplied scope or the current session's changes, and carry unresolved intent or missing context into the final report as open questions rather than pausing the review.
+
 ## Reuse shared review guidance
 
 Read these files relative to this skill before delegation:
@@ -22,9 +24,9 @@ Establish the same complete diff, goal, surrounding code, repository instruction
 
 ## Resolve model routing
 
-Charlie requires actual cross-model review, not multiple agents with unknown or identical models. Resolve the suggested slots to concrete model IDs supported by the current host before launching. Respect explicit user model choices and applicable model-selection restrictions.
+Charlie targets actual cross-model review, not merely multiple agents with unknown or identical models. Resolve the suggested slots to concrete model IDs when selection is permitted by the current host and applicable instructions. Respect explicit user model choices and applicable model-selection restrictions; this skill does not override a requirement that the user explicitly name models.
 
-Invoking Charlie authorizes its documented model-family mix, including the advisory consolidator, without a separate routine approval prompt. Resolve concrete IDs from models supported by the built-in Copilot delegation tool and select the highest available versions automatically within those families and tiers, subject to applicable model-selection restrictions and the shared no-BYOK policy. Explicit user model choices take precedence only within that policy. Announce the resolved mapping and proceed; do not wait for provider attestation or a second confirmation.
+When model selection is permitted, use the documented model-family mix, including the advisory consolidator, without a separate approval prompt. Resolve concrete IDs from models supported by the built-in Copilot delegation tool and select the highest available versions automatically within those families and tiers, subject to applicable model-selection restrictions and the shared no-BYOK policy. Explicit user model choices take precedence only within that policy. Announce the resolved mapping and proceed; do not wait for provider attestation or a second confirmation.
 
 The following is a starting selection, not a benchmarked ranking or a guarantee of model availability. Do not depend on hard-coded version examples: apply the shared policy's highest-available-version rule using supported Copilot versions exposed by the current host.
 
@@ -42,11 +44,13 @@ The following is a starting selection, not a benchmarked ranking or a guarantee 
 
 The eight core perspectives total 17 specialist reviewers; Alpha adds one, for 18 first-stage reviews. The advisory consolidator is an additional agent, not a replacement for a reviewer.
 
-For each multi-model perspective, use distinct model families as suggested unless the user explicitly approves a different mix. Different reasoning settings or separate agents on the same model do not count as different models.
+For each multi-model perspective, prefer distinct model families as suggested, subject to explicit user choices and permitted routing. Different reasoning settings or separate agents on the same model do not count as different models.
 
-Ask only when built-in model selection is unsupported, a known BYOK conflict exists, the required model-family diversity cannot be achieved, or an explicit user model choice cannot be honored. Do not silently fall back to configured defaults: explain the concrete limitation and ask whether to choose supported built-in models, reduce coverage, or use Bravo instead. Missing provider metadata alone is not a routing failure. If clarification cannot be obtained, report the unresolved limitation and that the review has not started; do not label it completed. Do not claim Charlie's multi-model coverage was achieved without selecting distinct supported models; report actual model identity when exposed and distinguish it from the requested selection.
+If model overrides require explicit user-named models that were not supplied, omit the model, reasoning-effort, and context-tier overrides and use configured subagent defaults. Do not ask the user to name or authorize models. If built-in model selection is unsupported, a requested model is unavailable, version ordering is uncertain, or the suggested diversity cannot be achieved, use permitted built-in routes or configured defaults and continue all 18 review slots plus consolidation. Announce the concrete limitation and fallback without waiting for a response. Do not silently reduce the reviewer count, substitute a Bravo run, or claim cross-model coverage when diversity is unverified or unavailable. Record requested selections separately from actual model identity when exposed.
 
-Select a strong consolidator from a different family than the current top-level agent: GPT reasoning when the lead uses Claude, or Claude Opus when it uses GPT or Gemini. If the lead's identity is unknown, select an available Claude Opus consolidator and disclose that contrast with the lead is unverified; this alone does not require approval. The final lead remains the current top-level agent.
+Missing provider metadata alone is not a routing failure. If no permitted built-in delegation route exists or a known BYOK conflict prevents execution, report the concrete blocker and any partial coverage without asking for permission to bypass it or claiming the review completed.
+
+When model selection is permitted, select a strong consolidator from a different family than the current top-level agent: GPT reasoning when the lead uses Claude, or Claude Opus when it uses GPT or Gemini. If the lead's identity is unknown, select an available Claude Opus consolidator and disclose that contrast with the lead is unverified. Otherwise use the configured subagent default and disclose unverified contrast. Do not ask for approval. The final lead remains the current top-level agent.
 
 ## Run independent reviewers
 

@@ -76,7 +76,7 @@
 			"path": "skills/code-review-charlie/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"rationale": "Adds an explicit-only deep review whose invocation authorizes highest-available model selection through built-in Copilot delegation without provider-attestation gates, while rejecting known BYOK routes; combines multi-model specialist coverage, holistic Alpha review, shared Bravo templates, advisory consolidation, and independent top-level synthesis.",
+			"rationale": "Adds an explicit-only deep review that starts without confirmation or clarification questions, selecting multiple model families when permitted or preserving all reviewer slots through configured defaults with disclosed coverage limits; rejects known BYOK routes and combines specialist coverage, holistic Alpha review, shared Bravo templates, advisory consolidation, and independent top-level synthesis.",
 			"uses": [
 				"skills/code-review-alpha/SKILL.md",
 				"skills/code-review-bravo/SKILL.md"
@@ -87,8 +87,8 @@
 				"agent-delegation-change",
 				"vanilla-code-review-change"
 			],
-			"retirementTest": "Bravo or the standard workflow provides comparable validated unique findings and Copilot-only cross-model scrutiny at lower cost, or supported hosts no longer permit verifiable Copilot-only multi-model routing.",
-			"lastReviewed": "2026-10-06"
+			"retirementTest": "Bravo or the standard workflow provides comparable validated unique findings, independent review breadth, and permitted cross-model scrutiny at lower cost without pre-review approval questions.",
+			"lastReviewed": "2026-10-14"
 		},
 		{
 			"path": "commands/code-review-plus-plus.prompt.md",

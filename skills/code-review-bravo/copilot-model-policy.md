@@ -28,7 +28,7 @@ When choosing a concrete delegated model, default to the highest available versi
 - Keep the chosen family and tier: Opus versions compete with Opus, Sonnet with Sonnet, and the chosen Gemini tier with that tier. Do not compare version numbers across vendors or replace model-family diversity with one newest model.
 - Explicit user version pins and applicable host model-selection restrictions take precedence. In Bravo, preserve configured subagent preferences unless version selection is authorized; these suggestions do not authorize otherwise prohibited overrides.
 - Do not choose an older version merely because it was used previously or appears in an example. Use an older version only for an explicit pin, supported routing limitation, or documented compatibility/capability constraint, and disclose why.
-- If available versions cannot be ordered reliably, use authoritative host information or ask for clarification instead of inventing a version ranking. The no-BYOK routing rules apply regardless of version.
+- If available versions cannot be ordered reliably, use authoritative host information or ask for clarification instead of inventing a version ranking. For Charlie, use its no-question fallback to permitted built-in routes or configured defaults and disclose the limitation instead of asking. The no-BYOK routing rules apply regardless of version.
 - Apply this preference to specialist, Alpha, and consolidator slots. The current top-level model remains unchanged; do not attempt to upgrade or replace the lead.
 
 ## Execution and reporting
