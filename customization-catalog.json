@@ -15,6 +15,19 @@
 	},
 	"customizations": [
 		{
+			"path": "skills/technical-explainer/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "standalone",
+			"rationale": "Adds an evidence-backed technical explainer workflow that keeps observable behavior, implementation, state, and output synchronized across accessible interactive source and standalone artifacts.",
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-explainer-workflow-change",
+				"artifact-tooling-change"
+			],
+			"retirementTest": "The standard workflow reliably produces source-verified, accessible technical explainers with synchronized state and output, reproducible standalone artifacts, and equivalent data and browser validation.",
+			"lastReviewed": "2026-10-14"
+		},
+		{
 			"path": "skills/migrate-agent-host-tunnel/SKILL.md",
 			"category": "reference-utility",
 			"integrationRole": "standalone",

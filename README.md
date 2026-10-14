@@ -8,7 +8,7 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | --- | --- | --- |
 | Instructions | `instructions/` | Language guidance, customization maintenance, long-response summaries, and pull request guidance |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
-| Skills | `skills/` | Code reviews, agent Q&A and answering, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, running JavaScript inspection with dbgjs, and persistent Agents background updater setup |
+| Skills | `skills/` | Code reviews, technical explainers, agent Q&A and answering, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, running JavaScript inspection with dbgjs, and persistent Agents background updater setup |
 
 The `extensions/agents-build-background` project is installed by the
 `setup-agents-build-background` skill. It refreshes the Agents background after
@@ -32,6 +32,13 @@ Both Bravo and Charlie check for changes unrelated to the goal, recommending des
 `/agent-plugin:agent-qa` searches a private issue board for prior solutions when a skill or agent workflow is blocked. It records a free-form question when no useful answer exists, uses issue closure as the verified-resolution signal, and connects reusable outcomes back to skill maintenance.
 
 `/agent-plugin:answer-agent-qa` investigates an issue on that board, posts guidance or additional diagnostic evidence, and reports the likely outcome tersely.
+
+[`/agent-plugin:technical-explainer`](skills/technical-explainer/SKILL.md) builds
+evidence-backed architecture walkthroughs, lifecycle examples, code traces, and
+field references. It keeps behavior, implementation, state, and output
+synchronized, with accessibility checks and validation of source and standalone
+shareable artifacts. This plugin skill replaces the user-level
+`~/.copilot/skills/technical-explainer` copy.
 
 `/agent-plugin:migrate-agent-host-tunnel` guides Windows migrations from the legacy
 Agent Host-specific tunnel to the regular VS Code tunnel or its persistent
