@@ -8,7 +8,8 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | --- | --- | --- |
 | Instructions | `instructions/` | Language guidance, customization maintenance, long-response summaries, and pull request guidance |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
-| Skills | `skills/` | Code reviews, agent Q&A and answering, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, running JavaScript inspection with dbgjs, and persistent Agents background updater setup |
+| Skills | `skills/` | Disk cleanup, code reviews, agent Q&A and answering, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, running JavaScript inspection with dbgjs, and persistent Agents background updater setup |
+| MCP app | `mcp/` | Compact disk cleanup review with repository-level worktree selection |
 
 The `extensions/agents-build-background` project is installed by the
 `setup-agents-build-background` skill. It refreshes the Agents background after
@@ -41,6 +42,72 @@ separately from relay connectivity. Insiders updates and reboot persistence are
 explicit follow-up checks, not assumed consequences of installing the service.
 
 The Rust instructions are sourced from [github/awesome-copilot](https://github.com/github/awesome-copilot/blob/main/instructions/rust.instructions.md). See `THIRD_PARTY_NOTICES.md` for license details. Awesome Copilot does not currently provide framework-neutral TypeScript instructions, so this repository includes its own general-purpose TypeScript guidance rather than applying its MCP, Azure Functions, or Playwright instructions to every TypeScript project.
+
+## Disk cleanup app
+
+Ask for disk cleanup or invoke `/agent-plugin:disk-cleanup` with the machine/roots
+to inspect. The skill is available for automatic invocation as well as explicit use.
+The agent measures directories, verifies their purpose and preservation evidence,
+and presents compact rows with sizes, inactivity and risk status.
+
+Old worktrees are investigated first and combined into one entry and checkbox per
+canonical `repositoryPath`, ranked by combined size before caches and other
+artifacts. Checking a repository selects all its reviewed candidate worktrees,
+not the main checkout or unreviewed worktrees. Details lists each member's full
+path, size, activity, safety evidence and recovery procedure. Any risky member
+makes its repository entry risky. **Select recoverable** only adds entries whose
+members are all recoverable, never part of a repository.
+
+Worktrees qualify after **more than 7 days** of inactivity when removal is
+recoverable, or **more than 30 days** with an explicit possible-data-loss warning.
+Commit age and stale remote-tracking refs do not establish inactivity or safety.
+All selections start unchecked. Parent/child overlap is rejected to avoid double
+counting and ambiguous removal scope. Reproducible build artifacts, caches and
+dependency trees are also supported.
+
+**Clean up selected** uses the MCP Apps `ui/message` API to hand a user prompt to
+the current chat. The prompt contains only "Confirmed cleanup for the following
+entries:" and the selected directory paths, one per line, retaining review context
+in the same chat. The host may require pressing Send in the composer.
+Predictable preservation questions are resolved before selection. Selecting entries
+and clicking **Clean up selected** is the only confirmation for their described
+scope; risk labels and Details are informational, with no acknowledgement checkbox.
+The server and app cannot delete anything: the agent rechecks only selected paths
+before acting. Unknown or newly discovered risks block affected entries, not
+unrelated safe selections. If review context is unavailable, the agent must not
+guess. Worktree removal preserves branches.
+
+The bundled stdio server is registered through [.mcp.json](.mcp.json) and requires
+Node.js 22+ on the plugin host. Bundles under [mcp/dist](mcp/dist) are checked in, so
+plugin installation needs no npm install or dependency download. Enable/trust the
+`disk-cleanup` server if VS Code prompts, then start a new chat after updating.
+Remote sessions inspect the MCP server's machine, not necessarily the computer
+displaying the app.
+
+This workflow moved from `amunger/agent-lab` in Agent Plugin 0.1.45. Update Agent Lab
+to 0.2.1 or newer as well if both are installed, so only Agent Plugin registers the
+cleanup tools and skill.
+
+### Develop and preview the cleanup app
+
+```powershell
+npm ci
+npm run build
+npm run check
+npm test
+npm run test:app
+npm run preview
+```
+
+Browser tests use installed Microsoft Edge or the executable specified by
+`MCP_APP_BROWSER`. The loopback preview uses illustrative data and captures the
+cleanup prompt instead of sending it to a chat or deleting files. Open the printed
+URL and stop the server when finished. Its self-contained HTML can also be saved
+and opened offline.
+
+When changing app code, rebuild and include generated bundles with the source.
+Runtime dependency licenses are collected in
+[mcp/dist/THIRD_PARTY_LICENSES.txt](mcp/dist/THIRD_PARTY_LICENSES.txt).
 
 ## Maintenance classification
 

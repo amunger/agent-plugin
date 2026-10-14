@@ -1,5 +1,11 @@
 # Third-Party Notices
 
+## Disk cleanup MCP App
+
+The disk-cleanup MCP App bundles dependencies from the Model Context Protocol
+SDK and Zod. The build collects the license texts for bundled packages in
+[mcp/dist/THIRD_PARTY_LICENSES.txt](mcp/dist/THIRD_PARTY_LICENSES.txt).
+
 ## github/awesome-copilot Rust instructions
 
 `instructions/rust.instructions.md` is copied from:
