@@ -1,6 +1,9 @@
 # Test and validation review
 
-Review the complete change. Your question is: would the tests fail for realistic defects introduced by this change?
+Review the complete change. Your questions are:
+
+- Would the tests fail for realistic defects introduced by this change?
+- Is this change degrading the test suite by taking up extra time or introducing instability?
 
 Use the supplied context and inspect anything needed to validate your findings.
 
@@ -14,6 +17,8 @@ Use the supplied context and inspect anything needed to validate your findings.
 - Trace fixture identifiers, routing keys, and discriminators to their production producers.
 - Flag tests that copy implementation literals or predicates without independently observing the producer-consumer contract.
 - Check whether mocks, fixtures, snapshots, or broad assertions hide the changed behavior.
+- Flag **fixed sleeps/manual waits used as synchronization**; prefer observable completion signals, controlled promises, or appropriate fake timers.
+- Tests should run fast and predictably, any unit test that takes over 100 ms should be flagged.
 - Prefer the production composition boundary over direct construction or a duplicated test graph.
 - When dependency registration matters, use a test container as strict as production and dispose it correctly.
 - After behavior moves into a shared abstraction, prefer focused boundary tests plus representative consumers over redundant copies.
@@ -28,6 +33,7 @@ Use the supplied context and inspect anything needed to validate your findings.
 - Unit tests call a constructor while production uses a factory that performs essential setup.
 - A test proves initial context population but not replacement or clearing.
 - A fixture reuses host-owned configuration keys for unrelated mock behavior.
+- A unit test that calls wait to resolve a race condition
 
 ## Output
 

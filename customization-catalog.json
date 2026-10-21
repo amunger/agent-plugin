@@ -18,16 +18,16 @@
 			"path": "skills/skeptical-eye/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"rationale": "Adds a concise PR net-benefit assessment weighing complexity, performance, regressions, and historical discussion, informed by a current review or an Alpha review when needed.",
+			"rationale": "Adds a concise PR net-benefit assessment weighing complexity, performance, regressions, test-suite runtime and flakiness, and historical discussion, informed by a current review or a Bravo review when needed.",
 			"uses": [
-				"skills/code-review-alpha/SKILL.md"
+				"skills/code-review-bravo/SKILL.md"
 			],
 			"reviewOn": [
 				"major-model-release",
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard PR workflow reliably identifies obvious net-good changes using proportionate cost analysis and relevant historical discussion without custom guidance.",
-			"lastReviewed": "2026-10-20"
+			"lastReviewed": "2026-10-21"
 		},
 		{
 			"path": "skills/prepare-verification/SKILL.md",
@@ -75,8 +75,7 @@
 			"integrationRole": "standalone",
 			"rationale": "Provides a broad, evidence-based standalone review workflow and an independent holistic perspective within Charlie's deeper review.",
 			"usedBy": [
-				"skills/code-review-charlie/SKILL.md",
-				"skills/skeptical-eye/SKILL.md"
+				"skills/code-review-charlie/SKILL.md"
 			],
 			"reviewOn": [
 				"major-model-release",
@@ -89,9 +88,10 @@
 			"path": "skills/code-review-bravo/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"rationale": "Adds eight independent specialist reviews and advisory consolidation through built-in Copilot delegation without unavailable provider-attestation gates, while rejecting known BYOK routes; covers scope, product fit, external-call risks, root-cause fixes, follow-up opportunities, and independent final synthesis without exposing internal templates as skills.",
+			"rationale": "Adds eight independent specialist reviews and advisory consolidation through built-in Copilot delegation without unavailable provider-attestation gates, while rejecting known BYOK routes; covers scope, product fit, external-call risks, test-suite runtime and instability including fixed synchronization waits and unit tests over 100 ms, root-cause fixes, follow-up opportunities, and independent final synthesis without exposing internal templates as skills.",
 			"usedBy": [
-				"skills/code-review-charlie/SKILL.md"
+				"skills/code-review-charlie/SKILL.md",
+				"skills/skeptical-eye/SKILL.md"
 			],
 			"reviewOn": [
 				"major-model-release",
@@ -99,7 +99,7 @@
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides Copilot-only routing, independent specialist coverage, cross-review consolidation, coherent root-cause recommendations, and independent final synthesis with comparable cost and precision.",
-			"lastReviewed": "2026-10-06"
+			"lastReviewed": "2026-10-21"
 		},
 		{
 			"path": "skills/code-review-charlie/SKILL.md",
