@@ -15,6 +15,21 @@
 	},
 	"customizations": [
 		{
+			"path": "skills/skeptical-eye/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "orchestrator",
+			"rationale": "Adds a concise PR net-benefit assessment weighing complexity, performance, regressions, and historical discussion, informed by a current review or an Alpha review when needed.",
+			"uses": [
+				"skills/code-review-alpha/SKILL.md"
+			],
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change"
+			],
+			"retirementTest": "The standard PR workflow reliably identifies obvious net-good changes using proportionate cost analysis and relevant historical discussion without custom guidance.",
+			"lastReviewed": "2026-10-20"
+		},
+		{
 			"path": "skills/prepare-verification/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
@@ -60,7 +75,8 @@
 			"integrationRole": "standalone",
 			"rationale": "Provides a broad, evidence-based standalone review workflow and an independent holistic perspective within Charlie's deeper review.",
 			"usedBy": [
-				"skills/code-review-charlie/SKILL.md"
+				"skills/code-review-charlie/SKILL.md",
+				"skills/skeptical-eye/SKILL.md"
 			],
 			"reviewOn": [
 				"major-model-release",
