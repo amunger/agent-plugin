@@ -18,14 +18,14 @@
 			"path": "skills/prepare-verification/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
-			"rationale": "Separates high-level verification planning from execution and offers explicit same-chat approval through an inline action.",
+			"rationale": "Plans evidence-based verification and schedules a self-contained automation that disables scheduling before its first attempt and deletes itself afterward.",
 			"reviewOn": [
 				"verification-workflow-change",
-				"mcp-app-host-change",
+				"automation-provider-capability-change",
 				"major-model-release"
 			],
-			"retirementTest": "The standard workflow presents an evidence-based verification plan and equivalent same-chat execution action without custom guidance.",
-			"lastReviewed": "2026-10-14"
+			"retirementTest": "The standard workflow plans verification, asks for missing timing, and safely schedules a self-deleting single attempt without custom guidance.",
+			"lastReviewed": "2026-10-21"
 		},
 		{
 			"path": "skills/disk-cleanup/SKILL.md",

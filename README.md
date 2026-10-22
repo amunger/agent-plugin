@@ -9,7 +9,7 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | Instructions | `instructions/` | Language guidance, customization maintenance, long-response summaries, and pull request guidance |
 | Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
 | Skills | `skills/` | Disk cleanup, code reviews, agent Q&A and answering, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, running JavaScript inspection with dbgjs, and persistent Agents background updater setup |
-| MCP apps | `mcp/` | Disk cleanup review and same-chat verification approval |
+| MCP apps | `mcp/` | Disk cleanup review |
 
 The `extensions/agents-build-background` project is installed by the
 `setup-agents-build-background` skill. It refreshes the Agents background after
@@ -34,7 +34,7 @@ Both Bravo and Charlie check for changes unrelated to the goal, recommending des
 
 `/agent-plugin:answer-agent-qa` investigates an issue on that board, posts guidance or additional diagnostic evidence, and reports the likely outcome tersely.
 
-`/agent-plugin:prepare-verification` outlines the target, high-level checks, success criteria, and limitations before doing verification. Its inline card ends with **Go Ahead and Verify**, which sends exactly `go ahead and verify` to the same chat; it does not create a new session. Rendering the plan runs no tests or queries. Hosts without MCP Apps receive a text fallback. The latest unambiguous plan is rechecked before execution, and a delivery timeout does not automatically resend the request.
+`/agent-plugin:prepare-verification` outlines the target, checks, success criteria, and limitations, then schedules verification through an available automation provider. It asks when to run if no time was supplied. The automation carries the full plan, disables its schedule before its first attempt, and deletes itself afterward, including failed or blocked attempts. Providers without native one-shot scheduling use a first-occurrence-matched recurring schedule only when supported; unsupported times are reported rather than silently approximated. Interrupted attempts may leave a disabled automation for cleanup. There is no verification MCP server or approval card.
 
 `/agent-plugin:migrate-agent-host-tunnel` guides Windows migrations from the legacy
 Agent Host-specific tunnel to the regular VS Code tunnel or its persistent

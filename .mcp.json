@@ -1,10 +1,5 @@
 {
 	"mcpServers": {
-		"verification": {
-			"type": "stdio",
-			"command": "node",
-			"args": ["${PLUGIN_ROOT}/mcp/dist/verificationServer.mjs"]
-		},
 		"disk-cleanup": {
 			"type": "stdio",
 			"command": "node",
