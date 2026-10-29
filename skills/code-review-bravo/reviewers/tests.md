@@ -21,6 +21,12 @@ Use the supplied context and inspect anything needed to validate your findings.
 - Use relevant static validators for schemas, generated declarations, and other declarative metadata.
 - Do not request a test that cannot catch a realistic regression.
 
+## Test-runtime evidence
+
+Before judging how long added or changed tests take, actually execute them with the repository's supported runner and the narrowest applicable selector. Verify that the intended tests ran and report the exact command, selected tests and executed count, pass/fail result, wall-clock time, runner-reported durations when available, and relevant environment or setup limitations.
+
+Separate execution time from startup, build, and setup overhead. Measure a comparable baseline before claiming an incremental slowdown, and repeat noisy measurements. Source inspection, test counts, sleeps, and configured timeouts are not substitutes for execution. If blocked or unable to finish, report the attempted command and limitation without estimating a completed duration or asserting an unmeasured runtime defect. This does not require an unconditional full-suite run.
+
 ## Examples
 
 - A composition test asserts only that one convenient object exists.
