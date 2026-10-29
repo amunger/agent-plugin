@@ -1,10 +1,10 @@
 # Copilot-only model routing
 
-This policy applies to Bravo and Charlie: every specialist, holistic Alpha reviewer, advisory consolidator, and the current top-level synthesis agent must use a model provided through GitHub Copilot. Never use bring-your-own-key (BYOK), direct vendor API, custom endpoint, or another non-Copilot provider for these workflows.
+This policy applies to Bravo and codereview-pocock: every reviewer, advisory consolidator, and the current top-level synthesis agent must use a model provided through GitHub Copilot. Never use bring-your-own-key (BYOK), direct vendor API, custom endpoint, or another non-Copilot provider for these workflows.
 
 ## Use built-in delegation without a provenance approval gate
 
-For a review requested in VS Code Copilot or Copilot CLI, use the current session's built-in general-purpose task/subagent tool. Do not create an external provider, start a separate vendor client, or switch to another session provider. Bravo uses configured subagent defaults subject to applicable instructions; Charlie selects its model mix through that same built-in tool.
+For a review requested in VS Code Copilot or Copilot CLI, use the current session's built-in general-purpose task/subagent tool. Do not create an external provider, start a separate vendor client, or switch to another session provider. Both workflows use configured subagent defaults subject to applicable instructions.
 
 Inspect provider information when the host already exposes it. If a model entry is explicitly labeled BYOK, custom endpoint, or non-Copilot, reject it. When the picker exposes multiple provider routes for the same model, choose the Copilot entry, not the external entry.
 
@@ -28,8 +28,8 @@ When choosing a concrete delegated model, default to the highest available versi
 - Keep the chosen family and tier: Opus versions compete with Opus, Sonnet with Sonnet, and the chosen Gemini tier with that tier. Do not compare version numbers across vendors or replace model-family diversity with one newest model.
 - Explicit user version pins and applicable host model-selection restrictions take precedence. In Bravo, preserve configured subagent preferences unless version selection is authorized; these suggestions do not authorize otherwise prohibited overrides.
 - Do not choose an older version merely because it was used previously or appears in an example. Use an older version only for an explicit pin, supported routing limitation, or documented compatibility/capability constraint, and disclose why.
-- If available versions cannot be ordered reliably, use authoritative host information or ask for clarification instead of inventing a version ranking. For Charlie, use its no-question fallback to permitted built-in routes or configured defaults and disclose the limitation instead of asking. The no-BYOK routing rules apply regardless of version.
-- Apply this preference to specialist, Alpha, and consolidator slots. The current top-level model remains unchanged; do not attempt to upgrade or replace the lead.
+- If available versions cannot be ordered reliably, use authoritative host information or ask for clarification instead of inventing a version ranking. The no-BYOK routing rules apply regardless of version.
+- Apply this preference to reviewer and consolidator slots. The current top-level model remains unchanged; do not attempt to upgrade or replace the lead.
 
 ## Execution and reporting
 
