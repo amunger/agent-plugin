@@ -8,6 +8,7 @@ Use the shared goal, complete change, repository instructions, surrounding code,
 
 - Treat reviewer findings as candidates, not established facts. Check evidence and identify unsupported assumptions or contradictions.
 - Preserve stable references to every original candidate. Account for each as a proposed retained finding, duplicate, related-but-distinct finding, rejection, or unresolved question.
+- Preserve every contributing reviewer on merged findings and track optional comments and open questions as well as defects. Keep Pocock's Standards and Spec labels, references, counts, and skipped/incomplete status separate; do not turn them into one cross-axis verdict. Supply the provenance and proposed dispositions needed for the lead's reviewer-credit table, without claiming recommended fixes were implemented.
 - Merge genuine duplicates without losing distinct triggering conditions, impacts, or evidence. Do not collapse separate defects merely because one change could fix them both.
 - Look across perspectives for a shared root cause. A lifecycle, ownership, behavior, and test finding may require one coordinated correction rather than several local safeguards.
 - Reconsider each proposed fix instead of merely combining reviewers' text. Prefer an appropriate, durable solution at the correct ownership boundary over a small patch that leaves the underlying design problem.

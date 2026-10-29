@@ -58,24 +58,21 @@
 			"path": "skills/code-review-alpha/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
-			"rationale": "Provides a broad, evidence-based standalone review workflow and an independent holistic perspective within Charlie's deeper review.",
-			"usedBy": [
-				"skills/code-review-charlie/SKILL.md"
-			],
+			"rationale": "Provides a broad, evidence-based standalone review workflow.",
 			"reviewOn": [
 				"major-model-release",
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides comparable breadth, evidence validation, and signal without this command.",
-			"lastReviewed": "2026-10-01"
+			"lastReviewed": "2026-10-28"
 		},
 		{
 			"path": "skills/code-review-bravo/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"rationale": "Adds eight independent specialist reviews and advisory consolidation through built-in Copilot delegation without unavailable provider-attestation gates, while rejecting known BYOK routes; covers scope, product fit, external-call risks, root-cause fixes, follow-up opportunities, and independent final synthesis without exposing internal templates as skills.",
-			"usedBy": [
-				"skills/code-review-charlie/SKILL.md"
+			"rationale": "Combines eight specialist reviewers with an independent Pocock standards/spec reviewer and advisory consolidation through built-in Copilot delegation; preserves axis-specific evidence, coherent root-cause recommendations, and explicit final credit and action dispositions for every contributing reviewer.",
+			"uses": [
+				"skills/codereview-pocock/SKILL.md"
 			],
 			"reviewOn": [
 				"major-model-release",
@@ -83,25 +80,23 @@
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides Copilot-only routing, independent specialist coverage, cross-review consolidation, coherent root-cause recommendations, and independent final synthesis with comparable cost and precision.",
-			"lastReviewed": "2026-10-06"
+			"lastReviewed": "2026-10-28"
 		},
 		{
-			"path": "skills/code-review-charlie/SKILL.md",
+			"path": "skills/codereview-pocock/SKILL.md",
 			"category": "workflow-enhancement",
-			"integrationRole": "orchestrator",
-			"rationale": "Adds an explicit-only deep review that starts without confirmation or clarification questions, selecting multiple model families when permitted or preserving all reviewer slots through configured defaults with disclosed coverage limits; rejects known BYOK routes and combines specialist coverage, holistic Alpha review, shared Bravo templates, advisory consolidation, and independent top-level synthesis.",
-			"uses": [
-				"skills/code-review-alpha/SKILL.md",
+			"integrationRole": "standalone",
+			"rationale": "Adapts Matt Pocock's independent standards and spec axes for standalone reviews and one embedded Bravo reviewer, retaining repository-over-baseline precedence, evidence-backed smell heuristics, and separate per-axis results.",
+			"usedBy": [
 				"skills/code-review-bravo/SKILL.md"
 			],
 			"reviewOn": [
 				"major-model-release",
-				"model-routing-change",
 				"agent-delegation-change",
 				"vanilla-code-review-change"
 			],
-			"retirementTest": "Bravo or the standard workflow provides comparable validated unique findings, independent review breadth, and permitted cross-model scrutiny at lower cost without pre-review approval questions.",
-			"lastReviewed": "2026-10-14"
+			"retirementTest": "The standard review workflow reliably separates repository standards from originating spec compliance, with comparable source discovery, evidence, and axis-specific reporting.",
+			"lastReviewed": "2026-10-28"
 		},
 		{
 			"path": "commands/code-review-plus-plus.prompt.md",

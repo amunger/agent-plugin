@@ -1,6 +1,6 @@
 ---
 name: code-review-bravo
-description: Review changes with eight independent specialist reviewers, including scope and product fit, advisory consolidation, and a top-level lead synthesis.
+description: Review changes with nine independent reviewers, including Pocock standards and spec review, scope and product fit, advisory consolidation, and a top-level synthesis crediting reviewers and comment dispositions.
 user-invocable: true
 ---
 
@@ -16,10 +16,11 @@ Before delegating, establish the stated goal and inspect enough context to give 
 - applicable repository instruction files
 - changed and relevant existing tests
 - for a pull request, its description, linked context, discussion, and relevant checks
+- standards sources and the originating issue, spec, or session requirements for the Pocock review; follow its source-discovery guidance before delegation and disclose unavailable sources
 
 Do not divide the diff by file. Every reviewer evaluates the complete change from a different perspective.
 
-## Run the eight reviewers
+## Run the nine reviewers
 
 Read the eight private reviewer templates from the `reviewers/` directory beneath this skill:
 
@@ -32,7 +33,9 @@ Read the eight private reviewer templates from the `reviewers/` directory beneat
 7. `skeptic.md`
 8. `scope.md`
 
-Launch eight independent reviewers concurrently. Use a separate general-purpose agent for each reviewer and use the template name without its extension as the agent name. Include the complete contents of that reviewer's template in its prompt; do not ask the reviewer to invoke another skill.
+Also read [codereview-pocock](../codereview-pocock/SKILL.md) as the ninth reviewer. Launch nine independent reviewers concurrently, subject to host concurrency limits; use independent waves if necessary without dropping reviewers. Use a separate general-purpose agent for each reviewer, using the template name without its extension for the eight specialists and `pocock` for the additional reviewer. Include the complete relevant template or Pocock skill contents in each prompt; do not ask reviewers to invoke another skill.
+
+Explicitly select Pocock's **Embedded Bravo reviewer** mode: one additional agent evaluates Standards and Spec separately, without nested delegation or repeating scope selection. Preserve its per-axis results, including missing-spec or incomplete status, through consolidation and final synthesis.
 
 Give each reviewer the shared scope, goal, and relevant context in addition to its template. Reviewers may inspect the repository and pull request as needed. They must not modify files or submit a GitHub review.
 
@@ -64,6 +67,7 @@ These are starting hypotheses for a mixed-model review, not proven model ranking
 | Tests | Strong Gemini model | Independent fixture scrutiny and surviving-mutation analysis |
 | Skeptic | Claude Opus | Product fit, necessity, tradeoffs, and simpler alternatives |
 | Scope | Claude Opus | Unrelated changes, unexplained scope, and description accuracy |
+| Pocock | Configured subagent default | Documented standards, code-smell heuristics, and originating spec compliance as separate axes |
 | Advisory consolidation | Strong GPT reasoning model when the top-level agent uses Claude; Claude Opus when it uses GPT or Gemini | Cross-review consolidation and root-cause fix planning from a different model family |
 | Final lead synthesis | Current top-level agent | Independent validation and final judgment using original reviews plus advisory notes |
 
@@ -77,7 +81,7 @@ Evaluate routing by validated unique findings, rejected candidates, latency, and
 
 ## Advisory consolidation
 
-After all eight reviewers have finished or reported that they could not complete:
+After all nine reviewers have finished or reported that they could not complete:
 
 1. Read the private `synthesis/consolidator.md` template beneath this skill.
 2. Launch one separate general-purpose agent named `consolidator`. Include the complete template, shared scope and goal, relevant context, and every original reviewer response, including no-finding results, open questions, and incomplete-review status. Give findings stable references such as `behavior-1` so suggestions remain traceable.
@@ -100,6 +104,19 @@ The current top-level agent performs the final synthesis. Treat the consolidator
 9. Mention any reviewer or consolidator that could not complete its work.
 10. Distinguish evidenced product-level objections from implementation defects. A skeptic finding may recommend narrowing or not making the change, but must identify a concrete conflict or cost and a viable alternative. If product intent cannot be established, report the missing context as an open question rather than a defect or a veto.
 11. Preserve scope findings as actionable dispositions: update an incomplete description of intended behavior, remove or split unrelated code, or seek clarification. Do not broaden the stated goal merely to justify unrelated changes.
+12. Include a separate Pocock summary under **Standards** and **Spec**, with per-axis finding counts and the worst supported issue or skipped/incomplete status. A severity-ordered finding may link back to either axis, but do not collapse them into one pass/fail judgment or let one mask the other.
+
+## Reviewer credit and comment dispositions
+
+The final user-facing response must include **Reviewer contributions and actions**:
+
+- Give every original candidate a stable reference, preserving Pocock's axis-specific references. Track references through consolidation and top-level validation, including rejected candidates.
+- Credit every reviewer that supplied a comment, including optional opportunities or open questions, and the consolidator for concerns it originated. When several reviewers independently found the same problem, credit all of them on the merged finding.
+- Use a compact table with **Reviewer(s)**, **Comment reference(s)**, **Final disposition and reason**, and **Action taken**. Account for each comment as accepted, merged (link to the retained finding), rejected, deferred/optional, or unresolved. Group rows only when every referenced comment has the same disposition and action.
+- Distinguish acted-on review feedback from implemented fixes. Say "included in final findings", "incorporated into recommendation", or "not changed" as appropriate. Mark a fix "implemented" only when an explicitly authorized change was actually made and verified; otherwise say "recommended, not implemented". A rejected candidate was evaluated, not fixed.
+- Identify completed reviewers with no comments and reviewers that failed or were incomplete separately. Never imply that a silent or failed reviewer approved the change.
+
+This attribution is required even if no defects survive synthesis. It does not authorize edits or posting reviews.
 
 ## Larger-change opportunities
 
