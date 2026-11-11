@@ -74,13 +74,32 @@
 			"uses": [
 				"skills/codereview-pocock/SKILL.md"
 			],
+			"usedBy": [
+				"skills/code-review-charlie/SKILL.md"
+			],
 			"reviewOn": [
 				"major-model-release",
 				"agent-delegation-change",
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides Copilot-only routing, independent specialist coverage, cross-review consolidation, coherent root-cause recommendations, and independent final synthesis with comparable cost and precision.",
-			"lastReviewed": "2026-10-28"
+			"lastReviewed": "2026-11-11"
+		},
+		{
+			"path": "skills/code-review-charlie/SKILL.md",
+			"category": "workflow-enhancement",
+			"integrationRole": "orchestrator",
+			"rationale": "Combines assumption, net-benefit, tradeoff, and relevant-history judgment with Bravo review, reproduction, and fix/regression verification while keeping feedback local until authorized.",
+			"uses": [
+				"skills/code-review-bravo/SKILL.md"
+			],
+			"reviewOn": [
+				"major-model-release",
+				"vanilla-code-review-change",
+				"verification-workflow-change"
+			],
+			"retirementTest": "The standard review workflow consistently judges assumptions and tradeoffs, reproduces issues, verifies fixes and existing behavior, and provides a local evidence-based verdict.",
+			"lastReviewed": "2026-11-11"
 		},
 		{
 			"path": "skills/codereview-pocock/SKILL.md",
@@ -259,14 +278,14 @@
 			"path": "skills/manage-agent-customization/SKILL.md",
 			"category": "plugin-management",
 			"integrationRole": "standalone",
-			"rationale": "Adds a reliable source-routing and maintenance workflow for public, experimental, and private customizations.",
+			"rationale": "Adds reliable source routing and maintenance for public, experimental, and private customizations, with concise, outcome-focused authoring that reuses existing workflows.",
 			"reviewOn": [
 				"customization-platform-change",
 				"plugin-repository-layout-change",
 				"plugin-publishing-workflow-change"
 			],
 			"retirementTest": "Standard customization tooling reliably selects the correct source repository and maintains equivalent classification metadata.",
-			"lastReviewed": "2026-09-30"
+			"lastReviewed": "2026-11-11"
 		},
 		{
 			"path": "skills/kusto-rest-query/SKILL.md",

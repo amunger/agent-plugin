@@ -19,6 +19,8 @@ Before changing a plugin command, skill, instruction, or other customization:
 
 If repository ownership or the public, experimental, or private classification is unclear, ask the user before making changes.
 
+Keep skills concise and focused on tasks and outcomes. Prefer general guidance over prescribed procedures unless specificity is necessary, and reference existing skills instead of repeating their workflows.
+
 ## Maintenance classification
 
 When the source repository contains `customization-catalog.json`, keep it synchronized with the customization files. The catalog is the classification source of truth; do not add maintenance-only metadata to runtime frontmatter or prompt bodies.
