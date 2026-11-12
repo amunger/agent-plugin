@@ -15,6 +15,18 @@
 	},
 	"customizations": [
 		{
+			"path": "skills/create-pr/SKILL.md",
+			"category": "personal-preference",
+			"integrationRole": "standalone",
+			"rationale": "Applies the owner's preference for concise change-related branch names and latest-main PRs containing only session work, with confirmation for inherited dependencies and published branch changes.",
+			"reviewOn": [
+				"pr-branch-preference-change",
+				"vanilla-pr-workflow-change"
+			],
+			"retirementTest": "The standard PR workflow follows the same naming, base, scope, and published-history confirmation preferences without custom guidance.",
+			"lastReviewed": "2026-11-12"
+		},
+		{
 			"path": "skills/prepare-verification/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
@@ -278,14 +290,14 @@
 			"path": "skills/manage-agent-customization/SKILL.md",
 			"category": "plugin-management",
 			"integrationRole": "standalone",
-			"rationale": "Adds reliable source routing and maintenance for public, experimental, and private customizations, with concise, outcome-focused authoring that reuses existing workflows.",
+			"rationale": "Adds reliable source routing and maintenance for public, experimental, and private customizations, with minimal authoring that reuses existing workflows and requires a demonstrated reason for unsolicited guidance or guardrails.",
 			"reviewOn": [
 				"customization-platform-change",
 				"plugin-repository-layout-change",
 				"plugin-publishing-workflow-change"
 			],
-			"retirementTest": "Standard customization tooling reliably selects the correct source repository and maintains equivalent classification metadata.",
-			"lastReviewed": "2026-11-11"
+			"retirementTest": "Standard customization tooling reliably selects the correct source repository, maintains equivalent classification metadata, and keeps skill content minimal without unjustified additions.",
+			"lastReviewed": "2026-11-12"
 		},
 		{
 			"path": "skills/kusto-rest-query/SKILL.md",
