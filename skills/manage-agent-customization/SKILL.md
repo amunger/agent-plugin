@@ -19,7 +19,7 @@ Before changing a plugin command, skill, instruction, or other customization:
 
 If repository ownership or the public, experimental, or private classification is unclear, ask the user before making changes.
 
-Keep skills concise and focused on tasks and outcomes. Prefer general guidance over prescribed procedures unless specificity is necessary, and reference existing skills instead of repeating their workflows.
+Keep skill content minimal and focused on tasks and outcomes. Clarification is fine, but do not expand points unnecessarily or add your own guidance or guardrails without a demonstrated reason. Prefer general guidance over prescribed procedures unless specificity is necessary, and reference existing skills instead of repeating their workflows.
 
 ## Maintenance classification
 
