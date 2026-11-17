@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
 	[switch]$All,
-	[int]$RulesVersion = 1,
+	[int]$RulesVersion = 2,
 	[string]$StateDirectory = $(if ($env:LOCALAPPDATA) {
 		Join-Path $env:LOCALAPPDATA 'Copilot\agent-plugin\notification-triage'
 	} else {
@@ -230,6 +230,7 @@ $requiredCachedFields = @(
 	'action',
 	'why',
 	'subject_complete',
+	'assignees',
 	'latest_comment_complete',
 	'issue_comments_complete',
 	'issue_comments',
@@ -389,6 +390,10 @@ foreach ($notification in $notifications) {
 		}
 	})
 	$nonemptyReviewBodies = @($reviewRecords | Where-Object { $_.body })
+	$assignees = $null
+	if ($subjectComplete -and $null -ne $subject.PSObject.Properties['assignees']) {
+		$assignees = @((Get-PropertyValue $subject 'assignees') | ForEach-Object { Get-Login $_ })
+	}
 
 	$record = [ordered]@{
 		record_type = 'notification'
@@ -401,6 +406,7 @@ foreach ($notification in $notifications) {
 		updated_at = Get-PropertyValue $notification 'updated_at'
 		subject_complete = $subjectComplete
 		subject_author = Get-Login (Get-PropertyValue $subject 'user')
+		assignees = $assignees
 		state = Get-PropertyValue $subject 'state'
 		state_reason = Get-PropertyValue $subject 'state_reason'
 		merged = Get-PropertyValue $subject 'merged'

@@ -1,6 +1,6 @@
 # Notification triage rules
 
-Rules version: `1`
+Rules version: `2`
 
 Every thread receives one action:
 
@@ -12,7 +12,7 @@ Every thread receives one action:
 
 1. Suppress ledgered IDs with no activity after their recorded `actioned_at`.
 2. Evaluate protected rule `KEEP-006`; a match stops evaluation.
-3. Evaluate `AUTO-001`, `AUTO-003`, `AUTO-004`, and `AUTO-005`.
+3. Evaluate `AUTO-001`, `AUTO-003`, `AUTO-004`, `AUTO-005`, and `AUTO-006`.
 4. Evaluate `KEEP-001` through `KEEP-004`; a match stops evaluation.
 5. Evaluate `AUTO-002`.
 6. Evaluate all `CANDIDATE` rules, using the most specific match.
@@ -22,15 +22,15 @@ Every condition of an automatic rule must be positively established. An API erro
 
 ## Automatic rules
 
-### AUTO-001: merged after the user's final approval
+### AUTO-001: approved and awaiting merge or already merged
 
 Use `auto_done` only when all of these are established:
 
-- The subject is a merged pull request.
+- The subject is a merged pull request, or an open pull request with auto-merge enabled or current merge-queue membership established by its timeline.
 - The authenticated user's latest valid, non-dismissed review is `APPROVED`.
 - No commit is newer than that approval.
-- Between the approval and merge, there is no human comment, review, review request, mention, reply, question, or other activity that may require the user's attention.
-- Later events are limited to the merge, automatic closure, and routine machine status activity.
+- Since the approval, there is no human comment, review, review request, mention, reply, question, or other activity that may require the user's attention.
+- Later events are limited to enabling auto-merge, entering the merge queue, merging, automatic closure, and routine machine status activity. Queue removal, a dismissed approval, or an unanswered request prevents this match.
 - Complete commits, reviews, issue comments, review comments, timeline, and CODENOTIFY history are available and chronologically consistent.
 
 ### AUTO-002: pull request closed without merge
@@ -61,6 +61,17 @@ Use `auto_done` only when:
 
 Use `auto_done` only when the pull request is merged and complete histories prove that it has no issue comments, review comments, non-empty review bodies, mentions of the user, or CODENOTIFY notices.
 
+### AUTO-006: informational update on an issue not assigned to the user
+
+Use `auto_done` only when:
+
+- The subject is an issue, and its current `assignees` list is available and does not include the authenticated user. Do not infer current assignment from the notification reason.
+- Complete issue comments and timeline establish that no unanswered question, request for work, verification request, or other directed follow-up needs the user's response.
+- The latest contribution is informational, such as confirming the behavior the user reported. This includes human comments and bot-authored comments posted through a human account.
+- Complete history contains no CODENOTIFY.
+
+An informational mention or reply alone does not require keeping the notification. A question or request to the user still does. Missing assignment data or ambiguous follow-up prevents this rule from matching. This rule dismisses the notification, not the issue.
+
 ## Candidate rules
 
 ### CANDIDATE-001: merged pull request
@@ -69,7 +80,7 @@ Use `candidate` for a merged pull request when its latest human activity is not 
 
 ### CANDIDATE-003: pull request awaiting automatic merge
 
-Use `candidate` for an open pull request with auto-merge enabled and no directed follow-up.
+Use `candidate` for an open pull request with auto-merge enabled and no directed follow-up only when `AUTO-001` does not match.
 
 ### CANDIDATE-004: closed issue
 

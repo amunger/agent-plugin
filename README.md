@@ -32,7 +32,7 @@ Bravo checks for changes unrelated to the goal, recommending description correct
 
 [`/agent-plugin:code-review-charlie`](skills/code-review-charlie/SKILL.md) adds explicit judgment of behavioral assumptions, subjective tradeoffs, net benefit, and relevant history, plus issue reproduction and fix/regression verification around Bravo. Feedback stays local until the user authorizes publication or approval, and the response ends with an approval, conditional approval, needs-work, or rejection verdict.
 
-`/agent-plugin:notification-triage` reviews the GitHub notification inbox using conservative, versioned rules. It can automatically mark narrowly proven-safe threads Done, independently reviews other suggestions, and requires confirmation before acting on those suggestions. It uses the GitHub CLI and native Windows PowerShell; GitHub authentication needs the `notifications` scope.
+`/agent-plugin:notification-triage` reviews the GitHub notification inbox using conservative, versioned rules. It can automatically mark narrowly proven-safe threads Done, including PRs awaiting automatic merge after your final approval and informational issue updates when you are not assigned and no question or request needs your response. It independently reviews other suggestions and requires confirmation before acting on those suggestions. It uses the GitHub CLI and native Windows PowerShell; GitHub authentication needs the `notifications` scope.
 
 `/agent-plugin:agent-qa` searches a private issue board for prior solutions when a skill or agent workflow is blocked. It records a free-form question when no useful answer exists, uses issue closure as the verified-resolution signal, and connects reusable outcomes back to skill maintenance.
 

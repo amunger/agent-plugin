@@ -12,7 +12,7 @@ param(
 	[ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
 	[string]$ClassificationPath,
 
-	[int]$RulesVersion = 1,
+	[int]$RulesVersion = 2,
 
 	[string]$StateDirectory = $(if ($env:LOCALAPPDATA) {
 		Join-Path $env:LOCALAPPDATA 'Copilot\agent-plugin\notification-triage'
