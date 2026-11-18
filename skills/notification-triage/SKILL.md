@@ -60,16 +60,18 @@ If `LOCALAPPDATA` is unavailable, use `$HOME\.copilot\agent-plugin\notification-
 9. **Review candidates.** Launch one independent `general-purpose` task agent with all candidate records, [RULES.md](RULES.md), and [REVIEW.md](REVIEW.md). It must not modify files or call GitHub. Apply its results exactly. A missing, invalid, or partial review changes affected candidates to `keep`.
 10. **Suggest future rules.** Launch a separate independent `general-purpose` task agent using [SUGGEST.md](SUGGEST.md), the reviewed records, recent classified snapshots, and the ledger. Save its output as `rule-suggestions-<timestamp>.md` in the state directory. Suggestions are not active rules.
 11. **Persist the reviewed run.** Replace the classified snapshot with the reviewed records. Write `summary-<timestamp>.md` and `pending-done-ids-<timestamp>.txt`, then update `latest-classified-pointer.txt`. Pending IDs must contain only reviewed, upheld candidates from the current rules version.
-12. **Present results.** Use these sections, omitting empty ones:
+12. **Prepare the full report.** Use these sections, omitting empty ones:
     - `Automatically Done`
-    - `Suggested Done after review`
+    - `Done after confirmation` for successful confirmed removals, or `Suggested Done after review` for candidates still awaiting confirmation
     - `Reviewer overrides`
     - `Keeping`
+    - `Failed removals`
 
     Link every subject when `html_url` is available. Include the rule ID for every result and the notification ID for automatic or proposed removals. Group results that have the same concrete outcome, such as `PR merged with no further comments` or `Closed as not planned without further comment`. Within each group, put every linked title on its own bullet. Do not report the GitHub notification reason, such as `assign`, `mention`, or `comment`; it does not help the user decide. Add item-specific context only when it materially differs from the group outcome.
-13. **Request confirmation.** In an interactive run with upheld candidates, use `ask_user` once. Start with a short sentence explaining that candidates passed independent review and that links are optional spot checks. Use outcome headings for groups and ordinary bullets for linked titles so the prompt itself cannot be mistaken for a candidate title. Offer `Done all suggested` and `Keep all`; the user may enter exclusions or a subset in freeform. Do not request confirmation in plain text.
+13. **Request confirmation.** In an interactive run with upheld candidates, use `ask_user` once. Include only the proposed removals in the widget, not the full report, automatically completed actions, reviewer overrides, or kept notifications. Start with a short sentence explaining that candidates passed independent review and that links are optional spot checks. Use outcome headings for groups and ordinary bullets for linked titles so the prompt itself cannot be mistaken for a candidate title. Offer `Done all suggested` and `Keep all`; the user may enter exclusions or a subset in freeform. Do not request confirmation in plain text.
 14. **Revalidate and delete.** After confirmation, call `Set-GitHubNotificationsDone.ps1` with `-Method Confirmed`, `-ClassificationPath $classifiedPath`, and only the selected IDs. The script must reject stale activity or invalid review state. Report successes and failures.
 15. **Clean up.** Remove transient fetch files after classified state is safely persisted. Retain snapshots, summaries, suggestions, pending lists, and the ledger.
+16. **Show the complete final report.** After actions finish, update the saved summary and present the full report in the final chat response, even if some items appeared in the confirmation widget. List every notification and its actual outcome, including candidates the user chose to keep and removals rejected by revalidation. Do not replace the list with counts or only a link to the saved summary.
 
 ## Scheduled use
 
@@ -77,7 +79,7 @@ When the user asks to schedule triage, use `listAutomations` and `configureAutom
 
 ## Report format
 
-Group equivalent outcomes. Keep descriptions concrete and short:
+Use this format for the complete final chat report, not the confirmation widget. Group equivalent outcomes. Keep descriptions concrete and short:
 
 ```markdown
 ## Automatically Done (2)
@@ -87,9 +89,9 @@ Group equivalent outcomes. Keep descriptions concrete and short:
 - [First pull request](https://github.com/owner/repo/pull/123) `[AUTO-001, 98765]`
 - [Second pull request](https://github.com/owner/repo/pull/124) `[AUTO-001, 98766]`
 
-## Suggested Done after review (3)
+## Done after confirmation (3)
 
-The candidates below passed independent review. Links are optional spot checks.
+The candidates below passed independent review and were marked Done after confirmation. Use `Suggested Done after review` instead when confirmation is still pending.
 
 ### PR merged with no further comments
 

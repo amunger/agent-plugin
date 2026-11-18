@@ -304,14 +304,14 @@
 			"path": "skills/notification-triage/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
-			"rationale": "Adds conservative, stateful notification cleanup with automatic dismissal after final approval while awaiting merge and current-assignment-aware dismissal of informational issue updates, independent review of other suggestions, and explicit confirmation beyond the vanilla GitHub workflow.",
+			"rationale": "Adds conservative, stateful notification cleanup with automatic dismissal after final approval while awaiting merge and current-assignment-aware dismissal of informational issue updates, independent review of other suggestions, focused removal confirmation, and complete final outcome reporting beyond the vanilla GitHub workflow.",
 			"reviewOn": [
 				"github-notification-api-change",
 				"automation-platform-change",
 				"notification-workflow-change"
 			],
 			"retirementTest": "The standard notification workflow provides equivalent conservative classification, stale-state protection, independent review, and confirmation controls.",
-			"lastReviewed": "2026-11-17"
+			"lastReviewed": "2026-11-18"
 		},
 		{
 			"path": "skills/setup-agents-build-background/SKILL.md",
