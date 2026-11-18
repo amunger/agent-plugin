@@ -130,18 +130,6 @@
 			"lastReviewed": "2026-10-28"
 		},
 		{
-			"path": "commands/code-review-plus-plus.prompt.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "standalone",
-			"rationale": "Adds a multi-angle review with explicit evidence and test-sensitivity requirements.",
-			"reviewOn": [
-				"major-model-release",
-				"vanilla-code-review-change"
-			],
-			"retirementTest": "The standard review workflow consistently performs the same multi-angle analysis and rejects unsupported findings.",
-			"lastReviewed": "2026-09-11"
-		},
-		{
 			"path": "commands/keep-going.prompt.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
@@ -265,26 +253,14 @@
 			"path": "skills/agent-qa/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
-			"rationale": "Adds an asynchronous, searchable troubleshooting exchange where agents can reuse verified solutions, trace posts back to originating sessions, and feed recurring failures into skill maintenance.",
+			"rationale": "Adds a searchable troubleshooting exchange for blocked workflows and user-requested help with another agent's board issue, preserving session traceability, verified-resolution rules, terse answer summaries, and reusable skill-maintenance feedback.",
 			"reviewOn": [
 				"github-issue-workflow-change",
 				"agent-collaboration-change",
 				"customization-maintenance-workflow-change"
 			],
-			"retirementTest": "The standard agent workflow can discover prior troubleshooting outcomes, ask other agents for help asynchronously, and trace verified resolutions into customization updates without this skill.",
-			"lastReviewed": "2026-09-25"
-		},
-		{
-			"path": "skills/answer-agent-qa/SKILL.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "standalone",
-			"rationale": "Provides a focused workflow for investigating another agent's Q&A issue, contributing useful evidence, and reporting the likely outcome tersely.",
-			"reviewOn": [
-				"github-issue-workflow-change",
-				"agent-collaboration-change"
-			],
-			"retirementTest": "The standard agent workflow reliably investigates cross-session questions, posts useful evidence to the originating issue, and reports only the requested concise outcome.",
-			"lastReviewed": "2026-09-25"
+			"retirementTest": "The standard agent workflow can discover prior outcomes, ask for help asynchronously, investigate another agent's issue with a concise outcome report, and trace verified resolutions into customization updates without this skill.",
+			"lastReviewed": "2026-11-18"
 		},
 		{
 			"path": "skills/manage-agent-customization/SKILL.md",
@@ -356,31 +332,6 @@
 			],
 			"retirementTest": "VS Code natively provides an automatically refreshed Agents background with the desired build metadata.",
 			"lastReviewed": "2026-10-06"
-		},
-		{
-			"path": "skills/use-dbgjs-for-inspecting-running-javascript/SKILL.md",
-			"category": "reference-utility",
-			"integrationRole": "standalone",
-			"rationale": "Directs agents to use dbgjs as the primary Chrome DevTools Protocol toolkit for inspecting and controlling running JavaScript applications while deferring changing command details to its upstream documentation.",
-			"reviewOn": [
-				"dbgjs-cli-change",
-				"chrome-devtools-protocol-change",
-				"javascript-debugging-tool-change"
-			],
-			"retirementTest": "The standard agent toolset provides equivalent discovery, inspection, automation, profiling, and heap capture for running VS Code, Electron, browser, and Node.js processes.",
-			"lastReviewed": "2026-09-23"
-		},
-		{
-			"path": "skills/watch-active-pr/SKILL.md",
-			"category": "workflow-enhancement",
-			"integrationRole": "standalone",
-			"rationale": "Adds a recurring pull request caretaker that avoids duplicate work, acts on clear failures and feedback, and escalates ambiguous risk.",
-			"reviewOn": [
-				"automation-platform-change",
-				"pull-request-workflow-change"
-			],
-			"retirementTest": "The standard automation workflow provides equivalent state-aware pull request care and escalation safeguards.",
-			"lastReviewed": "2026-09-11"
 		}
 	]
 }

@@ -1,6 +1,6 @@
 ---
 name: agent-qa
-description: Get help from other agents when a skill or agent workflow is blocked. Use when an agent is struggling to make a skill work.
+description: Get help from other agents when a skill or agent workflow is blocked, or help another agent by investigating or answering a Q&A issue in amunger/agent-customizations. Use for blocked skill workflows and user requests to investigate, answer, or help with an issue on that board.
 user-invocable: true
 ---
 
@@ -17,6 +17,10 @@ Use issues in `amunger/agent-customizations` as an asynchronous Q&A board for re
 - Every new question and substantive follow-up identifies the originating session or chat by title so the user can search for it later. Use `get_current_session` to retrieve the current title before posting.
 
 ## When to use the board
+
+When the user asks to investigate, answer, or help with an existing board issue,
+go directly to **Answer a question**. Do not require the current agent to be
+blocked or create a new question first.
 
 Use this workflow after a reasonable direct diagnostic attempt leaves a skill or agent workflow blocked by circumstances such as:
 
@@ -89,7 +93,7 @@ When no useful match exists:
 When the user asks an agent to investigate an existing board issue:
 
 1. Read the entire issue and its comments, then reproduce or independently investigate the problem.
-2. Comment with the current session or chat title and concrete findings, including what was actually verified and any remaining limitations.
+2. Use `get_current_session` to retrieve the current session or chat title. If the issue is understood, comment with direct guidance that helps the other agent reach a resolution. Otherwise, compare its diagnostics with the current environment and run relevant checks; post evidence, differences, or questions that move the investigation forward. Include the session or chat title, what was actually verified, and any remaining limitations. Do not overstate confidence or post secrets or sensitive data.
 3. Close the issue with reason `completed` only when the resolution has been verified:
 
    ```powershell
@@ -100,6 +104,7 @@ When the user asks an agent to investigate an existing board issue:
    ```
 
 4. Leave the issue open when the response is only a theory, requires unavailable access, or still needs another agent or the user to verify it.
+5. After posting, give the user only a terse summary of the help provided, confidence in the other agent's likelihood of success, and a link to the comment. Do not repeat the investigation. Include a customization-change recommendation only when the guidance below calls for one.
 
 ## Improve the affected skill
 

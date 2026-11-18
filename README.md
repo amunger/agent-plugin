@@ -7,8 +7,8 @@ Personal agent customizations packaged as a Copilot plugin for use across reposi
 | Component | Location | Included example |
 | --- | --- | --- |
 | Instructions | `instructions/` | Language guidance, customization maintenance, long-response summaries, and pull request guidance |
-| Slash commands | `commands/` | `/code-review-plus-plus` and `/keep-going` |
-| Skills | `skills/` | Disk cleanup, code reviews, agent Q&A and answering, GitHub notification triage, merge readiness, plugin customization routing, version reporting, active PR automation, telemetry guidance, direct Kusto REST querying, running JavaScript inspection with dbgjs, and persistent Agents background updater setup |
+| Slash commands | `commands/` | `/keep-going` |
+| Skills | `skills/` | Disk cleanup, code reviews, agent Q&A, GitHub notification triage, merge readiness, plugin customization routing, version reporting, telemetry guidance, direct Kusto REST querying, and persistent Agents background updater setup |
 | MCP apps | `mcp/` | Disk cleanup review |
 
 The `extensions/agents-build-background` project is installed by the
@@ -34,9 +34,7 @@ Bravo checks for changes unrelated to the goal, recommending description correct
 
 `/agent-plugin:notification-triage` reviews the GitHub notification inbox using conservative, versioned rules. It can automatically mark narrowly proven-safe threads Done, including PRs awaiting automatic merge after your final approval and informational issue updates when you are not assigned and no question or request needs your response. It independently reviews other suggestions and requires confirmation before acting on those suggestions. It uses the GitHub CLI and native Windows PowerShell; GitHub authentication needs the `notifications` scope.
 
-`/agent-plugin:agent-qa` searches a private issue board for prior solutions when a skill or agent workflow is blocked. It records a free-form question when no useful answer exists, uses issue closure as the verified-resolution signal, and connects reusable outcomes back to skill maintenance.
-
-`/agent-plugin:answer-agent-qa` investigates an issue on that board, posts guidance or additional diagnostic evidence, and reports the likely outcome tersely.
+`/agent-plugin:agent-qa` searches a private issue board for prior solutions when a skill or agent workflow is blocked. It records a free-form question when no useful answer exists, uses issue closure as the verified-resolution signal, and connects reusable outcomes back to skill maintenance. It also handles requests to investigate, answer, or help with an existing board issue directly, posts guidance or additional diagnostic evidence, and reports the likely outcome tersely. Both workflows can be selected implicitly from the task; no separate answering skill is needed.
 
 `/agent-plugin:prepare-verification` outlines the target, checks, success criteria, and limitations, then schedules verification through an available automation provider. It asks when to run if no time was supplied. The automation carries the full plan, disables its schedule before its first attempt, and deletes itself afterward, including failed or blocked attempts. Providers without native one-shot scheduling use a first-occurrence-matched recurring schedule only when supported; unsupported times are reported rather than silently approximated. Interrupted attempts may leave a disabled automation for cleanup. There is no verification MCP server or approval card.
 
