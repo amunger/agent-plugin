@@ -1,6 +1,6 @@
 ---
 name: codereview-pocock
-description: Review a branch, pull request, session changes, or changes since a fixed point along Matt Pocock's two independent axes, repository standards and originating spec compliance. Use for a standalone Pocock review or as Bravo's additional reviewer.
+description: Review a branch, pull request, session changes, or changes since a fixed point along Matt Pocock's two independent axes, repository standards and originating spec compliance.
 user-invocable: true
 ---
 
@@ -50,9 +50,3 @@ Launch two independent general-purpose reviewers concurrently, named `pocock-sta
 Require file and line, concrete problem and impact, triggering conditions, an appropriate root-cause fix, and evidence for each candidate. No findings is a valid result. Report incomplete reviewers and evidence gaps explicitly.
 
 Present lightly cleaned reports under `## Standards` and `## Spec`. Do not merge or rerank across axes. End with each axis's finding count and worst issue, or its skipped/incomplete status; do not choose a single winner across axes. Do not modify code or submit a GitHub review unless explicitly asked.
-
-## Embedded Bravo reviewer
-
-When Bravo supplies this skill in a reviewer prompt, use its pinned shared scope, standards, goal, and spec. Do not restart scope discovery, request a different baseline, invoke Bravo, or launch nested reviewers. Perform both axes within this single reviewer. If a necessary source is absent or inaccessible, report the gap; mark Spec "no spec available" when appropriate instead of blocking the other reviewers.
-
-Return separate `## Standards` and `## Spec` sections, under 400 words each, with stable references `pocock-standards-1`, `pocock-spec-1`, and so on. Preserve the same evidence requirements, hard-rule-versus-heuristic distinction, and per-axis counts. Bravo may deduplicate a candidate against other reviewers, but must retain its axis and attribution and report each axis's result separately.

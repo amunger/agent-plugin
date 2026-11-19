@@ -82,10 +82,7 @@
 			"path": "skills/code-review-bravo/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "orchestrator",
-			"rationale": "Combines eight specialist reviewers with an independent Pocock standards/spec reviewer and advisory consolidation through built-in Copilot delegation; preserves axis-specific evidence, coherent root-cause recommendations, and explicit final credit and action dispositions for every contributing reviewer.",
-			"uses": [
-				"skills/codereview-pocock/SKILL.md"
-			],
+			"rationale": "Combines eight specialist reviewers and advisory consolidation through built-in Copilot delegation, with coherent root-cause recommendations and explicit final credit and action dispositions for every contributing reviewer.",
 			"usedBy": [
 				"skills/code-review-charlie/SKILL.md"
 			],
@@ -95,7 +92,7 @@
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow provides Copilot-only routing, independent specialist coverage, cross-review consolidation, coherent root-cause recommendations, and independent final synthesis with comparable cost and precision.",
-			"lastReviewed": "2026-11-11"
+			"lastReviewed": "2026-11-19"
 		},
 		{
 			"path": "skills/code-review-charlie/SKILL.md",
@@ -117,17 +114,14 @@
 			"path": "skills/codereview-pocock/SKILL.md",
 			"category": "workflow-enhancement",
 			"integrationRole": "standalone",
-			"rationale": "Adapts Matt Pocock's independent standards and spec axes for standalone reviews and one embedded Bravo reviewer, retaining repository-over-baseline precedence, evidence-backed smell heuristics, and separate per-axis results.",
-			"usedBy": [
-				"skills/code-review-bravo/SKILL.md"
-			],
+			"rationale": "Adapts Matt Pocock's independent standards and spec axes for standalone reviews, retaining repository-over-baseline precedence, evidence-backed smell heuristics, and separate per-axis results.",
 			"reviewOn": [
 				"major-model-release",
 				"agent-delegation-change",
 				"vanilla-code-review-change"
 			],
 			"retirementTest": "The standard review workflow reliably separates repository standards from originating spec compliance, with comparable source discovery, evidence, and axis-specific reporting.",
-			"lastReviewed": "2026-10-28"
+			"lastReviewed": "2026-11-19"
 		},
 		{
 			"path": "commands/keep-going.prompt.md",
